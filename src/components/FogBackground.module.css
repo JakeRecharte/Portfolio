@@ -1,0 +1,204 @@
+/*
+ * Drifting fog background.
+ *
+ * Reference (afamolie.com) ships this as a 2.9 MB / 600x338 / 10 fps GIF
+ * stretched over the viewport, so it is both heavy and visibly upscaled.
+ * This rebuilds the same look from gradients: no network cost, sharp at any
+ * resolution, 60 fps, and it composites on the GPU.
+ *
+ * Palette sampled from the reference's own frames.
+ */
+
+.root {
+  position: fixed;
+  inset: 0;
+  z-index: -10;
+  overflow: hidden;
+  background-color: #04101f;
+  /* Containment keeps the blurred layers from inflating paint area. */
+  contain: strict;
+}
+
+.layer {
+  position: absolute;
+  border-radius: 50%;
+  /* Only transform animates, so these stay on the compositor. */
+  will-change: transform;
+  mix-blend-mode: screen;
+}
+
+/* Broad light mass, center-left. */
+.a {
+  top: -20%;
+  left: -15%;
+  width: 90vmax;
+  height: 75vmax;
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(95, 142, 181, 0.55) 0%,
+    rgba(46, 97, 141, 0.32) 38%,
+    rgba(28, 73, 111, 0) 70%
+  );
+  animation: driftA 41s ease-in-out infinite alternate;
+}
+
+/* Upper highlight, drifts against A. */
+.b {
+  top: -30%;
+  right: -20%;
+  width: 80vmax;
+  height: 70vmax;
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(110, 155, 192, 0.42) 0%,
+    rgba(46, 97, 141, 0.24) 42%,
+    rgba(9, 43, 84, 0) 72%
+  );
+  animation: driftB 53s ease-in-out infinite alternate;
+}
+
+/* Deep mass pulling the bottom-right darker. */
+.c {
+  bottom: -35%;
+  right: -10%;
+  width: 95vmax;
+  height: 80vmax;
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(34, 72, 105, 0.5) 0%,
+    rgba(9, 43, 84, 0.3) 45%,
+    rgba(1, 13, 32, 0) 75%
+  );
+  animation: driftC 67s ease-in-out infinite alternate;
+}
+
+/* Slow low-frequency wash across the whole field. */
+.d {
+  bottom: -25%;
+  left: -20%;
+  width: 85vmax;
+  height: 70vmax;
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(28, 73, 111, 0.45) 0%,
+    rgba(9, 43, 84, 0.26) 46%,
+    rgba(1, 13, 32, 0) 76%
+  );
+  animation: driftD 79s ease-in-out infinite alternate;
+}
+
+/*
+ * Film grain. The reference has visible noise baked into the GIF; an SVG
+ * turbulence filter reproduces it without the payload.
+ */
+.grain {
+  position: absolute;
+  inset: -50%;
+  opacity: 0.16;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  will-change: transform;
+  animation: grainShift 6s steps(6) infinite;
+}
+
+/* Darkens the edges so content in the middle stays readable. */
+.vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at 50% 45%,
+    rgba(4, 16, 31, 0) 35%,
+    rgba(4, 16, 31, 0.55) 78%,
+    rgba(2, 8, 18, 0.88) 100%
+  );
+}
+
+@keyframes driftA {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(6vw, 4vh, 0) scale(1.12);
+  }
+  100% {
+    transform: translate3d(-3vw, 7vh, 0) scale(1.04);
+  }
+}
+
+@keyframes driftB {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1.06);
+  }
+  50% {
+    transform: translate3d(-7vw, 6vh, 0) scale(1);
+  }
+  100% {
+    transform: translate3d(-2vw, -4vh, 0) scale(1.14);
+  }
+}
+
+@keyframes driftC {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(-5vw, -7vh, 0) scale(1.15);
+  }
+  100% {
+    transform: translate3d(4vw, -3vh, 0) scale(1.05);
+  }
+}
+
+@keyframes driftD {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1.08);
+  }
+  50% {
+    transform: translate3d(8vw, -5vh, 0) scale(1);
+  }
+  100% {
+    transform: translate3d(3vw, 3vh, 0) scale(1.12);
+  }
+}
+
+/* Jitters the noise tile so the grain shimmers instead of sitting still. */
+@keyframes grainShift {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  20% {
+    transform: translate3d(-2%, 3%, 0);
+  }
+  40% {
+    transform: translate3d(3%, -2%, 0);
+  }
+  60% {
+    transform: translate3d(-3%, -3%, 0);
+  }
+  80% {
+    transform: translate3d(2%, 2%, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/*
+ * Reduced motion: keep the look, drop the movement. The global reduce rule in
+ * globals.css collapses durations; this additionally kills the grain shimmer,
+ * which is the part most likely to bother a motion-sensitive viewer.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .a,
+  .b,
+  .c,
+  .d {
+    animation: none;
+  }
+
+  .grain {
+    animation: none;
+    opacity: 0.1;
+  }
+}
