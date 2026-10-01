@@ -13,8 +13,15 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Jake Recharte",
-  description: "Computer Science student at San Diego State University.",
+  title: "Jake Recharte — CS Student @ SDSU",
+  description:
+    "Computer Science student at San Diego State University. Projects, experience, and contact.",
+  openGraph: {
+    title: "Jake Recharte — CS Student @ SDSU",
+    description:
+      "Computer Science student at San Diego State University. Projects, experience, and contact.",
+    type: "website",
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

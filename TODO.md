@@ -61,6 +61,31 @@ The site I'm modeling this on. Torn down so I know what I'm building before I bu
 
 ---
 
+## 2a. Second reference — sawad.framer.website
+
+Where the *layout* comes from, as opposed to the background.
+
+**Pattern:** sticky profile card in a left column; the right column scrolls
+through sections. Each section opens with a huge uppercase display heading
+split across two lines, the second line dropped back in opacity so it reads as
+depth. Content rows are flat lists — title, supporting text, meta, and a small
+diagonal arrow at the far right — divided by hairline rules rather than boxed
+into cards. Everything fades up as it enters the viewport.
+
+**Taken:** the sticky-card-plus-scrolling-column split, the two-tone display
+headings, the hairline-divided rows, the arrow affordance, the scroll reveals.
+
+**Changed:**
+- The card is translucent glass instead of solid white, so the fog shows
+  through rather than being punched out by a white rectangle.
+- Nav is real anchor links, not click handlers on list items, so it is
+  keyboard navigable and works without JS.
+- No contact form — `mailto:` only, per the §1 non-goals.
+- Accent is amber `#ffa94d`, warm against the blue fog. Not the reference's
+  orange-red, and not afamolie's emerald.
+
+---
+
 ## 3. Stack decisions
 
 | Decision | Choice | Why |
@@ -112,27 +137,36 @@ site uses):
   `children: React.ReactNode` typing needed
 - `AGENTS.md` is generated and re-added by `next dev`; leave it committed
 
-### Phase 1 — Skeleton
-Structure with placeholder text. Ugly is fine; wiring is the point.
-- [ ] Root layout: full-height dark canvas, font loading, metadata
-- [ ] Left identity rail: name, "CS Student @ SDSU", nav
-- [ ] View state (`home | projects | experience | contact`) driving the right pane
-- [ ] `AnimatePresence` enter/exit between views
-- [ ] Nav as real `<button>` elements — keyboard focusable, visible focus ring, `aria-current` on the active one
-- [ ] Mobile layout: stacks to column, nav becomes a row
-- [ ] `prefers-reduced-motion` respected globally
+### Phase 1 — Skeleton ✅
+- [x] Root layout: full-height dark canvas, font loading, metadata
+- [x] Animated fog background (see §2a below)
+- [x] Sticky left identity card: monogram, name, role, links, education
+- [x] Floating pill nav, real anchor links to sections
+- [x] Scroll-reveal transitions between blocks (Motion `whileInView`)
+- [x] Mobile layout: stacks to a single column
+- [x] `prefers-reduced-motion` respected globally
+
+**Layout changed from the original plan.** The afamolie pattern (state-swapped
+panes, one view at a time) was replaced with the sawad.framer.website pattern:
+a sticky profile card beside a single scrolling column of sections. It suits a
+student portfolio better — a recruiter scrolls once and sees everything,
+instead of hunting through tabs. Keeps real anchors, so it works without JS.
 
 ### Phase 2 — Content layer
-- [ ] `src/content/projects.ts` with a typed `Project`: `slug`, `title`, `blurb`, `description`, `tech[]`, `repoUrl`, `liveUrl`, `media`, `date`
-- [ ] `src/content/experience.ts` with a typed `Role`: `org`, `title`, `start`, `end`, `bullets[]`
-- [ ] `src/content/site.ts` — name, tagline, links, email
-- [ ] Fill in **real content** (see §5 — this is the actual bottleneck, not the code)
+- [x] `src/content/projects.ts` — typed `Project`
+- [x] `src/content/experience.ts` — typed `Role`
+- [x] `src/content/tools.ts` — typed `Tool`
+- [x] `src/content/site.ts` — name, headline, tagline, links, education, stats
+- [ ] **Fill in real content** — every file is placeholder right now, marked
+      with `TODO:`. This is the actual bottleneck, not the code (see §5).
 
 ### Phase 3 — Sections
-- [ ] **Home** — name, one-line pitch, short bio, education (SDSU, major, expected grad), primary links
-- [ ] **Projects** — master-detail: list of titles, panel with description, tech chips, screenshot/demo, GitHub + live links
-- [ ] **Experience** — vertical timeline: role, org, dates, 2–4 accomplishment bullets each; relevant coursework below
-- [ ] **Contact** — big links: GitHub, LinkedIn, Email, Resume PDF
+- [x] **Hero** — two-tone display heading, tagline, stats row
+- [x] **Projects** — rows with title, year, blurb, tech chips, arrow link
+- [x] **Experience** — rows with org, role, period, bullets
+- [x] **Tools** — grid of tech with category labels
+- [x] **Contact** — big links: Email, GitHub, LinkedIn, Resume
+- [ ] Project screenshots / demo media (rows are text-only today)
 - [ ] Custom 404
 
 ### Phase 4 — Polish
@@ -199,3 +233,4 @@ The code is the easy half. This is what actually gates shipping.
 
 - **2026-08-21** — Repo initialized. Reference site (afamolie.com) torn down and documented. Plan written. Stack chosen: Next.js + TS + Tailwind + Motion on Vercel.
 - **2026-08-21** — Phase 0 complete. Next 16.3.2 scaffolded, tooling wired, build green. Vercel connection still pending (needs browser).
+- **2026-10-01** — Fog background built from gradients instead of the reference's 2.9 MB GIF. Layout rebuilt on the sawad pattern: sticky profile card, scrolling sections, two-tone headings, scroll reveals. Content files typed but still placeholder.

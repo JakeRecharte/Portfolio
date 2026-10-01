@@ -1,25 +1,32 @@
 import FogBackground from "@/components/FogBackground";
+import Nav from "@/components/Nav";
+import ProfileCard from "@/components/ProfileCard";
+import {
+  Hero,
+  Projects,
+  Experience,
+  Tools,
+  Contact,
+} from "@/components/Sections";
 
 export default function Home() {
   return (
     <>
       <FogBackground />
-      <main className="flex flex-1 items-center justify-center px-6 py-12">
-        {/* min-w-0 lets this shrink below max-content; without it the flex
-            item refuses to wrap and pushes the document wider than the
-            viewport on narrow screens. */}
-        <div className="w-full max-w-2xl min-w-0 text-center">
-          <h1 className="text-4xl font-semibold tracking-tight text-balance drop-shadow-lg sm:text-5xl">
-            Jake Recharte
-          </h1>
-          <p className="mt-3 text-base text-balance text-neutral-300 sm:text-lg">
-            Computer Science &middot; San Diego State University
-          </p>
-          <p className="mt-8 font-mono text-sm text-neutral-400">
-            Portfolio in progress.
-          </p>
-        </div>
-      </main>
+      <Nav />
+      <div className="mx-auto grid w-full max-w-6xl gap-12 px-5 pt-24 pb-28 lg:grid-cols-[21rem_1fr] lg:gap-16 lg:px-8 lg:pt-28">
+        <ProfileCard />
+        <main className="min-w-0 space-y-28 lg:space-y-36">
+          <Hero />
+          <Projects />
+          <Experience />
+          <Tools />
+          <Contact />
+        </main>
+      </div>
+      <footer className="pb-10 text-center text-xs text-white/30">
+        Built with Next.js &middot; {new Date().getFullYear()}
+      </footer>
     </>
   );
 }
