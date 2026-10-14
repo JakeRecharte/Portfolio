@@ -15,11 +15,11 @@ const jetBrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "Jake Recharte — CS Student @ SDSU",
   description:
-    "Computer Science student at San Diego State University. Projects, experience, and contact.",
+    "CS student at San Diego State. A language published on PyPI, a climbing app on Supabase, an ML model at 82% accuracy.",
   openGraph: {
     title: "Jake Recharte — CS Student @ SDSU",
     description:
-      "Computer Science student at San Diego State University. Projects, experience, and contact.",
+      "CS student at San Diego State. A language published on PyPI, a climbing app on Supabase, an ML model at 82% accuracy.",
     type: "website",
   },
 };

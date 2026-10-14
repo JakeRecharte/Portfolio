@@ -1,10 +1,10 @@
 import { site } from "@/content/site";
-import { projects } from "@/content/projects";
+import { featuredProjects, otherProjects } from "@/content/projects";
 import { experience } from "@/content/experience";
-import { tools } from "@/content/tools";
 import SectionHeading from "./SectionHeading";
 import ArrowLink from "./ArrowLink";
 import Reveal from "./Reveal";
+import ProjectBoard from "./ProjectBoard";
 
 export function Hero() {
   return (
@@ -45,49 +45,70 @@ export function Hero() {
   );
 }
 
-export function Projects() {
+/**
+ * The top three, as cards. Three things given room read as a claim; the same
+ * three in a row list read as inventory, which is what the additional-projects
+ * rows below are for. Order is Jake's ranking, not chronological.
+ *
+ * Cards are the exception to "rows beat boxes" (DESIGN.md §2.3) and the only
+ * grid of them on the page — that's the whole reason the featured set looks
+ * featured.
+ */
+export function FeaturedProjects() {
   return (
     <section id="projects" className="scroll-mt-24">
       <Reveal>
-        <SectionHeading lines={["RECENT", "PROJECTS"]} />
+        <SectionHeading lines={["FEATURED", "PROJECTS"]} />
       </Reveal>
-      <ul className="mt-12 divide-y divide-white/10 border-t border-white/10">
-        {projects.map((p, i) => {
+      <ul className="mt-12 grid gap-4 lg:grid-cols-3">
+        {featuredProjects.map((p, i) => {
           const href = p.liveUrl ?? p.repoUrl;
+          const body = (
+            <>
+              <div className="flex items-start justify-between gap-4">
+                <h3 className="text-xl font-bold text-white">{p.title}</h3>
+                {href && <ArrowLink className="mt-1 shrink-0 text-accent" />}
+              </div>
+              <p className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-xs text-white/35">
+                {p.period}
+                <span className="rounded-full border border-accent/40 px-2.5 py-0.5 font-mono text-[10px] tracking-wider text-white/55">
+                  {p.kind}
+                </span>
+              </p>
+              <p className="mt-4 text-sm leading-relaxed text-white/55">
+                {p.blurb}
+              </p>
+              {p.tech && (
+                <ul className="mt-auto flex flex-wrap gap-2 pt-6">
+                  {p.tech.map((t) => (
+                    <li
+                      key={t}
+                      className="rounded-full border border-white/10 px-2.5 py-0.5 text-xs text-white/55"
+                    >
+                      {t}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </>
+          );
+          const shell =
+            "flex h-full flex-col rounded-2xl border border-white/10 bg-white/[0.03] p-6";
           return (
-            <Reveal key={p.slug} delay={i * 0.06}>
-              <li>
-                <a
-                  href={href}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="group flex items-start gap-6 py-7 transition-colors hover:bg-white/[0.03]"
-                >
-                  <div className="min-w-0 flex-1">
-                    <div className="flex flex-wrap items-baseline gap-x-3">
-                      <h3 className="text-xl font-bold text-white sm:text-2xl">
-                        {p.title}
-                      </h3>
-                      <span className="font-mono text-xs text-white/35">
-                        {p.year}
-                      </span>
-                    </div>
-                    <p className="mt-2 max-w-lg text-sm leading-relaxed text-white/55">
-                      {p.blurb}
-                    </p>
-                    <ul className="mt-3 flex flex-wrap gap-2">
-                      {p.tech.map((t) => (
-                        <li
-                          key={t}
-                          className="rounded-full border border-white/10 px-2.5 py-0.5 text-xs text-white/55"
-                        >
-                          {t}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                  <ArrowLink className="mt-1.5 text-accent" />
-                </a>
+            <Reveal key={p.slug} delay={i * 0.04} className="h-full">
+              <li className="h-full">
+                {href ? (
+                  <a
+                    href={href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className={`group ${shell} transition hover:border-white/25 hover:bg-white/[0.07]`}
+                  >
+                    {body}
+                  </a>
+                ) : (
+                  <div className={shell}>{body}</div>
+                )}
               </li>
             </Reveal>
           );
@@ -97,22 +118,55 @@ export function Projects() {
   );
 }
 
+/**
+ * Everything else that's real, as a checkerboard of squares. This is a
+ * subsection of `Projects`, not a section of its own: it takes the eyebrow
+ * (DESIGN.md §2.5) rather than a display heading, so `FEATURED PROJECTS` stays
+ * the only projects title on the page and these tiles read as the rest of that
+ * list. The `mt-16` is the subsection gap — it only works because page.tsx
+ * wraps the pair in a plain div, outside `main`'s `space-y`.
+ *
+ * The board itself is [ProjectBoard](./ProjectBoard.tsx), which is a client
+ * component; this stays on the server and hands it the content.
+ */
+export function AdditionalProjects() {
+  return (
+    <section className="mt-16 lg:mt-20">
+      <Reveal>
+        <h2 className="font-mono text-xs tracking-[0.2em] text-white/40 uppercase">
+          Additional projects
+        </h2>
+      </Reveal>
+      <ProjectBoard projects={otherProjects} />
+    </section>
+  );
+}
+
+/**
+ * Work: the internship, the program, the job. The `kind` chip is load-bearing
+ * here — a program is not employment, and the copy must not imply it is
+ * (CONTENT.md §2.3).
+ */
 export function Experience() {
   return (
-    <section id="experience" className="scroll-mt-24">
+    <section id="work" className="scroll-mt-24">
       <Reveal>
-        <SectionHeading lines={["RELEVANT", "EXPERIENCE"]} />
+        <SectionHeading lines={["WORK", "EXPERIENCE"]} />
       </Reveal>
       <ol className="mt-12 divide-y divide-white/10 border-t border-white/10">
         {experience.map((role, i) => (
-          <Reveal key={role.org + role.title} delay={i * 0.06}>
+          <Reveal key={role.slug} delay={i * 0.06}>
             <li className="py-7">
-              <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+              <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
                 <h3 className="text-xl font-bold text-white sm:text-2xl">
                   {role.org}
                 </h3>
                 <span className="font-mono text-xs text-white/35">
                   {role.period}
+                </span>
+                {/* Kind chip: accent outline per DESIGN.md §2.3. */}
+                <span className="rounded-full border border-accent/40 px-2.5 py-0.5 font-mono text-[10px] tracking-wider text-white/55">
+                  {role.kind}
                 </span>
               </div>
               <p className="mt-1 text-sm font-medium text-accent">
@@ -128,77 +182,22 @@ export function Experience() {
                   </li>
                 ))}
               </ul>
+              {role.tech && (
+                <ul className="mt-3 flex flex-wrap gap-2">
+                  {role.tech.map((t) => (
+                    <li
+                      key={t}
+                      className="rounded-full border border-white/10 px-2.5 py-0.5 text-xs text-white/55"
+                    >
+                      {t}
+                    </li>
+                  ))}
+                </ul>
+              )}
             </li>
           </Reveal>
         ))}
       </ol>
-    </section>
-  );
-}
-
-export function Tools() {
-  return (
-    <section id="tools" className="scroll-mt-24">
-      <Reveal>
-        <SectionHeading lines={["THE", "TOOLKIT"]} />
-      </Reveal>
-      <ul className="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-3">
-        {tools.map((t, i) => (
-          <Reveal key={t.name} delay={i * 0.04}>
-            <li className="h-full rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-4 transition hover:border-white/25 hover:bg-white/[0.07]">
-              <span className="block text-sm font-semibold text-white">
-                {t.name}
-              </span>
-              <span className="mt-0.5 block text-xs text-white/45">
-                {t.kind}
-              </span>
-            </li>
-          </Reveal>
-        ))}
-      </ul>
-    </section>
-  );
-}
-
-export function Contact() {
-  const links = [
-    { label: "Email", href: `mailto:${site.email}`, value: site.email },
-    { label: "GitHub", href: site.links.github, value: "@JakeRecharte" },
-    { label: "LinkedIn", href: site.links.linkedin, value: "/in/jakerecharte" },
-    { label: "Resume", href: site.links.resume, value: "PDF" },
-  ];
-  return (
-    <section id="contact" className="scroll-mt-24">
-      <Reveal>
-        <SectionHeading lines={["GET IN", "TOUCH"]} />
-      </Reveal>
-      <Reveal delay={0.1}>
-        <p className="mt-8 max-w-lg text-base leading-relaxed text-white/65">
-          Open to summer 2027 internships. The fastest way to reach me is email.
-        </p>
-      </Reveal>
-      <ul className="mt-10 divide-y divide-white/10 border-y border-white/10">
-        {links.map((l, i) => (
-          <Reveal key={l.label} delay={i * 0.06}>
-            <li>
-              <a
-                href={l.href}
-                target={l.href.startsWith("http") ? "_blank" : undefined}
-                rel={l.href.startsWith("http") ? "noreferrer" : undefined}
-                className="group flex items-center justify-between gap-4 py-5 transition-colors hover:bg-white/[0.03]"
-              >
-                <span className="text-lg font-semibold text-white sm:text-xl">
-                  {l.label}
-                </span>
-                <span className="flex items-center gap-3 text-sm text-white/45 group-hover:text-white/70">
-                  <span className="hidden sm:inline">{l.value}</span>
-                  <ArrowLink className="text-accent" />
-                </span>
-              </a>
-            </li>
-          </Reveal>
-        ))}
-      </ul>
     </section>
   );
 }
