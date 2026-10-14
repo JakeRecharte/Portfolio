@@ -293,6 +293,18 @@ corner would look broken rather than linkless. It steps down to `size-4` below
 `sm:` so it doesn't out-weigh the title beside it (§3, "the label sets the icon
 size").
 
+**The contribution graph is one link, not a row.** The whole figure
+([ContributionGraph](./src/components/ContributionGraph.tsx)) is an anchor to
+`site.links.github`, so the obvious click target behaves. It carries the
+`ArrowLink` beside its caption rather than at a far-right edge, at `size-3.5`
+— the third step of "the label sets the icon size", the one that belongs to
+`text-[11px]` caption text — and its hover affordance is the caption lifting
+`text-white/35 → text-white` (§2.2's muted-link hover), **not** the row
+recipe's `hover:bg-white/[0.03]`: a background tint behind a 17px cell grid
+would read as a change in the data. The anchor owns the accessible name
+(`"<caption>. View the profile on GitHub."`) and everything inside it is
+`aria-hidden`, so the caption isn't announced twice.
+
 **The nav bar** is `sticky top-0 z-50`, 64px tall, with three groups on one
 `max-w-6xl` row: the wordmark (`#top`), the section anchors (`gap-7`, hidden
 under `sm:` where the pills matter more), and the actions. Actions are the
