@@ -206,7 +206,7 @@ The code is the easy half. This is what actually gates shipping.
 - [ ] **Projects** — for each: what problem it solves, what I personally built, what stack, what was hard. Screenshot or short screen recording. GitHub link that goes to a repo with a real README.
 - [ ] **Experience** — internships, jobs (yes, non-tech jobs count — frame the transferable parts), research, TA/grader, club or hackathon work. Bullets with concrete outcomes, not duties.
 - [ ] **Resume PDF** — current version, exported to `public/resume.pdf`
-- [ ] **Links** — GitHub, LinkedIn, email
+- [x] **Links** — GitHub, LinkedIn, email (LinkedIn URL corrected 2026-10-13)
 
 ---
 
