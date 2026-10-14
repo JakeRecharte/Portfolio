@@ -2,7 +2,8 @@
 
 /* Dark canvas is the base for this design, not a color-scheme variant. */
 :root {
-  --background: #0a0a0a;
+  /* Black, matching the reference: the fog GIF sits on it. */
+  --background: #000;
   --foreground: #ededed;
   --accent: #ffa94d;
 }
