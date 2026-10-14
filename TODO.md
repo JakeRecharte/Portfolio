@@ -276,3 +276,8 @@ The code is the easy half. This is what actually gates shipping.
   makes the featured set read as featured. NAVSEA/FathomWerx moved into Work
   with a `PROGRAM` chip — attended, not built — and its spelling corrected
   from the CV's "FathomWorks" per Jake.
+- **2026-10-13** — The contribution graph became a link to the profile it is
+  scraped from, and the snapshot it draws now refreshes itself: a daily
+  `workflow_dispatch`-able Action re-runs the scraper and commits the JSON,
+  but only when the calendar moved — the `fetchedAt` stamp changes every run
+  and committing on that alone would be a commit a day that says nothing.

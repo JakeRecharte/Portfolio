@@ -34,7 +34,7 @@ components.
 | --- | --- | --- |
 | `src/content/site.ts` | `site` — name, headline, role, tagline, bio, email, links, education, stats | `Header`, `Hero`, `ContactDialog` |
 | `src/content/now.ts` | `NowEntry[]` — the 4 newest roles, with status badges | `Header` |
-| `src/content/contributions.json` | generated, **do not hand-edit** — refresh with `npm run contributions` | `ContributionGraph` |
+| `src/content/contributions.json` | generated, **do not hand-edit** — refreshed daily by `.github/workflows/contributions.yml`, or by hand with `npm run contributions` | `ContributionGraph` |
 | `src/content/projects.ts` | `featuredProjects` (top 3, ranked) and `otherProjects` (the rest, newest first) — both `Project[]` | `FeaturedProjects` cards, `AdditionalProjects` rows |
 | `src/content/experience.ts` | `Role[]` — the internship, the program, the job | `Experience` section |
 

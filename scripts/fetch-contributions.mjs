@@ -3,7 +3,9 @@
  * to src/content/contributions.json.
  *
  * The JSON is committed so `next build` never depends on the network and the
- * page stays static. Re-run with `npm run contributions` to refresh it.
+ * page stays static. Re-run with `npm run contributions` to refresh it by
+ * hand — or let .github/workflows/contributions.yml do it, which runs this
+ * daily and commits the result only when the calendar actually moved.
  *
  * GitHub ships no public API for the calendar — the GraphQL one needs a token,
  * so this reads the same HTML fragment the profile page renders.

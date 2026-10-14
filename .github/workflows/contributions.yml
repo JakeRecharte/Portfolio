@@ -1,0 +1,65 @@
+# Keeps src/content/contributions.json honest without anyone remembering to
+# run the scraper. Daily: re-scrape, and commit only if the calendar actually
+# moved. The commit is what triggers a redeploy, so the graph is never more
+# than a day stale.
+name: Refresh contribution graph
+
+on:
+  schedule:
+    # 09:17 UTC — a few minutes off the hour, which is when GitHub's scheduler
+    # is least congested and least likely to drop a run.
+    - cron: "17 9 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+# A scheduled run and a manual one must never race for the same push.
+concurrency:
+  group: contributions
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+
+      # No `npm ci`: scripts/fetch-contributions.mjs has zero dependencies —
+      # node:fs/promises and global fetch. Installing would be a minute of CI
+      # spent on nothing. The script throws on a non-200 or on parsing zero
+      # days, so a markup change at GitHub fails the job loudly.
+      - name: Scrape the calendar
+        run: npm run contributions
+
+      - name: Commit if the data moved
+        run: |
+          set -euo pipefail
+          file=src/content/contributions.json
+
+          if git diff --quiet -- "$file"; then
+            echo "Byte-identical — nothing to do."
+            exit 0
+          fi
+
+          # The script stamps `fetchedAt` with today's date every single run,
+          # so the file always differs. Committing on that alone would be a
+          # commit a day that says nothing. Count the changed lines that
+          # aren't the stamp.
+          real=$(git diff -U0 -- "$file" | grep -E '^[+-][^+-]' | grep -vc '"fetchedAt"' || true)
+          if [ "$real" -eq 0 ]; then
+            echo "Only the fetchedAt stamp moved — discarding."
+            git checkout -- "$file"
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$file"
+          git commit -m "Refresh the GitHub contribution snapshot"
+          git push
+          echo "Pushed: $real changed lines."
