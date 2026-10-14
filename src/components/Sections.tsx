@@ -8,7 +8,7 @@ import Reveal from "./Reveal";
 
 export function Hero() {
   return (
-    <section id="top" className="scroll-mt-24">
+    <section>
       <Reveal>
         <h2 className="text-6xl leading-[0.85] font-black tracking-tighter uppercase sm:text-7xl lg:text-8xl">
           <span className="block text-white">{site.headline[0]}</span>
@@ -28,7 +28,7 @@ export function Hero() {
             <div key={stat.label.join(" ")}>
               <dt className="sr-only">{stat.label.join(" ")}</dt>
               <dd>
-                <span className="block text-5xl font-black tracking-tighter text-white sm:text-6xl">
+                <span className="block text-5xl font-black tracking-tighter text-white tabular-nums sm:text-6xl">
                   {stat.value}
                 </span>
                 <span className="mt-2 block text-xs tracking-widest text-white/45 uppercase">
