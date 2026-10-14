@@ -161,6 +161,8 @@ instead of hunting through tabs. Keeps real anchors, so it works without JS.
       with `TODO:`. This is the actual bottleneck, not the code (see §5).
 
 ### Phase 3 — Sections
+- [x] **Header** — identity block plus a "Now and recently" rail and the real
+      GitHub contribution graph (pattern taken from brandon-garate.com)
 - [x] **Hero** — two-tone display heading, tagline, stats row
 - [x] **Projects** — rows with title, year, blurb, tech chips, arrow link
 - [x] **Experience** — rows with org, role, period, bullets
@@ -204,7 +206,7 @@ The code is the easy half. This is what actually gates shipping.
 - [ ] **Projects** — for each: what problem it solves, what I personally built, what stack, what was hard. Screenshot or short screen recording. GitHub link that goes to a repo with a real README.
 - [ ] **Experience** — internships, jobs (yes, non-tech jobs count — frame the transferable parts), research, TA/grader, club or hackathon work. Bullets with concrete outcomes, not duties.
 - [ ] **Resume PDF** — current version, exported to `public/resume.pdf`
-- [ ] **Links** — GitHub, LinkedIn, email
+- [x] **Links** — GitHub, LinkedIn, email (LinkedIn URL corrected 2026-10-13)
 
 ---
 
@@ -234,3 +236,14 @@ The code is the easy half. This is what actually gates shipping.
 - **2026-08-21** — Repo initialized. Reference site (afamolie.com) torn down and documented. Plan written. Stack chosen: Next.js + TS + Tailwind + Motion on Vercel.
 - **2026-08-21** — Phase 0 complete. Next 16.3.2 scaffolded, tooling wired, build green. Vercel connection still pending (needs browser).
 - **2026-10-01** — Fog background built from gradients instead of the reference's 2.9 MB GIF. Layout rebuilt on the sawad pattern: sticky profile card, scrolling sections, two-tone headings, scroll reveals. Content files typed but still placeholder.
+- **2026-10-13** — Header rebuilt on the brandon-garate.com pattern: the sticky
+  profile card is gone, replaced by a full-width header card — identity on the
+  left, a "Now and recently" rail plus the real GitHub contribution graph on the
+  right. Graph data is scraped by `npm run contributions` into a committed JSON
+  file, so the build stays offline and the page stays static. Kept the dark fog
+  canvas rather than the reference's light browser-chrome card.
+- **2026-10-13** — Contribution graph trimmed to the trailing 6 months
+  (`MONTHS_SHOWN`), counted over the drawn window rather than the full year so
+  the caption stays true: 229 since Apr 2026. Grid metrics pulled into shared
+  `CELL`/`GAP`/`PITCH` constants so the month labels can't drift off the
+  columns again.

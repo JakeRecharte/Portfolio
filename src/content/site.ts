@@ -9,10 +9,11 @@ export const site = {
   email: "jakerecharte@gmail.com",
   links: {
     github: "https://github.com/JakeRecharte",
-    linkedin: "https://linkedin.com/in/jakerecharte",
+    linkedin: "https://www.linkedin.com/in/jake-recharte-8a3470377/",
     resume: "/resume.pdf",
   },
   education: {
+    location: "San Diego, CA",
     school: "San Diego State University",
     degree: "B.S. Computer Science",
     graduation: "Expected May 2028",
