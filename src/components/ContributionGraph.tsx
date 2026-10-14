@@ -1,4 +1,6 @@
 import data from "@/content/contributions.json";
+import { site } from "@/content/site";
+import ArrowLink from "./ArrowLink";
 
 /** Level 0-4 as GitHub grades it, recolored to the site's accent. */
 const levelClass = [
@@ -117,69 +119,84 @@ export default function ContributionGraph() {
 
   return (
     <figure className="m-0">
-      <div
-        className="[scrollbar-width:none] overflow-x-auto [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
-        role="img"
-        aria-label={caption}
+      {/* The whole graph is one link to the profile it was scraped from. The
+          anchor carries the accessible name, so everything inside it — the
+          grid and the visible caption — is hidden from the a11y tree to keep
+          the caption from being announced twice. */}
+      <a
+        href={site.links.github}
+        target="_blank"
+        rel="noreferrer"
+        aria-label={`${caption}. View the profile on GitHub.`}
+        className="group block"
       >
-        <div className="w-max" aria-hidden="true">
-          {/* Month labels sit above the cell area, so they clear the gutter.
+        <div
+          className="[scrollbar-width:none] overflow-x-auto [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+          aria-hidden="true"
+        >
+          <div className="w-max">
+            {/* Month labels sit above the cell area, so they clear the gutter.
               Offset in px off the same PITCH the grid uses — a percentage
               would drift, since the grid is its own intrinsic width. */}
-          <div
-            className="relative mb-1 h-[10px]"
-            style={{ marginLeft: GUTTER + GAP }}
-          >
-            {labels.map(({ week, label }) => (
-              <span
-                key={label + week}
-                className="absolute top-0 text-[9px] leading-[10px] text-white/35"
-                style={{ left: week * PITCH }}
-              >
-                {label}
-              </span>
-            ))}
-          </div>
+            <div
+              className="relative mb-1 h-[10px]"
+              style={{ marginLeft: GUTTER + GAP }}
+            >
+              {labels.map(({ week, label }) => (
+                <span
+                  key={label + week}
+                  className="absolute top-0 text-[9px] leading-[10px] text-white/35"
+                  style={{ left: week * PITCH }}
+                >
+                  {label}
+                </span>
+              ))}
+            </div>
 
-          {/* One grid for the weekday gutter and the cells, so the Mon/Wed/Fri
+            {/* One grid for the weekday gutter and the cells, so the Mon/Wed/Fri
               labels stay on their rows. Column-major fill: the 7 labels form
               the first column, then a column per week. */}
-          <div
-            className="grid grid-flow-col grid-rows-7"
-            style={{
-              gap: GAP,
-              gridTemplateColumns: `${GUTTER}px repeat(${weeks.length}, ${CELL}px)`,
-            }}
-          >
-            {["", "Mon", "", "Wed", "", "Fri", ""].map((d, i) => (
-              <span
-                key={`day-${i}`}
-                className="self-center text-[9px] leading-[10px] text-white/35"
-              >
-                {d}
-              </span>
-            ))}
+            <div
+              className="grid grid-flow-col grid-rows-7"
+              style={{
+                gap: GAP,
+                gridTemplateColumns: `${GUTTER}px repeat(${weeks.length}, ${CELL}px)`,
+              }}
+            >
+              {["", "Mon", "", "Wed", "", "Fri", ""].map((d, i) => (
+                <span
+                  key={`day-${i}`}
+                  className="self-center text-[9px] leading-[10px] text-white/35"
+                >
+                  {d}
+                </span>
+              ))}
 
-            {weeks
-              .flat()
-              .map((cell, i) =>
-                cell ? (
-                  <span
-                    key={cell.date}
-                    title={`${cell.count} on ${cell.date}`}
-                    className={`aspect-square w-full rounded-[2px] ${levelClass[cell.level]}`}
-                  />
-                ) : (
-                  <span key={`pad-${i}`} className="aspect-square w-full" />
-                ),
-              )}
+              {weeks
+                .flat()
+                .map((cell, i) =>
+                  cell ? (
+                    <span
+                      key={cell.date}
+                      title={`${cell.count} on ${cell.date}`}
+                      className={`aspect-square w-full rounded-[2px] ${levelClass[cell.level]}`}
+                    />
+                  ) : (
+                    <span key={`pad-${i}`} className="aspect-square w-full" />
+                  ),
+                )}
+            </div>
           </div>
         </div>
-      </div>
 
-      <figcaption className="mt-3 text-[11px] text-white/35">
-        {caption}
-      </figcaption>
+        <figcaption
+          className="mt-3 flex items-center gap-1.5 text-[11px] text-white/35 transition-colors group-hover:text-white"
+          aria-hidden="true"
+        >
+          {caption}
+          <ArrowLink className="size-3.5 text-accent" />
+        </figcaption>
+      </a>
     </figure>
   );
 }

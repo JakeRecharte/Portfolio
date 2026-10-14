@@ -32,12 +32,11 @@ components.
 
 | File | Exports | Renders in |
 | --- | --- | --- |
-| `src/content/site.ts` | `site` — name, headline, role, tagline, bio, email, links, education, stats | `Header`, `Hero`, `Contact` |
+| `src/content/site.ts` | `site` — name, headline, role, tagline, bio, email, links, education, stats | `Header`, `Hero`, `ContactDialog` |
 | `src/content/now.ts` | `NowEntry[]` — the 4 newest roles, with status badges | `Header` |
 | `src/content/contributions.json` | generated, **do not hand-edit** — refresh with `npm run contributions` | `ContributionGraph` |
-| `src/content/projects.ts` | `Project[]` | `Projects` section |
-| `src/content/experience.ts` | `Role[]` | `Experience` section |
-| `src/content/tools.ts` | `Tool[]` | `Tools` section |
+| `src/content/projects.ts` | `featuredProjects` (top 3, ranked) and `otherProjects` (the rest, newest first) — both `Project[]` | `FeaturedProjects` cards, `AdditionalProjects` rows |
+| `src/content/experience.ts` | `Role[]` — the internship, the program, the job | `Experience` section |
 
 Touch `src/components/Sections.tsx`, `Header.tsx`, `SectionHeading.tsx`
 only when the *shape* changes, not the words. Metadata strings are duplicated
@@ -118,12 +117,16 @@ Spring 2026. That's a good story in an interview, not site copy.
 - Developed and integrated an ML model mapping assignment descriptions to
   standards with scored confidence outputs — **82% average accuracy**.
 
-**NAVSEA / FathomWorks — Engineering Program Student — September 2023 – December 2023**
+**NAVSEA / FathomWerx — Engineering Program Student — September 2023 – December 2023**
 - 8-week government-sponsored defense engineering program covering defense and
   military technologies, with lectures from government and industry engineers.
 - Note: this predates SDSU enrollment (Fall 2024) — it's a high-school-era
   program. Real and worth listing, but it is a program, not a job; don't let
-  the copy imply engineering employment.
+  the copy imply engineering employment. It lives in the Work section anyway,
+  by Jake's call, with the `PROGRAM` chip carrying the distinction.
+- **Spelled "FathomWerx" on the site, 2026-10-13, per Jake** — the CV says
+  "FathomWorks", and the lab in Port Hueneme spells it *Werx*. Worth fixing on
+  the CV too.
 
 **Recharte's Gold Coast Insurance — IT & Office Support — September 2021 – May 2023**
 - In-house IT support for a 7-computer office: hardware upgrades, Windows OS
@@ -193,16 +196,39 @@ Ordered newest first, as the CV has them. "Repo" = verified public GitHub repo.
   large universe is untested. It also says "Assignment for CS450" — the CV
   doesn't. See §8.
 
+**Apple Picker — September 2026**
+- **Not on the CV and has no README.** Everything here was read off the repo
+  source on 2026-10-13; treat the repo as the source of record for this one.
+- A Unity arcade game in C# (URP, TextMesh Pro UI): a tree drifts left and
+  right overhead dropping apples, the player slides a stack of baskets with the
+  mouse to catch them, a miss destroys one basket and clears the field, and
+  running out of baskets reloads the scene.
+- Six hand-written scripts: `Apple`, `ApplePicker`, `AppleTree`, `Basket`,
+  `ScoreCounter`, `HighScore`. (The repo's large C#/ShaderLab line counts are
+  mostly the vendored TextMesh Pro samples, not his code.)
+- **The part that isn't in the standard build of this game** is the difficulty
+  ramp in `AppleTree`: `treeSpeedRampRate` scales the tree's speed every frame
+  and `gravityRampRate` adds downward gravity over time, so it gets harder the
+  longer you last. That is the detail worth leading with.
+- High score is a `static int`, so it survives a scene reload but not relaunch
+  — **don't describe it as persistent.**
+- Tech: Unity, C#, URP.
+- Repo: https://github.com/JakeRecharte/Apple-Picker — no README. See §8.
+- Likely the 3D Game Design course listed as in progress (§2.2), but the repo
+  doesn't say so and neither does the CV, so the site doesn't claim it. See §8.
+
 **Avalanche NFT Project — 2022 – 2023**
 - Co-founded and led a team of 8 to design, develop and launch an NFT
   collection on the Avalanche blockchain; oversaw smart contract deployment and
   community growth. **$12,000 in mint revenue.**
 - Tech: Avalanche blockchain, Web3.
 - Repo: none. High-school-era.
-- **Judgment call for §8:** genuinely impressive for leadership and shipping,
-  but crypto/NFT reads badly with a chunk of engineering recruiters. The CV
-  itself only puts it on the Base template. Jake's call whether it makes the
-  site.
+- **Off the site.** It went on as a placeholder on 2026-10-13 and came back off
+  the same day at Jake's request — one line from the CV and no link wasn't
+  worth a tile. Put it back when there's detail to put in it (§8).
+- Standing caveat for when that happens: genuinely impressive for leadership
+  and shipping, but crypto/NFT reads badly with a chunk of engineering
+  recruiters, and the CV itself only puts it on the Base template.
 
 ### 2.5 Skills (CV, verbatim groupings)
 
@@ -219,16 +245,19 @@ Ordered newest first, as the CV has them. "Repo" = verified public GitHub repo.
   Pipelines, Document Parsing & Extraction, Computer Vision, Sensor & Hardware
   Integration, Blockchain
 - C# / Unity is **not** on the CV but is the language of the Apple-Picker repo
-  (ShaderLab + HLSL too) — see §4 and §8.
+  (ShaderLab + HLSL too). It is now on the site through that project's tech
+  chips, which is the only way a tool should appear here — see the "no toolkit
+  section" note in §3. Adding it to the CV is Jake's call (§8).
 
 ### 2.6 Extracurriculars
 
 - **ColorStack — Co-Vice President — July 2026 – Present.** Reestablishing
   SDSU's chapter; helped plan workshop events with 60+ attendees.
 - **Sigma Phi Delta (engineering fraternity) — Rush & Brotherhood Chairs —
-  November 2025 – Present.** Ran a 3-week rush reaching ~500 students; planned
-  events with 100+ attendees.
-- **Sigma Phi Delta — Academic Chair — November 2025 – Present.** Bi-weekly
+  September 2025 – Present.** Ran a 3-week rush reaching ~500 students; planned
+  events with 100+ attendees. *(Start corrected from the CV's November 2025 by
+  Jake directly, 2026-10-13. Jake's word beats the CV here.)*
+- **Sigma Phi Delta — Academic Chair — September 2025 – Present.** Bi-weekly
   study sessions over 4 months, 40+ brothers attending regularly.
 - **AI Club — Member — January 2026 – Present.** Completed a semester-long
   work study with a partner company; starting a second with Bright Sky
@@ -244,29 +273,62 @@ Ordered newest first, as the CV has them. "Repo" = verified public GitHub repo.
 Derived from §2. This is a recommendation, not a fact — Jake can override any
 of it.
 
-**Projects — ship 5, in this order.** The section holds 3–6 (§5).
+**Three sections, not one.** The brief merge of projects and work was reversed
+on 2026-10-13 at Jake's call: a recruiter reads "built this" and "was paid for
+this" differently, and the merged list buried the top projects among jobs.
 
-1. **CWG — Coding With Git** — most distinctive, published on PyPI, best README.
-2. **BoulderBuddy** — the most "real product" one, full-stack + mobile.
-3. **GradeFlow work** stays in Experience, not here.
-4. **Lightning McShower** — the award (1st in hardware of 200) plus hardware range.
-5. **Permit Paragons** — the other placement, plus a big concrete number (330k parcels).
-6. **AI Trading Model** — ML with a measurable result.
+**Work leads.** Also Jake's call on 2026-10-13: page order is Hero →
+`Experience` → projects, and that is the whole page. The paid and sponsored
+work is the part a recruiter is scanning for, so it goes above the things he
+built for himself. The numbered list below is grouped by kind, not by page
+order.
 
-Avalanche NFT: Jake's call (§2.4). Apple-Picker and CS460: coursework repos,
-leave off. This Portfolio site itself: optional 6th, but see the §4 warning
-about its repo not being public.
+**No Contact section.** Removed on 2026-10-13 at Jake's call. Email and
+LinkedIn now live only in the nav bar's Contact modal, and the resume only in
+its Resume pill, so **those two pills are the entire contact surface** — don't
+let a redesign treat them as optional chrome. The availability line is not lost
+with the section: `site.bio` still carries "looking for a summer 2027
+internship" in the header.
 
-**Experience — 3 roles,** in CV order: GradeFlow, NAVSEA/FathomWorks,
-Recharte's Gold Coast Insurance. Drop the fake placeholder internship and the
-generic "Relevant Coursework" row — coursework belongs in the profile card or
-its own small block, using the real §2.2 list.
+1. **`FeaturedProjects`** — the top three, as cards: **CWG, Permit Paragons,
+   BoulderBuddy**, in that order. The order is Jake's ranking and is *not*
+   chronological; don't "fix" it. CWG leads because it's the most distinctive
+   thing on the CV (published on PyPI, the only polished README).
+2. **`AdditionalProjects`** — everything else, newest first: Lightning
+   McShower, AI Trading Model. Thin at two rows; Avalanche NFT (§2.4) and this
+   site itself are the two candidates to lengthen it, both still open in §8.
+   It renders as a subsection under the featured cards, so its title is the
+   small eyebrow `Additional projects`, not a display heading.
+3. **`Experience`** — GradeFlow, NAVSEA/FathomWerx, Gold Coast Insurance.
+   NAVSEA sits here, not in projects, per Jake: it was a program he attended,
+   not a thing he built. The `PROGRAM` chip is what keeps that honest.
+
+The board holds three tiles as of 2026-10-13, in this order — the order is the
+board's reading order and also decides which squares are filled, so don't
+reshuffle it casually: **Lightning McShower, AI Trading Model, Apple Picker**.
+Three fills one row exactly, with no fillers.
+
+Off the board, and why: **Avalanche NFT** (§2.4 — one CV line and no link isn't
+a tile; waiting on detail), the **Portfolio site** itself (its repo 404s — §4,
+§8.1 — so it was the one tile guaranteed to disappoint a click; it goes on the
+moment the repo is public), and **CS460** and **Machine-Learning** (one is
+empty, the other has no name yet).
+
+Note the arithmetic: a fourth tile costs two inert fillers to complete the
+second row, so three and six are the sizes that look deliberate.
+
+**No toolkit section.** The standalone grid of languages and frameworks came off
+on 2026-10-13 — a tool named on the row that used it is evidence, and the same
+tool floating in a grid is an assertion. The §2.5 skills list is still the
+source for which chips are allowed to appear.
 
 Extracurriculars have no section today. ColorStack Co-VP and the Sigma Phi
 Delta chairs are real leadership signal. Either add a small section or fold the
 strongest one into Experience — flagged in §8.
 
-**Stats row — three candidates that are all literally true:**
+**Stats row — shipped 2026-10-13: `82` PERCENT/ACCURACY, `330K`
+PARCELS/MAPPED, `2` HACKATHON/PLACEMENTS.** The full candidate list, all
+literally true:
 
 | Value | Label | Sourced from |
 | --- | --- | --- |
@@ -276,9 +338,9 @@ strongest one into Experience — flagged in §8.
 | `82` | PERCENT / ACCURACY | GradeFlow ML model |
 | `330K` | PARCELS / MAPPED | Permit Paragons |
 
-Prefer the concrete ones (`82`, `330K`) over the countable-but-soft ones; they
-survive scrutiny better. "Years coding" has no source — don't use it. Labels
-must be two words, ≤10 chars each (§5).
+The concrete ones won: they survive scrutiny better than a count of projects.
+"Years coding" has no source — it was on the site until 2026-10-13 and is now
+gone. Labels must be two words, ≤10 chars each (§5).
 
 ---
 
@@ -292,11 +354,11 @@ must be two words, ≤10 chars each (§5).
 | `BoulderBuddy` | TypeScript, PLpgSQL | ok but stale | describes AsyncStorage + "coming soon" features the CV says shipped |
 | `Trading-Model` | Python | thin | typos; says "Assignment for CS450" |
 | `Machine-Learning` | Jupyter | **none** | desc: "name will be updated when we have a team/project name" |
-| `Apple-Picker` | C#, ShaderLab, HLSL | **none** | Unity; likely the 3D Game Design course |
+| `Apple-Picker` | C#, ShaderLab, HLSL | **none** | Unity; **on the site since 2026-10-13** — the only project whose copy comes from source, not the CV |
 | `CS460` | — | **none** | empty; "Assignments for my SDSU CS460 Algorithms Class" |
 
 **`github.com/JakeRecharte/Portfolio` returns 404** — it is private or doesn't
-exist under that name. `projects.ts` currently links there and `TODO.md` lists
+exist under that name. `projects.ts` linked there until 2026-10-13 and `TODO.md` lists
 it as the repo URL. **That link is dead for every visitor.** Either make the
 repo public or drop the self-referential project row.
 
@@ -318,15 +380,22 @@ uppercase, rendered up to `text-8xl` with `tracking-tighter`. Each line
 line renders at 20% opacity, so the pair must read as one phrase
 (`RECENT`/`PROJECTS`), never as two sentences.
 
-**`site.stats`** — exactly 3 entries. `value` 1–3 characters (`82`, `330K`),
+`site.headline` is `ACTUALLY`/`FINISHED` as of 2026-10-13. It replaced
+`COMPUTER`/`SCIENCE`, which spent the largest type on the page restating what a
+page full of code already proves. A hero heading has to earn that size: say
+something a reader couldn't have assumed.
+
+**`site.stats`** — exactly 3 entries. `value` 1–4 characters (`82`, `330K`),
 `label` a tuple of exactly two words on separate lines, each **≤ 10 chars**.
 Every stat must be literally true and traceable to §2.
 
 **`NowEntry`** — exactly 4 entries, newest start date first. `org` ≤ 18 chars
 and `title` ≤ 26 chars; past that the row wraps to two lines on a laptop.
-`period` is the **start** month (`Nov 2025`) for anything ongoing and a span
-(`Feb - Jul 2026`) for anything finished. `badge` is `NOW` for ongoing,
-otherwise what the role was. Every entry must also exist in §2.3 or §2.6.
+`period` carries **all** the time information: `Sep 2025 - Now` for anything
+ongoing, a closed span (`Feb - Jul 2026`) for anything finished. `badge` carries
+**only** what the thing is — `CLUB`, `INTERNSHIP` or `PROGRAM` — and never when
+it was; mixing the two axes is what made the old `NOW`/`INTERN` pair read
+wrong. Every entry must also exist in §2.3 or §2.6.
 
 **`site.tagline`** — 1–2 sentences, ~150–220 chars, sits under the hero at
 `max-w-xl`.
@@ -335,21 +404,40 @@ otherwise what the role was. Every entry must also exist in §2.3 or §2.6.
 longer makes the card taller than the viewport on laptops and breaks the sticky
 behaviour.
 
-**`Project`** — `slug` (kebab-case, stable; becomes the Phase 4 deep-link URL),
-`title` ≤ 30 chars, `blurb` 1–2 sentences ~120–200 chars, `tech` 2–4 chips of
-≤ 14 chars each, `year` a 4-digit string, plus `repoUrl` and/or `liveUrl`. The
-row links to `liveUrl ?? repoUrl`, so **a project with neither is an
-unclickable row**. Keep the array at **3–6 items**, newest first.
+**`Project`** — two exported arrays, same type.
 
-**`Role`** — `org` ≤ 30 chars, `title` ≤ 40, `period` a short span
-(`Feb – Jul 2026`), `bullets` **2–3 items**, each ~80–140 chars. Bullets are
-outcomes, not duties.
+- `featuredProjects` is **exactly 3**, in Jake's ranked order (not
+  chronological). Three is the grid; a fourth breaks `lg:grid-cols-3` into an
+  orphan row and stops the set reading as a shortlist.
+- `otherProjects` is **2–5**, newest first.
+- `slug` kebab-case and stable (it becomes the Phase 4 deep-link URL).
+- `title` ≤ 30 chars. In a featured card it sits at `text-xl` with no `sm:`
+  step up, so a title past ~22 chars wraps to two lines there — fine, but check
+  it.
+- `kind` is `PROJECT` or `HACKATHON`. `HACKATHON` means a weekend build judged
+  against other teams (Lightning McShower, Permit Paragons). The chip says it,
+  so the blurb must not repeat the word.
+- `period` a month (`Sep 2026`), a span, or `May 2026 - Now` while it's
+  running. Time lives here, never in `kind`.
+- `blurb` 1–2 sentences, ~120–200 chars. The featured cards sit in a 3-up grid,
+  so a blurb much past 200 makes one card tower over its neighbours.
+- `tech` 2–4 chips of ≤ 14 chars, from the §2.5 skills list. Featured cards cap
+  at **3** — a fourth chip wraps to a second line inside a narrow card.
+- `repoUrl` / `liveUrl` optional. The row or card links to `liveUrl ??
+  repoUrl`; with neither it renders with **no arrow**, which is honest for the
+  two hackathons that have no public repo (§8.3).
 
-**`Tool`** — `name` ≤ 14 chars, `kind` one of Language / Library / Framework /
-Database / Version Control / Environment unless deliberately adding a category.
-6–12 items, grouped so same-`kind` entries sit together — the grid renders
-array order, there's no sorting. The §2.5 list is longer than 12; trim to what
-Jake would be comfortable being interviewed on.
+**`Role`** — **2–4 items**, newest first, in `experience.ts`.
+
+- `org` ≤ 30 chars, `title` ≤ 40 (renders in accent under the org).
+- `kind` is `INTERNSHIP`, `PROGRAM` or `JOB`. This chip is load-bearing:
+  NAVSEA/FathomWerx was an eight-week program, and §2.3 is explicit that the
+  copy must not imply engineering employment.
+- `period` a span (`Feb - Jul 2026`) or a year range (`2021 - 2023`).
+- `bullets` **2–3 items**, each ~80–140 chars, outcomes not duties, with the
+  number wherever §2.3 has one.
+- `tech` optional, same rules as a project's — the NAVSEA program has none
+  worth naming and omits it.
 
 ---
 
@@ -396,8 +484,13 @@ left, roughly in order of how much they block.
 **Broken or wrong right now**
 1. `github.com/JakeRecharte/Portfolio` 404s. Make it public, or should the
    Portfolio row come off the site?
-2. Resume PDF → needs to land at `public/resume.pdf`; `site.links.resume`
-   points there and 404s today. Which tab — Base, Full Stack, or AI/ML?
+2. ~~Resume PDF → 404s.~~ Fixed 2026-10-13: `public/resume.pdf` is a copy of
+   `~/Downloads/Jake Recharte Resume.pdf` (modified Oct 6 2026), and the
+   nav bar's Resume pill now opens it in a modal viewer instead of navigating
+   (it was the Contact row too, until that section came off). Two
+   things to confirm: is that the tab you want public, and **that PDF prints
+   your phone number**, which Q9 and §2.1 say to keep off the site — a
+   phone-free export would settle it.
 3. Are there repos for **Lightning McShower** and **Permit Paragons**? They're
    two of your five best items and both would be unclickable rows without a
    URL. A teammate's repo or a Devpost page works.
@@ -416,13 +509,17 @@ left, roughly in order of how much they block.
    strong. Own section, folded into Experience, or left off?
 8. **What are you targeting?** The site currently says "summer 2027
    internship" in two places. Confirm — summer 2027, new grad 2028, or both?
-9. Phone number: CV has it, the site doesn't. Keep it off? (Recommended —
-   email plus LinkedIn is enough, and a scraped phone number invites spam.)
+9. Phone number: CV has it, the site's copy doesn't — but the resume PDF
+   served at `/resume.pdf` does, so it is public now. Keep it off? (Recommended
+   — email plus LinkedIn is enough, and a scraped phone number invites spam.
+   Acting on it means re-exporting the PDF without the number.)
 10. Photo for the profile card, or keep the `JR` monogram?
 11. GPA: §2.2 recommends leaving it off. Confirm or override.
 12. Three or four sentences in your own words about what you're into
-    technically — I'll cut them to length, not add to them. Right now the bio
-    and tagline are my invention, not your voice.
+    technically — I'll cut them to length, not add to them. Still open: the
+    bio, the tagline and the `ACTUALLY`/`FINISHED` hero line are my wording,
+    not your voice. The *facts* in the tagline are yours (§2.4); the phrasing
+    isn't.
 
 **Nice to have**
 12a. The header's contribution graph shows the **last 6 months** — 229 real
@@ -433,14 +530,23 @@ left, roughly in order of how much they block.
 13. Screenshots or screen recordings for any of the five projects (`TODO.md`
     Phase 3 has a media task open). The hackathon car and the parcel map are
     the two most visual.
-14. Is C# / Unity (the Apple-Picker repo) something you'd want listed, or is it
-    just coursework?
-15. Your GitHub display name is "Tendie" and your bio is one line. Recruiters
+14. **Apple Picker needs a README** — it's on the site now and it's the only
+    tile that sends a recruiter to a repo with no explanation at all. I can
+    write one from the source in a few minutes; say the word. Two things only
+    you know: is it for the 3D Game Design course (the site doesn't claim it
+    either way), and is there anything beyond the difficulty ramp that's yours
+    rather than the standard build of this game?
+15. **Avalanche is parked, not dropped.** To put it back: a link (collection
+    page, explorer, anything that still resolves), whether the contracts are
+    anywhere public, and one sentence on what *you* built versus what the team
+    of 8 did. Adding it alone makes the board four tiles and two fillers, so
+    it pairs well with making the Portfolio repo public (§8.1).
+16. Your GitHub display name is "Tendie" and your bio is one line. Recruiters
     click through from this site — want it tidied?
-16. Anything on LinkedIn that isn't in the CV? I can't read it (§4), so paste
+17. Anything on LinkedIn that isn't in the CV? I can't read it (§4), so paste
     anything that matters.
-17. Domain decision (`TODO.md` §3 and §7).
-18. Anything you'd rather the site *not* say.
+18. Domain decision (`TODO.md` §3 and §7).
+19. Anything you'd rather the site *not* say.
 
 ---
 

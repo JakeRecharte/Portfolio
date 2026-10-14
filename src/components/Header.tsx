@@ -1,19 +1,24 @@
 import { site } from "@/content/site";
 import { now } from "@/content/now";
 import ContributionGraph from "./ContributionGraph";
+import Icon from "./Icon";
 
+// Profiles only. Resume and email are deliberately absent: since the Contact
+// section came off the page, both live in the nav bar's pills — Resume opens
+// the PDF in a modal (ResumeDialog) and Contact opens the email and LinkedIn
+// rows (ContactDialog).
 const socials = [
   { label: "GitHub", href: site.links.github },
   { label: "LinkedIn", href: site.links.linkedin },
-  { label: "Email", href: `mailto:${site.email}` },
-  { label: "Resume", href: site.links.resume },
-];
+] as const;
 
-const badgeClass: Record<string, string> = {
-  NOW: "border-accent/40 bg-accent/10 text-accent",
-  INTERN: "border-white/15 bg-white/5 text-white/55",
-  PROGRAM: "border-white/15 bg-white/5 text-white/55",
-};
+/**
+ * One chip style for every kind, shared in spirit with the `kind` chip in
+ * `Work`. The amber outline marks it as a kind label, not a status — the badge
+ * still says what a thing is, never whether it's current, and "ongoing" is
+ * carried by the period reading "… - Now" (DESIGN.md §2.1).
+ */
+const badgeClass = "border-accent/40 text-white/55";
 
 /**
  * Full-width identity header: who he is on the left, what he's doing right now
@@ -49,8 +54,10 @@ export default function Header() {
                     href={s.href}
                     target={external ? "_blank" : undefined}
                     rel={external ? "noreferrer" : undefined}
-                    className="block rounded-lg border border-white/10 bg-white/[0.03] px-3 py-1.5 text-xs text-white/75 transition hover:border-white/25 hover:bg-white/10 hover:text-white"
+                    className="flex items-center gap-2 rounded-lg border border-white/10 bg-white/[0.03] px-3 py-1.5 text-sm text-white/75 transition hover:border-white/25 hover:bg-white/10 hover:text-white"
                   >
+                    {/* Explicit accent beats the pill's hover:text-white. */}
+                    <Icon name={s.label} className="size-4 text-accent" />
                     {s.label}
                   </a>
                 </li>
@@ -92,7 +99,7 @@ export default function Header() {
                     {entry.period}
                   </span>
                   <span
-                    className={`rounded-full border px-2 py-0.5 font-mono text-[10px] tracking-wider ${badgeClass[entry.badge]}`}
+                    className={`rounded-full border px-2 py-0.5 font-mono text-[10px] tracking-wider ${badgeClass}`}
                   >
                     {entry.badge}
                   </span>

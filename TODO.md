@@ -10,9 +10,9 @@
 
 ### Primary
 - [ ] Give recruiters a single link that answers: *who is this, what has he built, can he write code, how do I reach him.*
-- [ ] Show 3–6 projects with real detail (problem, stack, what I did, link to code/demo).
-- [ ] Show experience: internships, jobs, research, TA/tutoring, clubs, relevant coursework.
-- [ ] Make resume download one click.
+- [x] Show 3–6 projects with real detail (problem, stack, what I did, link to code/demo). Five shipped 2026-10-13; two have no repo to link yet (§8.3 in CONTENT.md).
+- [ ] Show experience: internships, jobs, research, TA/tutoring, clubs, relevant coursework. (Shares one section with projects — same claim, for an undergrad.)
+- [x] Make resume download one click. (The nav bar's Resume pill opens a modal viewer with a Download button; `public/resume.pdf` is the Oct 6 2026 one-pager.)
 - [ ] Be memorable — the site itself is a portfolio piece.
 
 ### Success criteria
@@ -141,7 +141,8 @@ site uses):
 - [x] Root layout: full-height dark canvas, font loading, metadata
 - [x] Animated fog background (see §2a below)
 - [x] Sticky left identity card: monogram, name, role, links, education
-- [x] Floating pill nav, real anchor links to sections
+- [x] Sticky nav bar, real anchor links to sections, plus Contact and Resume
+      pills that open modals (replaced the floating pill 2026-10-13)
 - [x] Scroll-reveal transitions between blocks (Motion `whileInView`)
 - [x] Mobile layout: stacks to a single column
 - [x] `prefers-reduced-motion` respected globally
@@ -153,21 +154,26 @@ student portfolio better — a recruiter scrolls once and sees everything,
 instead of hunting through tabs. Keeps real anchors, so it works without JS.
 
 ### Phase 2 — Content layer
-- [x] `src/content/projects.ts` — typed `Project`
+- [x] `src/content/projects.ts` — typed `Project`, exported as
+      `featuredProjects` (3, ranked) and `otherProjects` (the timeline)
 - [x] `src/content/experience.ts` — typed `Role`
-- [x] `src/content/tools.ts` — typed `Tool`
+- [x] `tools.ts` deleted — tools are listed per project instead
 - [x] `src/content/site.ts` — name, headline, tagline, links, education, stats
-- [ ] **Fill in real content** — every file is placeholder right now, marked
-      with `TODO:`. This is the actual bottleneck, not the code (see §5).
+- [x] **Fill in real content** — done 2026-10-13. No `TODO:` placeholders are
+      left in `src/content/`; every row and stat traces to CONTENT.md §2.
+      Outstanding content gaps are now open *asks*, not placeholders:
+      `public/resume.pdf` still 404s, and two projects have no link.
 
 ### Phase 3 — Sections
 - [x] **Header** — identity block plus a "Now and recently" rail and the real
       GitHub contribution graph (pattern taken from brandon-garate.com)
 - [x] **Hero** — two-tone display heading, tagline, stats row
-- [x] **Projects** — rows with title, year, blurb, tech chips, arrow link
-- [x] **Experience** — rows with org, role, period, bullets
-- [x] **Tools** — grid of tech with category labels
-- [x] **Contact** — big links: Email, GitHub, LinkedIn, Resume
+- [x] **Featured projects** — the top three as a 3-up card grid: title,
+      period, kind chip, blurb, tech chips, arrow where there's a URL
+- [x] **Project timeline** — the rest, in the standard row pattern
+- [x] **Work experience** — org, period, kind chip, role line, bullets, tools.
+      The Tools grid is gone; tools sit on the thing that used them.
+- [x] ~~**Contact** — big links: Email, GitHub, LinkedIn, Resume~~ — section removed 2026-10-13; the nav bar's Contact and Resume pills are the contact surface now
 - [ ] Project screenshots / demo media (rows are text-only today)
 - [ ] Custom 404
 
@@ -205,7 +211,7 @@ The code is the easy half. This is what actually gates shipping.
 - [ ] **Education block** — SDSU, BS Computer Science, expected graduation, GPA if it's good, relevant coursework (data structures, algorithms, OS, databases, etc.)
 - [ ] **Projects** — for each: what problem it solves, what I personally built, what stack, what was hard. Screenshot or short screen recording. GitHub link that goes to a repo with a real README.
 - [ ] **Experience** — internships, jobs (yes, non-tech jobs count — frame the transferable parts), research, TA/grader, club or hackathon work. Bullets with concrete outcomes, not duties.
-- [ ] **Resume PDF** — current version, exported to `public/resume.pdf`
+- [x] **Resume PDF** — `public/resume.pdf` is a copy of `Jake Recharte Resume.pdf` (Oct 6 2026). Swap the file to update; nothing in code names a tab. **It carries the phone number** — see `CONTENT.md` §8 Q9.
 - [x] **Links** — GitHub, LinkedIn, email (LinkedIn URL corrected 2026-10-13)
 
 ---
@@ -247,3 +253,26 @@ The code is the easy half. This is what actually gates shipping.
   the caption stays true: 229 since Apr 2026. Grid metrics pulled into shared
   `CELL`/`GAP`/`PITCH` constants so the month labels can't drift off the
   columns again.
+- **2026-10-13** — Projects and Experience merged into one "Work & projects"
+  section backed by `src/content/work.ts`; for an undergrad they make the same
+  claim, and splitting them halved both lists. The Tools grid came off — tools
+  are listed per row instead, so a chip is evidence rather than an assertion.
+  "Now and recently" badges switched from status (`NOW`/`INTERN`) to kind
+  (`CLUB`/`INTERNSHIP`/`PROGRAM`), which were mixing two axes in one chip;
+  ongoing rows now say so in the period (`Sep 2025 - Now`). Sigma Phi Delta
+  corrected to a September 2025 start per Jake.
+- **2026-10-13** — Placeholders gone. `work.ts` now holds the five real
+  projects plus the three real roles, ordered live-first then newest. The
+  self-referential Portfolio row came off because its repo 404s. Stats row
+  swapped from invented counts ("3 years coding") to sourced numbers: 82%
+  accuracy, 330K parcels, 2 hackathon placements. Hero heading changed from
+  `COMPUTER`/`SCIENCE` to `ACTUALLY`/`FINISHED` — the old one spent the biggest
+  type on the page restating the obvious. Tagline and OG description now lead
+  with the PyPI package, the Supabase app and the 82% model.
+- **2026-10-13** — Work and projects split apart again, and projects split in
+  two: three featured cards (CWG, Permit Paragons, BoulderBuddy, in Jake's
+  ranked order) over a plain-row timeline for the rest. Cards are now the one
+  deliberate exception to "rows beat boxes" besides the header, which is what
+  makes the featured set read as featured. NAVSEA/FathomWerx moved into Work
+  with a `PROGRAM` chip — attended, not built — and its spelling corrected
+  from the CV's "FathomWorks" per Jake.
