@@ -174,8 +174,42 @@ instead of hunting through tabs. Keeps real anchors, so it works without JS.
 - [x] **Work experience** — org, period, kind chip, role line, bullets, tools.
       The Tools grid is gone; tools sit on the thing that used them.
 - [x] ~~**Contact** — big links: Email, GitHub, LinkedIn, Resume~~ — section removed 2026-10-13; the nav bar's Contact and Resume pills are the contact surface now
-- [ ] Project screenshots / demo media (rows are text-only today)
+- [x] **Tiles carry their own write-up** — the checkerboard squares show the
+      period, blurb and tech chips from `sm:` up, so the board reads without
+      opening anything (DESIGN.md §2.3)
+- [x] **Live demo: AI Trading Model** — see Phase 3a
+- [ ] Project screenshots / demo media for the projects with no live demo
 - [ ] Custom 404
+
+### Phase 3a — Live demos
+
+The goal is most projects having something that actually runs. The thing that
+kills that goal is maintenance: **a dead demo link is worse than no demo
+link**, and eight free-tier accounts is eight things that expire quietly. So
+the rule is *static by default* — ship the model, the build or the data as
+files this repo serves, and only pay for a backend where a visitor supplies
+input the demo cannot precompute.
+
+- [x] **AI Trading Model** — shipped 2026-10-13. `scripts/export-trading-demo.py`
+      retrains the repo's forest and writes `public/demos/*.json`; the browser
+      walks the 200 trees itself. No server, no API key, no cold start.
+      Verified against the Python backtest: 1.9499% vs 1.9514% edge over the
+      same 487 dates, ~160ms of compute. Payload is 469KB + 107KB gzipped,
+      fetched only when the dialog opens.
+- [ ] **Apple Picker** — Unity WebGL build into `public/demos/apple-picker/`,
+      loaded in an iframe behind a click-to-play poster so the ~25MB bundle is
+      never on the homepage's critical path. Fastest win left.
+- [ ] **Permit Paragons** — the 330,000-parcel map, predictions precomputed to
+      vector tiles, on a static MapLibre canvas. Visually the strongest, and
+      still needs no backend. Blocked on §8.3: there is no repo yet.
+- [ ] **CWG** — a set of prebaked example repos the page steps through, so the
+      commit graph executes visibly without running git in the browser.
+- [ ] **BoulderBuddy** — `flutter build web` with a seeded demo account.
+      Supabase is already the hosted backend, so this adds no infrastructure.
+- [ ] Lightning McShower is hardware — video only, never a live demo.
+- [ ] Revisit once two or more demos exist: they are all reached through the
+      project dialog today, which is fine for one. A third would be the point
+      to do the Phase 4 `/projects/[slug]` route and give each a real URL.
 
 ### Phase 4 — Polish
 - [ ] Intro animation — make it *skippable*, and don't replay it on every navigation (`sessionStorage` flag)
@@ -281,3 +315,12 @@ The code is the easy half. This is what actually gates shipping.
   `workflow_dispatch`-able Action re-runs the scraper and commits the JSON,
   but only when the calendar moved — the `fetchedAt` stamp changes every run
   and committing on that alone would be a commit a day that says nothing.
+- **2026-10-13** — The project board stopped being a set of titles: each tile
+  now carries its period, blurb and tech chips from `sm:` up, and the dialog
+  behind it was rebuilt around what the tile *can't* hold — a live demo, a
+  2–3 paragraph write-up and a guide to driving it. First demo: the AI
+  Trading Model, with its random forest exported to JSON and walked in the
+  browser, so there is nothing to host and nothing to keep alive. Re-running
+  the pipeline also moved its headline number from 1.7% to 1.95% — same code,
+  a fresher Yahoo pull — which the site now states both halves of
+  (CONTENT.md §8.13).

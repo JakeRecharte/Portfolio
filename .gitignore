@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Cached Yahoo Finance pull for the trading demo export (scripts/export-trading-demo.py)
+scripts/.cache-prices.csv

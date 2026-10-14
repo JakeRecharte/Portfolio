@@ -195,6 +195,17 @@ Ordered newest first, as the CV has them. "Repo" = verified public GitHub repo.
   short, has typos ("Yahoo Fiance", "selction", "incerease"), and admits the
   large universe is untested. It also says "Assignment for CS450" — the CV
   doesn't. See §8.
+- **Re-run 2026-10-13** by `scripts/export-trading-demo.py`, which reproduces
+  the repo's pipeline exactly (same universe, features, 21-day horizon,
+  time-ordered 80/20 split, `RandomForestRegressor(200, 8, random_state=42)`)
+  against a fresh Yahoo Finance pull. 2,516 dates × 50 tickers → 121,600
+  samples; 487 dates in the test set. Results, all verified:
+  - strategy mean **3.94%** per horizon, universe mean **1.99%**, edge
+    **1.95%** — **not the 1.7% the CV claims.** Same code, newer data. See §8.
+  - test **R² 0.006**, MSE 0.0075. The edge is thin, and the picks beat the
+    universe on **301 of 487** dates (62%).
+  - the site states both numbers and says why they differ, rather than
+    quietly using whichever is larger.
 
 **Apple Picker — September 2026**
 - **Not on the CV and has no README.** Everything here was read off the repo
@@ -426,6 +437,17 @@ behaviour.
 - `repoUrl` / `liveUrl` optional. The row or card links to `liveUrl ??
   repoUrl`; with neither it renders with **no arrow**, which is honest for the
   two hackathons that have no public repo (§8.3).
+- `detail` **2–3 paragraphs**, each ~150–300 chars, on every board project.
+  This is what the dialog is *for* now that the tile carries the blurb and the
+  tech chips: paragraph one says what the thing does, two says what Jake built
+  and with whom, three carries the number and its caveat. Don't restate the
+  blurb — a visitor has already read it on the tile.
+- `demo` optional, and only where something really runs. `label` ≤ 40 chars,
+  naming what is executing rather than the project again ("The forest, running
+  in your browser"). `guide` **2–4 steps**, ~120–220 chars each, each one
+  action to take or one thing to notice — not a feature list. `note` is the
+  caveat a visitor deserves before reading the output as a claim, ~1–2
+  sentences; for anything with money or health in it, that note is mandatory.
 
 **`Role`** — **2–4 items**, newest first, in `experience.ts`.
 
@@ -501,6 +523,17 @@ left, roughly in order of how much they block.
    the row lands on the stale version.
 5. `Trading-Model`'s README has typos and says "Assignment for CS450" while the
    CV presents it as a project. Want me to rewrite that README?
+
+13. **The trading model's headline number has moved: 1.7% → 1.95%.** Re-running
+    your own pipeline on a fresh Yahoo pull gives a 1.95% edge, not the 1.7%
+    on the CV (§2.4). Nothing is wrong with either — Yahoo revises history and
+    `yfinance` has changed since November 2025 — but the CV, the tile blurb
+    and the live demo can't all say different things forever. Right now the
+    blurb keeps **1.7%** (it is what your CV says) and the dialog explains the
+    **1.95%** re-run beside it. Options: leave it, move everything to 1.95%
+    and update the CV, or drop the single number and let the demo be the
+    claim. Related: the test **R² is 0.006**, which the dialog also states —
+    tell me if you'd rather that came off, though I'd keep it.
 
 **Decisions only you can make**
 6. **Avalanche NFT ($12k, team of 8) — on the site or not?** Real leadership

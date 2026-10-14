@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import type { Project } from "@/content/projects";
 import ArrowLink from "./ArrowLink";
 import Reveal from "./Reveal";
+import ProjectDemo from "./demos/ProjectDemo";
 
 /**
  * The additional projects, as a checkerboard: square tiles three across,
@@ -21,6 +22,11 @@ import Reveal from "./Reveal";
  *
  * A square grid only reads as a board if the board is full, so the last row is
  * padded with inert cells that carry the pattern and nothing else.
+ *
+ * The tile carries the blurb and the tech chips from `sm:` up (DESIGN.md §2.3)
+ * so the board is readable without opening anything. The dialog is therefore
+ * not a way to see the same facts again — it is where the demo, the longer
+ * write-up and the guide live.
  */
 const COLUMNS = 3;
 
@@ -34,7 +40,24 @@ export default function ProjectBoard({ projects }: { projects: Project[] }) {
     if (active) dialogRef.current?.showModal();
   }, [active]);
 
+  // `showModal()` doesn't stop the page behind it from scrolling, and a demo
+  // dialog is tall enough that the page moving underneath it is obvious.
+  useEffect(() => {
+    if (!active) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previous;
+    };
+  }, [active]);
+
   const filler = (COLUMNS - (projects.length % COLUMNS)) % COLUMNS;
+
+  // A demo needs the resume viewer's full-bleed size; a write-up sizes to its
+  // own content at the narrower width (DESIGN.md §2.3).
+  const size = active?.demo
+    ? "h-[90dvh] w-[92vw] max-w-6xl"
+    : "max-h-[90dvh] w-[min(92vw,32rem)]";
 
   return (
     <>
@@ -76,7 +99,7 @@ export default function ProjectBoard({ projects }: { projects: Project[] }) {
         onClick={(e) => {
           if (e.target === dialogRef.current) dialogRef.current?.close();
         }}
-        className="m-auto w-[min(92vw,32rem)] rounded-3xl border border-white/10 bg-neutral-950/80 p-6 backdrop-blur-xl backdrop:bg-black/70 open:block sm:p-8"
+        className={`m-auto overflow-hidden rounded-3xl border border-white/10 bg-neutral-950/80 p-0 backdrop-blur-xl backdrop:bg-black/70 open:flex open:flex-col ${size}`}
       >
         {active && (
           <Detail project={active} onClose={() => dialogRef.current?.close()} />
@@ -92,6 +115,10 @@ export default function ProjectBoard({ projects }: { projects: Project[] }) {
  * enhancement rather than the only way in — middle-click, cmd-click and a
  * visitor without JS all still reach the repo. A project with no public link
  * has no honest destination, so there it falls back to a button.
+ *
+ * The anchor takes an explicit `aria-label` because its contents are now a
+ * paragraph and a chip list: left to compute its own name it would announce
+ * the whole tile as one 200-character link.
  */
 function Tile({ project, onOpen }: { project: Project; onOpen: () => void }) {
   const href = project.liveUrl ?? project.repoUrl;
@@ -108,7 +135,33 @@ function Tile({ project, onOpen }: { project: Project; onOpen: () => void }) {
           {project.kind}
         </span>
       </p>
-      <span className="flex items-end justify-between gap-2">
+
+      {/* The wrapper owns the hiding and the paragraph owns the clamp on
+          purpose: `hidden` and `line-clamp-*` both set `display`, so on one
+          element which wins depends on stylesheet order. A third of a phone
+          screen is about 100px — too narrow for prose at any clamp — so the
+          blurb starts at `sm:`, three lines of it, and opens up to five once
+          a cell is wide enough to fit ~50 characters a line. */}
+      <div className="mt-3 hidden min-h-0 flex-1 sm:block">
+        <p className="line-clamp-3 text-xs leading-relaxed text-white/55 lg:line-clamp-5 lg:text-sm">
+          {project.blurb}
+        </p>
+      </div>
+
+      {project.tech && (
+        <ul className="mt-3 hidden flex-wrap gap-2 lg:flex">
+          {project.tech.map((t) => (
+            <li
+              key={t}
+              className="rounded-full border border-white/10 px-2.5 py-0.5 text-xs text-white/55"
+            >
+              {t}
+            </li>
+          ))}
+        </ul>
+      )}
+
+      <span className="mt-3 flex items-end justify-between gap-2">
         <span className="text-sm leading-tight font-bold text-white sm:text-base lg:text-lg">
           {project.title}
         </span>
@@ -116,6 +169,10 @@ function Tile({ project, onOpen }: { project: Project; onOpen: () => void }) {
       </span>
     </>
   );
+
+  const label = `${project.title}, ${project.period}. Open details${
+    project.demo ? " and demo" : ""
+  }.`;
 
   // The handler is on both branches; only the anchor needs to suppress a
   // navigation first.
@@ -125,6 +182,7 @@ function Tile({ project, onOpen }: { project: Project; onOpen: () => void }) {
       target="_blank"
       rel="noreferrer"
       aria-haspopup="dialog"
+      aria-label={label}
       onClick={(e) => {
         if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0)
           return;
@@ -139,6 +197,7 @@ function Tile({ project, onOpen }: { project: Project; onOpen: () => void }) {
     <button
       type="button"
       aria-haspopup="dialog"
+      aria-label={label}
       onClick={onOpen}
       className={shell}
     >
@@ -147,7 +206,12 @@ function Tile({ project, onOpen }: { project: Project; onOpen: () => void }) {
   );
 }
 
-/** The dialog's contents: the full row that the square had no room for. */
+/**
+ * The dialog's contents. A pinned header bar on the resume viewer's recipe,
+ * then one scrolling body: the demo takes two of three columns at `lg:` and
+ * the write-up rides alongside it, or the write-up is the whole thing for a
+ * project with nothing to run.
+ */
 function Detail({
   project,
   onClose,
@@ -160,23 +224,20 @@ function Detail({
     project.liveUrl && { label: "View it live", href: project.liveUrl },
   ].filter((l): l is { label: string; href: string } => Boolean(l));
 
+  const demo = project.demo;
+  // Every board project has `detail`; the fallback keeps a new one from
+  // opening an empty dialog before its write-up is written.
+  const paragraphs = project.detail ?? [project.blurb];
+
   return (
     <>
-      <div className="flex items-start justify-between gap-4">
-        <div className="min-w-0">
-          <h2
-            id="project-dialog-title"
-            className="text-xl font-bold text-white sm:text-2xl"
-          >
-            {project.title}
-          </h2>
-          <p className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-xs text-white/35">
-            {project.period}
-            <span className="rounded-full border border-accent/40 px-2.5 py-0.5 font-mono text-[10px] tracking-wider text-white/55">
-              {project.kind}
-            </span>
-          </p>
-        </div>
+      <div className="flex items-center justify-between gap-4 border-b border-white/10 px-5 py-3.5">
+        <h2
+          id="project-dialog-title"
+          className="truncate text-lg font-bold text-white sm:text-xl"
+        >
+          {project.title}
+        </h2>
         <button
           type="button"
           onClick={onClose}
@@ -198,44 +259,102 @@ function Detail({
         </button>
       </div>
 
-      <p className="mt-5 text-sm leading-relaxed text-white/55">
-        {project.blurb}
-      </p>
+      <div
+        className={`min-h-0 flex-1 overflow-y-auto p-6 sm:p-8 ${
+          demo ? "lg:grid lg:grid-cols-3 lg:gap-8" : ""
+        }`}
+      >
+        {demo && (
+          <section className="lg:col-span-2">
+            <h3 className="font-mono text-xs tracking-[0.2em] text-white/40 uppercase">
+              {demo.label}
+            </h3>
+            <div className="mt-5">
+              <ProjectDemo demo={demo.key} />
+            </div>
+          </section>
+        )}
 
-      {project.tech && (
-        <ul className="mt-5 flex flex-wrap gap-2">
-          {project.tech.map((t) => (
-            <li
-              key={t}
-              className="rounded-full border border-white/10 px-2.5 py-0.5 text-xs text-white/55"
-            >
-              {t}
-            </li>
-          ))}
-        </ul>
-      )}
+        <div className={demo ? "mt-10 lg:mt-0" : ""}>
+          <p className="flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-xs text-white/35">
+            {project.period}
+            <span className="rounded-full border border-accent/40 px-2.5 py-0.5 font-mono text-[10px] tracking-wider text-white/55">
+              {project.kind}
+            </span>
+          </p>
 
-      {links.length > 0 ? (
-        <ul className="mt-6 space-y-2">
-          {links.map((l) => (
-            <li key={l.href}>
-              <a
-                href={l.href}
-                target="_blank"
-                rel="noreferrer"
-                className="group flex items-center justify-between gap-3 rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-white transition hover:border-white/25 hover:bg-white/[0.07]"
-              >
-                {l.label}
-                <ArrowLink className="text-accent" />
-              </a>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        // CONTENT.md §4: no public repo was found for this one. Saying so is
-        // better than a dead link or a tile that quietly does nothing.
-        <p className="mt-6 font-mono text-xs text-white/35">No public repo.</p>
-      )}
+          <div className="mt-5 max-w-lg space-y-4">
+            {paragraphs.map((p) => (
+              <p key={p} className="text-sm leading-relaxed text-white/55">
+                {p}
+              </p>
+            ))}
+          </div>
+
+          {project.tech && (
+            <ul className="mt-5 flex flex-wrap gap-2">
+              {project.tech.map((t) => (
+                <li
+                  key={t}
+                  className="rounded-full border border-white/10 px-2.5 py-0.5 text-xs text-white/55"
+                >
+                  {t}
+                </li>
+              ))}
+            </ul>
+          )}
+
+          {demo && (
+            <section className="mt-10">
+              <h3 className="font-mono text-xs tracking-[0.2em] text-white/40 uppercase">
+                How to read it
+              </h3>
+              <ol className="mt-5 max-w-lg space-y-2">
+                {demo.guide.map((step, i) => (
+                  <li
+                    key={step}
+                    className="flex gap-3 text-sm leading-relaxed text-white/55"
+                  >
+                    <span className="shrink-0 font-mono text-xs text-white/35">
+                      {i + 1}
+                    </span>
+                    {step}
+                  </li>
+                ))}
+              </ol>
+              {demo.note && (
+                <p className="mt-5 max-w-lg text-xs leading-relaxed text-white/35">
+                  {demo.note}
+                </p>
+              )}
+            </section>
+          )}
+
+          {links.length > 0 ? (
+            <ul className="mt-6 space-y-2">
+              {links.map((l) => (
+                <li key={l.href}>
+                  <a
+                    href={l.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="group flex items-center justify-between gap-3 rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-white transition hover:border-white/25 hover:bg-white/[0.07]"
+                  >
+                    {l.label}
+                    <ArrowLink className="text-accent" />
+                  </a>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            // CONTENT.md §4: no public repo was found for this one. Saying so is
+            // better than a dead link or a tile that quietly does nothing.
+            <p className="mt-6 font-mono text-xs text-white/35">
+              No public repo.
+            </p>
+          )}
+        </div>
+      </div>
     </>
   );
 }

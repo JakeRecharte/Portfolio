@@ -148,6 +148,30 @@ stay genuinely transparent. A `gap` plus per-cell borders would double every
 interior rule to 2px and a gap colored by the container would tint the open
 cells.
 
+**A tile carries its own write-up, from `sm:` up.** The square is not just a
+title: it holds the period, the blurb and the tech chips, so the board can be
+read without opening anything and the dialog is left to the demo and the long
+form. What fits depends entirely on how wide a third of the viewport is:
+
+| Part | Classes | From |
+| --- | --- | --- |
+| Period + kind | `font-mono text-[10px] sm:text-xs`, chip `hidden lg:inline-block` | always |
+| Blurb wrapper | `mt-3 hidden min-h-0 flex-1 sm:block` | `sm:` |
+| Blurb | `line-clamp-3 text-xs leading-relaxed text-white/55 lg:line-clamp-5 lg:text-sm` | `sm:` |
+| Tech chips | `mt-3 hidden flex-wrap gap-2 lg:flex` | `lg:` |
+| Title + arrow | `mt-3 flex items-end justify-between` | always |
+
+**The wrapper hides and the paragraph clamps — never both on one element.**
+`hidden` and `line-clamp-*` both set `display`, so a `hidden sm:line-clamp-3`
+resolves by stylesheet order rather than by intent. The measurements behind the
+breakpoints: a cell is ~110px on a phone (title only), ~200px at `sm:` (three
+clamped lines, no room for chips) and ~362px at `lg:` (five lines and two rows
+of chips, with headroom).
+
+A tile with this much in it can no longer compute its own accessible name — the
+anchor would announce as one 200-character link — so it takes an explicit
+`aria-label` of title, period and what the click does.
+
 **Three columns is load-bearing.** With an odd column count, `i % 2` alternates
 both across a row and between rows, so the checker needs no row arithmetic. An
 even column count turns the same code into vertical stripes. The board also
@@ -169,10 +193,19 @@ wider than the site. The resume viewer
 ([ResumeDialog](./src/components/ResumeDialog.tsx)) uses that full size; a modal
 that only holds a few rows
 ([ContactDialog](./src/components/ContactDialog.tsx)) is
-`w-[min(92vw,26rem)]` with `p-6 sm:p-8` and sizes to its content instead; the
-project detail ([ProjectBoard](./src/components/ProjectBoard.tsx)) is the same
-recipe one step wider at `w-[min(92vw,32rem)]`, because it holds a blurb and a
-chip row rather than two link rows.
+`w-[min(92vw,26rem)]` with `p-6 sm:p-8` and sizes to its content instead.
+
+**The project dialog ([ProjectBoard](./src/components/ProjectBoard.tsx)) has
+two sizes, and the content picks.** A project with a demo takes the resume
+viewer's full `h-[90dvh] w-[92vw] max-w-6xl`; one with only a write-up takes
+`max-h-[90dvh] w-[min(92vw,32rem)]` and sizes to itself, with `max-h-` rather
+than `h-` so three paragraphs scroll instead of overflowing. Both share one
+shell: `p-0 open:flex open:flex-col`, a pinned header bar
+(`border-b border-white/10 px-5 py-3.5`) holding the title and the close
+button, and one scrolling body at `min-h-0 flex-1 overflow-y-auto p-6 sm:p-8`.
+With a demo the body becomes `lg:grid lg:grid-cols-3 lg:gap-8` — the demo takes
+`lg:col-span-2` and the write-up rides in the last column, stacking under it
+below `lg:`.
 
 **Chips come in two sizes and two colors of one recipe.** Size: content chips
 (tech, and the `kind` label in `Work Experience`) are `px-2.5 py-0.5`; the denser badge in
@@ -305,6 +338,49 @@ would read as a change in the data. The anchor owns the accessible name
 (`"<caption>. View the profile on GitHub."`) and everything inside it is
 `aria-hidden`, so the caption isn't announced twice.
 
+**A demo is a figure, a control and a table — in the site's own palette.**
+A live demo ([demos/](./src/components/demos/)) renders inside the project
+dialog's demo column and may not reach for colors the rest of the site does not
+have. The recipe, from
+[TradingDemo](./src/components/demos/TradingDemo.tsx):
+
+| Part | Classes |
+| --- | --- |
+| Plot | `h-40 w-full sm:h-48`, `viewBox="0 0 600 180"`, `preserveAspectRatio="none"` |
+| Series line | `strokeWidth="2"` + `vectorEffect="non-scaling-stroke"` |
+| Subject series | `text-accent` |
+| Baseline series | `text-white/55` |
+| Zero rule | `text-white/10`, 1px |
+| Selected marker | `text-white/25`, 1px |
+| Axis gutter | wrapper `relative pl-12`, labels `absolute … font-mono text-[9px] text-white/35` |
+| Legend swatch | `h-0.5 w-3 rounded-[2px]` in the series' color, label `text-[11px] text-white/35` |
+| Range input | `w-full accent-accent` and nothing else |
+| Progress bar | `h-0.5 rounded-full bg-white/[0.07]`, fill `bg-accent` |
+
+Four rules hold it to the design:
+
+1. **Two series, not a palette.** Amber is the thing being demonstrated and
+   `white/55` is whatever it is being measured against — a baseline, not a
+   second category. §2.1's accent discipline means a demo never introduces a
+   second hue, so a chart that genuinely needs three or more categories has to
+   be rethought, not recolored.
+2. **Never red and green.** Direction is carried by an explicit `+` / `−` and
+   the sign of the number. This is the palette rule and the colorblind-safe
+   answer at the same time.
+3. **Stretch the strokes, not the glyphs.** `preserveAspectRatio="none"` is
+   what lets the plot fill its column, and it would skew any `<text>` inside
+   the SVG — so every label is HTML positioned around it, and the paths keep
+   an even weight through `non-scaling-stroke`.
+4. **The numbers are the alternative text.** The `<svg>` is `aria-hidden`; the
+   `<figcaption>`, the readout table and the summary `<dl>` carry the same
+   information in text, which is also what keeps a `/55` line legible for
+   anyone who can't resolve it against black.
+
+**A demo computes in chunks, never in one blocking pass**, and says so while it
+works: a mono line and the progress bar above. Chunk with `setTimeout`, not
+`requestAnimationFrame` — rAF stops dead while a tab is backgrounded, which
+would strand the run at whatever percent it had reached.
+
 **The nav bar** is `sticky top-0 z-50`, 64px tall, with three groups on one
 `max-w-6xl` row: the wordmark (`#top`), the section anchors (`gap-7`, hidden
 under `sm:` where the pills matter more), and the actions. Actions are the
@@ -357,7 +433,11 @@ links get `target="_blank" rel="noreferrer"`; internal paths must not.
    until that section came off the page). A modal trigger is an anchor to the
    thing it shows, never a bare `<button>`.
 4. **Server components by default.** `Reveal`, `ResumeDialog`,
-   `ContactDialog` and `ProjectBoard` are the only `"use client"` files. A dialog takes its
+   `ContactDialog`, `ProjectBoard` and everything under `components/demos/`
+   are the only `"use client"` files. A demo is interactive by definition, so
+   it is a client component and is reached only through the dialog — never
+   imported into a server section, which would put its JavaScript on the
+   homepage for every visitor. A dialog takes its
    trigger as `children` plus a class, so the markup around it can stay on the
    server and one dialog can serve two call sites. If a new
    component needs the directive, say why in a comment.

@@ -5,3 +5,7 @@ node_modules/
 package-lock.json
 next-env.d.ts
 *.md
+
+# Exported model + price data for the project demos: machine-written, shipped
+# minified, and re-inflated ~35% by a prettier pass.
+public/demos
