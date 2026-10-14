@@ -10,7 +10,8 @@
     "lint:fix": "eslint --fix",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "contributions": "node scripts/fetch-contributions.mjs"
   },
   "dependencies": {
     "motion": "^13.1.1",
