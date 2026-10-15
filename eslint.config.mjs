@@ -15,6 +15,11 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Generated demo payloads: Unity's WebGL loader is minified engine code
+    // we neither wrote nor can fix, and linting it buries our own findings
+    // under ~190 of its own. Prettier skips the same directory
+    // (see .prettierignore).
+    "public/demos/**",
   ]),
 ]);
 

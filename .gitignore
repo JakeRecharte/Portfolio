@@ -42,3 +42,8 @@ next-env.d.ts
 
 # Cached Yahoo Finance pull for the trading demo export (scripts/export-trading-demo.py)
 scripts/.cache-prices.csv
+
+# CPython's bytecode cache. The CWG demo ships `public/demos/cwg/cwg_trace.py`
+# as source — Pyodide reads it over HTTP — so a local run leaves a __pycache__
+# beside it that nothing serves.
+__pycache__/

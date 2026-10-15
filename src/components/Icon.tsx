@@ -1,5 +1,6 @@
 /**
- * The marks that sit beside a contact label. One stroke style for all four —
+ * The marks that sit beside a contact label, plus `Play`. One stroke style for
+ * all of them —
  * `viewBox="0 0 24 24"`, `strokeWidth="2"`, round caps — so they line up with
  * {@link ArrowLink}, which is the other SVG on the same row.
  *
@@ -7,7 +8,7 @@
  * filled GitHub cat next to three line icons reads as a sticker, and amber
  * fill at this size is the "black on amber" problem DESIGN.md §2.1 warns off.
  */
-export type IconName = "GitHub" | "LinkedIn" | "Email" | "Resume";
+export type IconName = "GitHub" | "LinkedIn" | "Email" | "Resume" | "Play";
 
 const paths: Record<IconName, React.ReactNode> = {
   GitHub: (
@@ -32,6 +33,10 @@ const paths: Record<IconName, React.ReactNode> = {
       <path d="M14 2v6h6M8 13h8M8 17h5" />
     </>
   ),
+  // The one mark here that isn't a contact channel: it starts a demo. Same
+  // stroke recipe, and an outline rather than a filled triangle for the
+  // reason in the comment above.
+  Play: <path d="M7 4.5v15l12-7.5z" />,
 };
 
 export default function Icon({
