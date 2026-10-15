@@ -1,7 +1,7 @@
 /**
  * The marks that sit beside a contact label, plus `Play`. One stroke style for
- * all of them —
- * `viewBox="0 0 24 24"`, `strokeWidth="2"`, round caps — so they line up with
+ * all of them (`viewBox="0 0 24 24"`, `strokeWidth="2"`, round caps) so they
+ * line up with
  * {@link ArrowLink}, which is the other SVG on the same row.
  *
  * Brand glyphs are the outline versions, not the filled official marks: a

@@ -1,11 +1,11 @@
 # Portfolio
 
-Personal portfolio site — projects, experience, and contact info.
+Personal portfolio site: projects, experience, and contact info.
 
 **Jake Recharte** · Computer Science, San Diego State University
 
 See [TODO.md](./TODO.md) for the project plan, goals, and phase checklist, and
-[CONTENT.md](./CONTENT.md) for the content fact sheet — read it before editing
+[CONTENT.md](./CONTENT.md) for the content fact sheet. Read it before editing
 anything in `src/content/` or writing copy.
 
 ## Stack
@@ -40,7 +40,7 @@ Open http://localhost:3000.
 ## Notes
 
 - Next 16 defaults to Turbopack, and `params` / `searchParams` are async
-  (Promises) — relevant when project deep-linking lands in Phase 4.
+  (Promises), which matters when project deep-linking lands in Phase 4.
 - `next lint` was removed in Next 16; ESLint runs directly via flat config in
   `eslint.config.mjs`.
 - `AGENTS.md` is generated and re-added by `next dev`. Leave it committed.

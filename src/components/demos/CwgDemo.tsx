@@ -14,7 +14,7 @@ import Icon from "../Icon";
  * Pyodide loads CPython as WebAssembly, micropip installs the actual `cwg`
  * wheel from PyPI (vendored into `public/demos/cwg/wheels/` so the demo does
  * not depend on PyPI being reachable), and `cwg_trace.py` runs the program
- * through `cwg.interpreter` — Jake's interpreter, unmodified, executing the
+ * through `cwg.interpreter`: Jake's interpreter, unmodified, executing the
  * language's real semantics. Nothing here is a recording, which is why the
  * knobs can take any value rather than a precomputed few.
  *
@@ -281,8 +281,8 @@ json.dumps(cwg_trace.run_source(program_source))
   if (error) {
     return (
       <p className="text-sm leading-relaxed text-white/55">
-        The interpreter could not start ({error}). CWG is on PyPI and in the
-        repo below —{" "}
+        The interpreter couldn&apos;t start ({error}). CWG is on PyPI and in the
+        repo below, so{" "}
         <code className="font-mono text-white/75">pip install cwg</code> runs
         the same thing locally.
       </p>
@@ -439,7 +439,7 @@ json.dumps(cwg_trace.run_source(program_source))
 
       <p className="mt-3 font-mono text-xs text-white/55">
         <span className="text-white/35">{step.kind}</span>{" "}
-        {subject(step.message) || "—"}
+        {subject(step.message) || "(no message)"}
         {step.note && <span className="text-white/35"> · {step.note}</span>}
         {step.error && <span className="text-white"> · {step.error}</span>}
       </p>
@@ -476,7 +476,7 @@ json.dumps(cwg_trace.run_source(program_source))
             Output
           </h4>
           <pre className="mt-3 min-h-[1.5rem] font-mono text-xs leading-relaxed whitespace-pre-wrap text-white/55">
-            {output || "—"}
+            {output || "(no output)"}
           </pre>
         </div>
       </div>
@@ -493,7 +493,7 @@ json.dumps(cwg_trace.run_source(program_source))
 /**
  * The program as `git log --graph` draws it: one row per commit, a lane per
  * branch. Branch *type* is carried by the lane label and position, never by
- * colour — the palette has one accent (DESIGN.md §2.1), so colour is spent on
+ * colour. The palette has one accent (DESIGN.md §2.1), so colour is spent on
  * execution state instead, which is what changes as you step.
  */
 function Graph({
@@ -559,7 +559,7 @@ function Graph({
                 isCurrent ? "font-bold" : ""
               }`}
             >
-              {subject(commit.message) || "—"}
+              {subject(commit.message) || "(no message)"}
             </span>
 
             {commit.branch !== "main" && (

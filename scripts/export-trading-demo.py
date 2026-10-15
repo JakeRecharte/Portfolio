@@ -1,10 +1,10 @@
 """
 Export the AI Trading Model so the browser can run it.
 
-This reproduces the pipeline in github.com/JakeRecharte/Trading-Model exactly
-— same 50-ticker universe, same five rolling-window features, same 21-day
+This reproduces the pipeline in github.com/JakeRecharte/Trading-Model exactly:
+same 50-ticker universe, same five rolling-window features, same 21-day
 horizon, same time-ordered 80/20 split, same `RandomForestRegressor(200, 8,
-random_state=42)` — and then writes two files the demo in
+random_state=42)`. It then writes two files the demo in
 `src/components/demos/TradingDemo.tsx` fetches at runtime:
 
     public/demos/trading-forest.json   the trained forest, as flat arrays
@@ -119,7 +119,7 @@ def export_forest(model: RandomForestRegressor, feature_names: list[str]) -> dic
     `feature[i]` and `threshold[i]` decide whether to walk to `left[i]` or
     `right[i]`, and a leaf (feature -2) carries its mean in `value[i]`.
 
-    Thresholds keep 6 significant digits and leaf values 8 decimals — both
+    Thresholds keep 6 significant digits and leaf values 8 decimals, both
     well inside the noise of a 21-day return prediction, and together they cut
     the payload roughly in half against full float repr.
     """

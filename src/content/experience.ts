@@ -1,7 +1,7 @@
 /**
  * Work: the internship, the program, and the job. Newest first.
  *
- * `kind` matters here in a way it doesn't for projects — NAVSEA/FathomWerx was
+ * `kind` matters here in a way it doesn't for projects. NAVSEA/FathomWerx was
  * an eight-week program, not employment, and CONTENT.md §2.3 is explicit that
  * the copy must not imply otherwise. The chip does that work so the bullets
  * don't have to.
@@ -29,7 +29,7 @@ export const experience: Role[] = [
     bullets: [
       "Built a curriculum standards tagging feature on a team of 5: teacher-uploaded assignments get aligned standards with confidence scores.",
       "Built a document pipeline with PDF scrapers that turned 1,000+ curriculum pages into a searchable Supabase knowledge base.",
-      "Trained and integrated the model mapping assignments to standards — 82% average accuracy.",
+      "Trained and integrated the model mapping assignments to standards, at 82% average accuracy.",
     ],
     tech: ["Supabase", "PostgreSQL", "ML"],
   },

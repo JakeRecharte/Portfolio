@@ -1,11 +1,13 @@
+import Image from "next/image";
 import { site } from "@/content/site";
 import { now } from "@/content/now";
+import { profilePicture } from "@/content/art";
 import AboutDialog from "./AboutDialog";
 import ContributionGraph from "./ContributionGraph";
 import Icon from "./Icon";
 
 // Profiles only. Resume and email are deliberately absent: since the Contact
-// section came off the page, both live in the nav bar's pills — Resume opens
+// section came off the page, both live in the nav bar's pills: Resume opens
 // the PDF in a modal (ResumeDialog) and Contact opens the email and LinkedIn
 // rows (ContactDialog).
 const socials = [
@@ -15,7 +17,7 @@ const socials = [
 
 /**
  * One chip style for every kind, shared in spirit with the `kind` chip in
- * `Work`. The amber outline marks it as a kind label, not a status — the badge
+ * `Work`. The amber outline marks it as a kind label, not a status. The badge
  * still says what a thing is, never whether it's current, and "ongoing" is
  * carried by the period reading "… - Now" (DESIGN.md §2.1).
  */
@@ -23,8 +25,8 @@ const badgeClass = "border-accent/40 text-white/55";
 
 /**
  * Full-width identity header: who he is on the left, what he's doing right now
- * on the right. Replaces the sticky side card — the same facts read faster as
- * one block above the fold than as a rail you scroll past.
+ * on the right. Replaces the sticky side card, since the same facts read
+ * faster as one block above the fold than as a rail you scroll past.
  */
 export default function Header() {
   return (
@@ -34,9 +36,27 @@ export default function Header() {
     >
       <div className="grid gap-8 p-6 sm:p-8 md:grid-cols-[16rem_1fr] md:gap-10 lg:grid-cols-[18rem_1fr] lg:gap-12">
         <div className="md:border-r md:border-white/10 md:pr-10 lg:pr-12">
-          {/* Monogram stands in until there's a real photo (CONTENT.md §8). */}
-          <div className="flex aspect-square w-32 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-400/90 to-orange-600/90 text-4xl font-black tracking-tighter text-neutral-950 select-none sm:w-36 sm:text-5xl">
-            JR
+          {/* Jake's own *Cradled Fortress*, which replaced the `JR` monogram
+              on 2026-10-14 (CONTENT.md §8 Q10). The piece is square, so the
+              plain tile frame (DESIGN.md §2.3) crops nothing. The file,
+              its dimensions and its `alt` come from `art.ts`, the same place
+              `/art` renders it from.
+
+              `priority`: it is the first image in the header and above the
+              fold on every visit, so it should not wait for the lazy
+              observer. `sizes` is the frame's two widths (`w-32` is 128px
+              and `sm:w-36` is 144px), which keeps the optimizer from shipping
+              a 2160px file into a 144px box. */}
+          <div className="aspect-square w-32 overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] sm:w-36">
+            <Image
+              src={profilePicture.src}
+              alt={`${site.name}'s profile picture: his illustration ${profilePicture.title}. ${profilePicture.alt}`}
+              width={profilePicture.width}
+              height={profilePicture.height}
+              sizes="(min-width: 640px) 144px, 128px"
+              priority
+              className="block h-full w-full"
+            />
           </div>
 
           <h1 className="mt-5 text-3xl font-bold tracking-tight text-white">

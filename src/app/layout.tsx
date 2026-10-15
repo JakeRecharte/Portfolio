@@ -15,16 +15,16 @@ const jetBrainsMono = JetBrains_Mono({
 });
 
 /**
- * One string, used three times — the page description, the OG description and
+ * One string, used three times: the page description, the OG description and
  * nothing else. It was written out twice and drifted from the hero when the
  * tagline changed, which is the drift CONTENT.md §1 warns about.
  *
  * It is the hero tagline minus the "I build things end to end" clause, because
  * a search result has less room than the page does. Change the tagline in
- * `site.ts` and this needs the same edit — it is a shorter variant by hand,
- * not a slice of it.
+ * `site.ts` and this needs the same edit, since it is a shorter variant by
+ * hand, not a slice of it.
  */
-const title = "Jake Recharte — CS Student @ SDSU";
+const title = "Jake Recharte · CS Student @ SDSU";
 const description =
   "CS student at San Diego State. A language published on PyPI, a climbing app on Supabase, a hackathon car wired by hand.";
 
@@ -47,8 +47,8 @@ export const metadata: Metadata = {
  * keep in step, and the fog GIF would have restarted on every navigation
  * instead of staying put across it.
  *
- * What stays in a page is its own shell — the `max-w-6xl` measure and the
- * padding — because that is the one thing a future route might want to differ
+ * What stays in a page is its own shell, the `max-w-6xl` measure and the
+ * padding, because that is the one thing a future route might want to differ
  * on.
  */
 export default function RootLayout({ children }: LayoutProps<"/">) {

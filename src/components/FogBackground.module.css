@@ -1,12 +1,12 @@
 /*
- * Drifting blue fog background — the actual asset from afamolie.com.
+ * Drifting blue fog background: the actual asset from afamolie.com.
  *
  * This was previously rebuilt from CSS gradients. It didn't read as fog: the
  * reference's motion is organic smoke turbulence, which drifting radial
  * gradients cannot fake. The GIF is the effect, so it ships as the GIF.
  *
  * 600x338 / 2.9 MB, stretched over the viewport exactly as the reference does.
- * It is upscaled and soft at full size — that softness is the look.
+ * It is upscaled and soft at full size, and that softness is the look.
  */
 
 .root {

@@ -8,12 +8,12 @@ import Icon from "../Icon";
  *
  * `scripts/build-apple-picker.sh` drives Unity in batch mode and drops the
  * build in `public/demos/apple-picker/`, so the site serves it as plain static
- * files — no Unity hosting, no account, nothing to keep alive.
+ * files: no Unity hosting, no account, nothing to keep alive.
  *
  * **It does not load until asked.** The build is tens of megabytes, and
  * starting that download just because a visitor opened the dialog would be
  * rude on a phone and wasteful on a laptop. So the pane is a poster with a
- * play control, and the `<iframe>` is only mounted on the click — which also
+ * play control, and the `<iframe>` is only mounted on the click, which also
  * means the game cannot start making noise or eating a frame budget behind a
  * dialog nobody is looking at.
  */

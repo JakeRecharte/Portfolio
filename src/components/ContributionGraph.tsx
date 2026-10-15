@@ -28,13 +28,13 @@ const MONTHS = [
 
 /**
  * How much history the header shows. The JSON holds a full year, so widening
- * this back out is a one-line change — no re-fetch.
+ * this back out is a one-line change, with no re-fetch.
  */
 const MONTHS_SHOWN = 6;
 
 /**
  * Grid metrics, in px. Shared by the cells and the month labels so the two
- * can't drift apart — `PITCH` is one column plus its gap.
+ * can't drift apart. `PITCH` is one column plus its gap.
  */
 const CELL = 17;
 const GAP = 3;
@@ -48,7 +48,7 @@ function utc(date: string) {
 
 /**
  * The trailing `MONTHS_SHOWN` months, snapped back to the Sunday that starts
- * the week — otherwise the first column would be a part-week stub.
+ * the week, since otherwise the first column would be a part-week stub.
  */
 function recentDays(days: typeof data.days) {
   const cutoff = utc(days[days.length - 1].date);
@@ -94,7 +94,7 @@ function monthLabels(weeks: Cell[][]) {
     const first = week.find(Boolean);
     if (!first) return;
     const month = utc(first.date).getUTCMonth();
-    // Skip a stub first column — its label would collide with the next one.
+    // Skip a stub first column, since its label would collide with the next.
     if (month !== last && (i > 0 || week[0])) {
       labels.push({ week: i, label: MONTHS[month] });
       last = month;
@@ -106,7 +106,7 @@ function monthLabels(weeks: Cell[][]) {
 /**
  * Jake's real public contribution calendar, scraped at author time by
  * `npm run contributions` into `src/content/contributions.json`. Rendered on
- * the server — no client JS, no GitHub request from the visitor's browser.
+ * the server: no client JS, no GitHub request from the visitor's browser.
  */
 export default function ContributionGraph() {
   const days = recentDays(data.days);
@@ -120,8 +120,8 @@ export default function ContributionGraph() {
   return (
     <figure className="m-0">
       {/* The whole graph is one link to the profile it was scraped from. The
-          anchor carries the accessible name, so everything inside it — the
-          grid and the visible caption — is hidden from the a11y tree to keep
+          anchor carries the accessible name, so everything inside it (the
+          grid and the visible caption) is hidden from the a11y tree to keep
           the caption from being announced twice. */}
       <a
         href={site.links.github}
@@ -136,8 +136,9 @@ export default function ContributionGraph() {
         >
           <div className="w-max">
             {/* Month labels sit above the cell area, so they clear the gutter.
-              Offset in px off the same PITCH the grid uses — a percentage
-              would drift, since the grid is its own intrinsic width. */}
+              Offset in px off the same PITCH the grid uses, since a
+              percentage would drift when the grid is its own intrinsic
+              width. */}
             <div
               className="relative mb-1 h-[10px]"
               style={{ marginLeft: GUTTER + GAP }}

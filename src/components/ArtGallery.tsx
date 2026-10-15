@@ -7,14 +7,14 @@ import Reveal from "./Reveal";
  * from `lg:` up (DESIGN.md §2.3).
  *
  * **Why columns and not a grid.** Every other collection on this site is
- * square — the project board crops nothing because it holds text, not
+ * square, and the project board crops nothing because it holds text, not
  * pictures. Art is the one kind of content where the frame cropping the
  * subject is a real loss, so each piece keeps its own aspect ratio and the
  * columns stagger around them. That is also why the frame is the plain tile
  * recipe and nothing more: the picture is the content, so the chrome around it
  * stays a hairline.
  *
- * It renders no client JS of its own — `Reveal` is the only client component
+ * It renders no client JS of its own. `Reveal` is the only client component
  * in here, same as every section on the homepage.
  */
 export default function ArtGallery() {
@@ -23,7 +23,7 @@ export default function ArtGallery() {
       CSS multi-column, so `gap` is the horizontal gutter only and each item
       carries its own `mb-4` for the vertical one. `break-inside-avoid` keeps a
       piece from being sliced across a column boundary, and it has to sit on
-      the direct child of the column box — which is why `Reveal` is *inside*
+      the direct child of the column box, which is why `Reveal` is *inside*
       the `<li>` here, the one place on the site where it isn't wrapped around
       it. A `<Reveal>` outside would become the column item and take the class
       with it, and `ul > div` is invalid markup anyway.
@@ -66,13 +66,19 @@ export default function ArtGallery() {
                   </div>
                 )}
               </div>
+              {/* The meta line is conditional because `year` is unknown on
+                  every piece right now (see `art.ts`). An empty mono line, or
+                  a stray "·" with nothing on one side of it, would read as a
+                  rendering bug rather than as a missing date. */}
               <figcaption className="mt-3">
                 <span className="block text-sm font-medium text-white">
                   {piece.title}
                 </span>
-                <span className="mt-1 block font-mono text-xs text-white/35">
-                  {piece.year} &middot; {piece.medium}
-                </span>
+                {(piece.year || piece.medium) && (
+                  <span className="mt-1 block font-mono text-xs text-white/35">
+                    {[piece.year, piece.medium].filter(Boolean).join(" · ")}
+                  </span>
+                )}
               </figcaption>
             </figure>
           </Reveal>

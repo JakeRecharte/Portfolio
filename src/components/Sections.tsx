@@ -53,7 +53,8 @@ export function Hero() {
  * chronological.
  *
  * Cards are the exception to "rows beat boxes" (DESIGN.md §2.3) and the only
- * ones on the page — that's the whole reason the featured set looks featured.
+ * ones on the page, which is the whole reason the featured set looks
+ * featured.
  * They stack at every breakpoint: a full-width card is the widest surface on
  * the page, which is the claim, and it leaves the three-across shape to the
  * checkerboard below so the two don't compete.
@@ -107,7 +108,7 @@ export function FeaturedProjects() {
           return (
             <Reveal key={p.slug} delay={i * 0.06}>
               <li>
-                {/* A featured card opens the same dialog a board tile does —
+                {/* A featured card opens the same dialog a board tile does:
                     it is where the write-up and any live demo live, and CWG's
                     demo would otherwise have nowhere to go. */}
                 <ProjectDialog
@@ -133,8 +134,8 @@ export function FeaturedProjects() {
  * subsection of `Projects`, not a section of its own: it takes the eyebrow
  * (DESIGN.md §2.5) rather than a display heading, so `FEATURED PROJECTS` stays
  * the only projects title on the page and these tiles read as the rest of that
- * list. The `mt-16` is the subsection gap — it only works because page.tsx
- * wraps the pair in a plain div, outside `main`'s `space-y`.
+ * list. The `mt-16` is the subsection gap, and it only works because
+ * page.tsx wraps the pair in a plain div, outside `main`'s `space-y`.
  *
  * The board itself is [ProjectBoard](./ProjectBoard.tsx), which is a client
  * component; this stays on the server and hands it the content.
@@ -154,7 +155,7 @@ export function AdditionalProjects() {
 
 /**
  * Work: the internship, the program, the job. The `kind` chip is load-bearing
- * here — a program is not employment, and the copy must not imply it is
+ * here: a program is not employment, and the copy must not imply it is
  * (CONTENT.md §2.3).
  */
 export function Experience() {

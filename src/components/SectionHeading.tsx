@@ -3,14 +3,14 @@
  * reads as depth rather than as a second sentence.
  *
  * Two sizes, because there are two jobs (DESIGN.md §2.5). `hero` is the one
- * step larger that a page's own title gets — the homepage's `ACTUALLY
- * FINISHED` and the art page's — and `section` is every heading inside a page.
+ * step larger that a page's own title gets (the homepage's `ACTUALLY
+ * FINISHED` and the art page's), and `section` is every heading inside a page.
  * They were hand-rolled copies of each other until 2026-10-14, which is the
  * drift DESIGN.md §6 had open: one of them was always going to be edited
  * without the other.
  *
  * `as` exists for the same reason. A section heading is an `<h2>`; a page that
- * has no `Header` above it — which is to say the art page — needs its display
+ * has no `Header` above it, which is to say the art page, needs its display
  * heading to be the document's one `<h1>` instead (DESIGN.md §3, "Semantics
  * are part of the design").
  */

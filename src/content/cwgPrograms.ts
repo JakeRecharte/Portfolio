@@ -1,6 +1,6 @@
 /**
  * The CWG programs the demo can run, ordered so each one adds exactly one
- * idea. Together they are the language reference — a visitor who steps
+ * idea. Together they are the language reference, so a visitor who steps
  * through all six has seen every construct CWG has.
  *
  * These are real programs, executed by the real `cwg` package in the browser
@@ -17,8 +17,8 @@
  *
  * `python` is the same program written the ordinary way, line-matched against
  * the CWG version while it steps. It is the fastest way to answer "what am I
- * actually looking at", and the revert example — where it becomes
- * `try`/`except` — is the one that makes the language click.
+ * actually looking at", and the revert example, where it becomes
+ * `try`/`except`, is the one that makes the language click.
  */
 export type CwgKnob = {
   key: string;

@@ -1,15 +1,17 @@
 "use client";
 
 import { useRef } from "react";
+import Link from "next/link";
 import { site } from "@/content/site";
+import ArrowLink from "./ArrowLink";
 
 /**
  * The header's About trigger: a modal holding Jake's own words about himself,
  * sitting under the degree line because that is where a reader is already
  * looking at "who is this" rather than "what has he shipped".
  *
- * Size is the project dialog's write-up-only size — `w-[min(92vw,32rem)]`,
- * roughly half the `max-w-6xl` shell and a little under (DESIGN.md §2.3) —
+ * Size is the project dialog's write-up-only size, `w-[min(92vw,32rem)]`,
+ * roughly half the `max-w-6xl` shell and a little under (DESIGN.md §2.3),
  * with `max-h-` rather than `h-` so a long script scrolls instead of
  * overflowing. It reuses that shell wholesale: `p-0 open:flex open:flex-col`,
  * a pinned header bar, one scrolling body.
@@ -78,12 +80,39 @@ export default function AboutDialog({
         </div>
 
         <div className="min-h-0 flex-1 overflow-y-auto p-6 sm:p-8">
-          {/* Measure is carried by the prose, not the dialog — a 32rem panel is
-              already wider than §2.5's body measure. */}
-          <div className="max-w-lg space-y-4 text-sm leading-relaxed text-white/55">
-            {site.about.map((paragraph) => (
-              <p key={paragraph}>{paragraph}</p>
+          {/* Measure is carried by the prose, not the dialog: a 32rem panel
+              is already wider than §2.5's body measure. */}
+          <div className="max-w-lg space-y-8">
+            {site.about.sections.map((section) => (
+              <section key={section.heading}>
+                {/* Eyebrow geometry at heading alpha. The pinned bar above is
+                    the same mono eyebrow at `/40`, so these have to sit a step
+                    brighter or the dialog title and its subsections read as
+                    one flat level (DESIGN.md §2.2). */}
+                <h3 className="font-mono text-xs tracking-[0.2em] text-white uppercase">
+                  {section.heading}
+                </h3>
+                <div className="mt-3 space-y-3 text-sm leading-relaxed text-white/55">
+                  {section.paragraphs.map((paragraph) => (
+                    <p key={paragraph}>{paragraph}</p>
+                  ))}
+                </div>
+              </section>
             ))}
+
+            {/* The one thing in here that leads somewhere, so it takes the row
+                recipe: `group`, a hover tint, and the amber arrow at the far
+                right (DESIGN.md §3). `next/link` for the soft nav, since a
+                full load would restart the fog GIF, which is why `Nav` uses
+                it. */}
+            <Link
+              href={site.about.art.href}
+              onClick={() => dialogRef.current?.close()}
+              className="group flex items-center justify-between gap-4 rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3 transition hover:border-white/25 hover:bg-white/[0.07]"
+            >
+              <span className="text-sm text-white">{site.about.art.label}</span>
+              <ArrowLink className="size-4 text-accent" />
+            </Link>
           </div>
         </div>
       </dialog>

@@ -9,9 +9,9 @@ import ProjectDemo from "./demos/ProjectDemo";
 /**
  * One project's dialog, plus the trigger that opens it.
  *
- * The trigger is `children` and a class rather than markup baked in here —
- * the pattern DESIGN.md §4 rule 4 sets for `ResumeDialog` and `ContactDialog`
- * — which is what lets one component serve both the checkerboard tiles
+ * The trigger is `children` and a class rather than markup baked in here,
+ * the pattern DESIGN.md §4 rule 4 sets for `ResumeDialog` and `ContactDialog`.
+ * That is what lets one component serve both the checkerboard tiles
  * ([ProjectBoard](./ProjectBoard.tsx)) and the featured cards
  * ([Sections](./Sections.tsx)) without either of them becoming a client
  * component or duplicating the write-up markup.
@@ -175,11 +175,11 @@ function Detail({
 
       <div
         className={`min-h-0 flex-1 overflow-y-auto p-6 sm:p-8 ${
-          demo ? "lg:grid lg:grid-cols-3 lg:gap-8" : ""
+          demo && !demo.wide ? "lg:grid lg:grid-cols-3 lg:gap-8" : ""
         }`}
       >
         {demo && (
-          <section className="lg:col-span-2">
+          <section className={demo.wide ? "" : "lg:col-span-2"}>
             <h3 className="font-mono text-xs tracking-[0.2em] text-white/40 uppercase">
               {demo.label}
             </h3>
@@ -189,7 +189,7 @@ function Detail({
           </section>
         )}
 
-        <div className={demo ? "mt-10 lg:mt-0" : ""}>
+        <div className={demo ? (demo.wide ? "mt-10" : "mt-10 lg:mt-0") : ""}>
           <p className="flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-xs text-white/35">
             {project.period}
             <span className="rounded-full border border-accent/40 px-2.5 py-0.5 font-mono text-[10px] tracking-wider text-white/55">

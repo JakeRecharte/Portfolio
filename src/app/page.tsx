@@ -7,7 +7,7 @@ import {
 } from "@/components/Sections";
 
 /**
- * `/` — the homepage.
+ * `/`, the homepage.
  *
  * The fog, the nav bar and the footer moved to the root layout on 2026-10-14
  * when `/art` was added, since both routes carry all three

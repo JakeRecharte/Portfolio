@@ -2,12 +2,12 @@
 Runs a CWG program and records a step-by-step trace of its execution.
 
 This is shipped to the browser and executed by Pyodide against the real `cwg`
-package from PyPI — the language semantics below are *not* reimplemented, they
+package from PyPI. The language semantics below are *not* reimplemented, they
 are `cwg.interpreter`'s own. Two things are added:
 
 1. **A fuller .cwg parser.** `cwg.runner.CWGRunner` understands `init`,
    `commit`, `branch`, `checkout` and `merge`, which covers statements,
-   if/else, while and for — but not `revert`, `tag` or `cherry-pick`, because
+   if/else, while and for, but not `revert`, `tag` or `cherry-pick`, because
    it never sets `is_revert` / `revert_src` / `cherry_pick_src` or fills
    `functions`. Those three are a third of what makes CWG interesting, so
    `Builder` below handles them. It is the same job `CWGRunner` does (git
@@ -20,7 +20,7 @@ are `cwg.interpreter`'s own. Two things are added:
 `_trace` mirroring `_execute` is the risk here: if the two drift, the demo
 lies about what the interpreter does. `run_source` guards that by executing
 the same program through the real `cwg.interpreter.run` and asserting the
-final scopes match — a drift turns into a loud failure rather than a subtly
+final scopes match, so a drift turns into a loud failure rather than a subtly
 wrong animation.
 """
 
@@ -40,12 +40,12 @@ def _stub_gitpython() -> None:
     `sys.exit(1)` if it fails, so `import cwg` is impossible without the name
     resolving. GitPython cannot provide it here: it runs the `git` binary
     during its own import to find a version, and Emscripten has no
-    subprocesses — `GIT_PYTHON_REFRESH=quiet` does not help, because the
+    subprocesses. `GIT_PYTHON_REFRESH=quiet` does not help, because the
     failure is an OSError from `popen`, not the missing-executable path that
     flag covers.
 
     Nothing in this module needs git. Programs arrive as `.cwg` files, so
-    `scrape()` — the only function that touches a repository — is never
+    `scrape()`, the only function that touches a repository, is never
     called. The stub is installed unconditionally so a local run and a
     browser run exercise the same code, and each placeholder raises if
     anything ever does reach for it, rather than failing quietly.
@@ -56,7 +56,7 @@ def _stub_gitpython() -> None:
 
     def _unavailable(*_args, **_kwargs):
         raise RuntimeError(
-            "this build of cwg runs .cwg programs only — no git available"
+            "this build of cwg runs .cwg programs only, no git available"
         )
 
     module.Repo = _unavailable
@@ -239,7 +239,7 @@ class Builder:
 
 
 # ---------------------------------------------------------------------------
-# Recording executor — mirrors cwg.interpreter._execute
+# Recording executor: mirrors cwg.interpreter._execute
 # ---------------------------------------------------------------------------
 
 def _show(scope: dict) -> dict:

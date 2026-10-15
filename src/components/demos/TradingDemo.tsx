@@ -5,8 +5,8 @@ import { useEffect, useMemo, useState } from "react";
 /**
  * The AI Trading Model, running in the visitor's browser.
  *
- * `scripts/export-trading-demo.py` retrains the repo's random forest — same
- * universe, same five features, same 21-day horizon, same seed — and writes it
+ * `scripts/export-trading-demo.py` retrains the repo's random forest (same
+ * universe, same five features, same 21-day horizon, same seed) and writes it
  * out as flat arrays. Walking 200 depth-8 trees is a few million operations,
  * which is milliseconds of JavaScript, so there is no Python host here, no API
  * key and no cold start: two static JSON files and a `while` loop.
@@ -57,7 +57,7 @@ type Day = {
   picks: Pick[];
   /** Mean realized return of the top-K picks. */
   strategy: number;
-  /** Mean realized return of the whole universe — the thing to beat. */
+  /** Mean realized return of the whole universe, the thing to beat. */
   universe: number;
 };
 
@@ -191,7 +191,7 @@ export default function TradingDemo() {
       const last = prices.dates.length - 1 - forest.horizon;
       const out: Day[] = [];
 
-      // Chunked so the whole backtest — a few hundred million operations —
+      // Chunked so the whole backtest, a few hundred million operations,
       // never blocks the dialog for more than a frame at a time. `setTimeout`
       // rather than `requestAnimationFrame`: rAF stops entirely while a tab is
       // in the background, which would strand the run at whatever percent it
@@ -383,7 +383,8 @@ export default function TradingDemo() {
       </label>
 
       {/* Rows, not boxes (DESIGN.md §2.3). Sign and the explicit +/− carry
-          direction — the palette has one accent and no red/green pair. */}
+          direction, since the palette has one accent and no red/green
+          pair. */}
       <ul className="mt-5 divide-y divide-white/10 border-y border-white/10">
         <li className="flex items-center gap-3 py-2 font-mono text-[10px] tracking-wider text-white/35 uppercase">
           <span className="flex-1">Pick</span>

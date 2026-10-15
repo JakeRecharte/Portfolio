@@ -11,7 +11,8 @@ import type { IconName } from "./Icon";
  * recruiter on a desktop without a mail client gets nothing from `mailto:`;
  * the address stays selectable text either way.
  *
- * No phone row — `CONTENT.md` §2.1 keeps the number off the public site. No
+ * No phone row, since `CONTENT.md` §2.1 keeps the number off the public
+ * site. No
  * GitHub row either: it's where you read his code, not a way to reach him. It
  * stays in the header pills.
  *
@@ -67,8 +68,9 @@ export default function ContactDialog({
     <>
       {/* An anchor, not a button (DESIGN.md §4, rule 3). It used to fall back
           to `#contact`; with that section gone the only honest target left is
-          the address itself. `mailto:` is a poor primary — which is why the row
-          inside the modal copies instead — but it is a real destination for a
+          the address itself. `mailto:` is a poor primary, which is why the
+          row inside the modal copies instead, but it is a real destination
+          for a
           visitor without JS, and `#contact` no longer is. */}
       <a
         href={`mailto:${site.email}`}

@@ -4,20 +4,26 @@ import ContactDialog from "./ContactDialog";
 import ResumeDialog from "./ResumeDialog";
 
 /**
- * Page order, which is also priority order: work, then projects, then art.
- * There is no `#contact` entry — the Contact section came off the page, and
- * the pill on the right is now the only way to reach that content.
+ * Page order, which is also priority order: work, then projects. There is no
+ * `#contact` entry, because the Contact section came off the page and the
+ * pill on the right is now the only way to reach that content.
  *
- * **The two homepage links are `/#work`, not `#work`.** A bare fragment is
- * relative to whatever page you are on, so from `/art` it resolved to
- * `/art#work` and did nothing. Rooting them fixes that in both directions: on
- * the homepage the browser still treats a same-path fragment as a scroll
- * rather than a navigation, so nothing about that behaviour changed.
+ * **There is deliberately no `/art` entry** (Jake, 2026-10-14). The art is
+ * reached from the row at the bottom of the header's About modal and nowhere
+ * else, which keeps the bar answering the one question it is for: can he write
+ * code. A third link would have put a gallery at the same level as the work.
+ *
+ * **These links are `/#work`, not `#work`.** A bare fragment is relative to
+ * whatever page you are on, so from `/art` it resolved to `/art#work` and did
+ * nothing. Rooting them fixes that in both directions, and it still matters
+ * with Art out of the bar, because this bar also renders *on* `/art` and is
+ * how a visitor gets back. On the homepage the browser still treats a
+ * same-path fragment as a scroll rather than a navigation, so nothing about
+ * that behaviour changed.
  */
 const links = [
   { href: "/#work", label: "Work" },
   { href: "/#projects", label: "Projects" },
-  { href: "/art", label: "Art" },
 ];
 
 const pillClass =
@@ -25,17 +31,18 @@ const pillClass =
 
 /**
  * Sticky top bar: wordmark left, section anchors center, the two things a
- * recruiter actually wants right. It replaced the floating pill — a bar can
- * hold the Contact and Resume actions, which a pill of three anchors could
- * not, and `sticky` keeps it in flow so nothing has to be padded around it.
+ * recruiter actually wants right. It replaced the floating pill, because a
+ * bar can hold the Contact and Resume actions, which a pill of three anchors
+ * could not, and `sticky` keeps it in flow so nothing has to be padded
+ * around it.
  *
  * The anchors are real anchors, so the bar works without JS; only the two
  * pills need it, and both degrade (Resume to the raw PDF, Contact to a
- * `mailto:` — see `ContactDialog`).
+ * `mailto:`, see `ContactDialog`).
  *
  * They are `next/link` rather than plain `<a>` now that there are two routes
  * to move between: it swaps the page without a reload, which matters here for
- * one specific reason — a full load restarts the fog GIF from frame one, and
+ * one specific reason: a full load restarts the fog GIF from frame one, and
  * the bar you clicked would flash out and back in.
  */
 export default function Nav() {

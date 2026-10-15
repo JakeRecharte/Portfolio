@@ -23,7 +23,7 @@ import ProjectDialog from "./ProjectDialog";
  *
  * The tile carries the blurb and the tech chips from `sm:` up (DESIGN.md §2.3)
  * so the board is readable without opening anything. The dialog is therefore
- * not a way to see the same facts again — it is where the demo, the longer
+ * not a way to see the same facts again. It is where the demo, the longer
  * write-up and the guide live.
  */
 const COLUMNS = 3;
@@ -68,7 +68,7 @@ export default function ProjectBoard({ projects }: { projects: Project[] }) {
 /**
  * One square. It is an anchor to the project's own URL wherever there is one,
  * with the click intercepted (DESIGN.md §4, rule 3) so the dialog is an
- * enhancement rather than the only way in — middle-click, cmd-click and a
+ * enhancement rather than the only way in: middle-click, cmd-click and a
  * visitor without JS all still reach the repo. A project with no public link
  * has no honest destination, so there it falls back to a button.
  *
@@ -92,8 +92,8 @@ function Tile({ project }: { project: Project }) {
         {project.period}
         {/* One chip per tile, and it is always `kind`: the chip says what the
             thing *is*, never where it is in its life. That is the same axis
-            rule the header's "Now" rail follows (CONTENT.md §5) — mixing the
-            two is what made a hackathon read as "UPCOMING" rather than as a
+            rule the header's "Now" rail follows (CONTENT.md §5), and mixing
+            the two is what made a hackathon read as "UPCOMING" rather than a
             hackathon. Nothing is lost on the tile, because `period` already
             carries the state in words: "Upcoming", "Sep 2026 - Now". The
             dialog shows both chips. The chip needs more width than a third of
@@ -106,7 +106,7 @@ function Tile({ project }: { project: Project }) {
       {/* The wrapper owns the hiding and the paragraph owns the clamp on
           purpose: `hidden` and `line-clamp-*` both set `display`, so on one
           element which wins depends on stylesheet order. A third of a phone
-          screen is about 100px — too narrow for prose at any clamp — so the
+          screen is about 100px, too narrow for prose at any clamp, so the
           blurb starts at `sm:`, three lines of it, and opens up to five once
           a cell is wide enough to fit ~50 characters a line. */}
       <div className="mt-3 hidden min-h-0 flex-1 sm:block">

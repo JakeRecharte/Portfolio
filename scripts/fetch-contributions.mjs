@@ -4,10 +4,11 @@
  *
  * The JSON is committed so `next build` never depends on the network and the
  * page stays static. Re-run with `npm run contributions` to refresh it by
- * hand — or let .github/workflows/contributions.yml do it, which runs this
+ * hand, or let .github/workflows/contributions.yml do it, which runs this
  * daily and commits the result only when the calendar actually moved.
  *
- * GitHub ships no public API for the calendar — the GraphQL one needs a token,
+ * GitHub ships no public API for the calendar, and the GraphQL one needs a
+ * token,
  * so this reads the same HTML fragment the profile page renders.
  */
 import { writeFile } from "node:fs/promises";
@@ -48,7 +49,7 @@ for (const m of html.matchAll(
 days.sort((a, b) => a.date.localeCompare(b.date));
 
 if (days.length === 0) {
-  throw new Error("Parsed zero days — GitHub's markup probably changed.");
+  throw new Error("Parsed zero days. GitHub's markup probably changed.");
 }
 
 const data = {

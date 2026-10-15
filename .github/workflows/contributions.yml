@@ -6,7 +6,7 @@ name: Refresh contribution graph
 
 on:
   schedule:
-    # 09:17 UTC — a few minutes off the hour, which is when GitHub's scheduler
+    # 09:17 UTC, a few minutes off the hour, which is when GitHub's scheduler
     # is least congested and least likely to drop a run.
     - cron: "17 9 * * *"
   workflow_dispatch:
@@ -29,8 +29,8 @@ jobs:
         with:
           node-version: 22
 
-      # No `npm ci`: scripts/fetch-contributions.mjs has zero dependencies —
-      # node:fs/promises and global fetch. Installing would be a minute of CI
+      # No `npm ci`: scripts/fetch-contributions.mjs has zero dependencies,
+      # just node:fs/promises and global fetch. Installing would be a minute of CI
       # spent on nothing. The script throws on a non-200 or on parsing zero
       # days, so a markup change at GitHub fails the job loudly.
       - name: Scrape the calendar
@@ -42,7 +42,7 @@ jobs:
           file=src/content/contributions.json
 
           if git diff --quiet -- "$file"; then
-            echo "Byte-identical — nothing to do."
+            echo "Byte-identical, nothing to do."
             exit 0
           fi
 
@@ -52,7 +52,7 @@ jobs:
           # aren't the stamp.
           real=$(git diff -U0 -- "$file" | grep -E '^[+-][^+-]' | grep -vc '"fetchedAt"' || true)
           if [ "$real" -eq 0 ]; then
-            echo "Only the fetchedAt stamp moved — discarding."
+            echo "Only the fetchedAt stamp moved, discarding."
             git checkout -- "$file"
             exit 0
           fi

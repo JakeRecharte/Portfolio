@@ -36,7 +36,7 @@ export default function ResumeDialog({
   }, [open]);
 
   function openDialog(e: React.MouseEvent<HTMLAnchorElement>) {
-    // Leave modified clicks alone — cmd-click should still open the raw PDF.
+    // Leave modified clicks alone, since cmd-click should still open the PDF.
     if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0)
       return;
     e.preventDefault();
