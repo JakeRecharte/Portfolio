@@ -1,6 +1,8 @@
 "use client";
 
 import type { DemoKey } from "@/content/projects";
+import ApplePickerDemo from "./ApplePickerDemo";
+import CwgDemo from "./CwgDemo";
 import TradingDemo from "./TradingDemo";
 
 /**
@@ -11,5 +13,7 @@ import TradingDemo from "./TradingDemo";
  */
 export default function ProjectDemo({ demo }: { demo: DemoKey }) {
   if (demo === "ai-trading-model") return <TradingDemo />;
+  if (demo === "apple-picker") return <ApplePickerDemo />;
+  if (demo === "cwg") return <CwgDemo />;
   return null;
 }

@@ -22,7 +22,7 @@
  * means adding a case there; the dialog renders the demo pane only for a
  * project that has one.
  */
-export type DemoKey = "ai-trading-model";
+export type DemoKey = "ai-trading-model" | "apple-picker" | "cwg";
 
 export type ProjectDemo = {
   key: DemoKey;
@@ -39,6 +39,13 @@ export type Project = {
   title: string;
   /** `HACKATHON` is a weekend build judged against other teams. */
   kind: "PROJECT" | "HACKATHON";
+  /**
+   * Where the thing is in its life, when that isn't "finished". `period` still
+   * carries the time (`Sep 2026 - Now`, `Upcoming`); this is the chip that
+   * says it outright, so an unbuilt thing can never read as a claim. Omit it
+   * for anything shipped.
+   */
+  status?: "UPCOMING" | "IN PROGRESS";
   period: string;
   blurb: string;
   /**
@@ -50,6 +57,13 @@ export type Project = {
   tech?: string[];
   repoUrl?: string;
   liveUrl?: string;
+  /**
+   * The project's Devpost page. Its own field rather than `liveUrl` because a
+   * Devpost write-up is not the thing running — it is the judged submission,
+   * with the demo video and the team on it. For a hackathon that is the
+   * richest destination, so it outranks `repoUrl` for the tile's click.
+   */
+  devpostUrl?: string;
   demo?: ProjectDemo;
 };
 
@@ -61,9 +75,25 @@ export const featuredProjects: Project[] = [
     period: "May 2026 - Now",
     blurb:
       "A language where the git commit graph is the source code: branches are control flow, commits are statements, tags define functions. Tree-walking interpreter, published on PyPI.",
+    detail: [
+      "A programming language whose source code is a git repository. Commits on main are Python statements run oldest first; a branch is a block, and its prefix is the keyword — if/, else/, while/, for/, fn/. The merge commit decides which variables come back out, and git revert is exception handling.",
+      "The interpreter scrapes the repo with GitPython, builds an execution tree of if/while/for/fn nodes from the commit DAG, and walks it. Nothing runs as commits are written: the whole history is read first, then executed in one pass.",
+      "Published on PyPI as cwg, v0.2.0, Python 3.10 and up — pip install cwg, then cwg run against a .cwg file, a local repo, or a GitHub URL.",
+    ],
     tech: ["Python", "GitPython", "Git"],
     repoUrl: "https://github.com/JakeRecharte/CWG-Coding_with_Git",
     liveUrl: "https://pypi.org/project/cwg/",
+    demo: {
+      key: "cwg",
+      label: "CWG, running in your browser",
+      guide: [
+        "Pick a program. The six are ordered so each one adds a single idea, and together they are the whole language — statements, if/else, while, for, revert, functions.",
+        "Press play. The highlighted row is the commit being executed; scope and output below it are what that commit did. Watch a merge promote a variable back to main, which is the rule that makes branches usable.",
+        "Switch to \u201cAs Python\u201d to see the same program written the ordinary way, with the matching line highlighted as it steps. The revert example is the one worth looking at: it becomes try/except.",
+        "Drag a value and the program re-runs for real. On the revert example, x = 0 makes the division raise and the handler fire; any other x and the handler is skipped entirely.",
+      ],
+      note: "This is not a recording. Pyodide loads CPython as WebAssembly and installs the real cwg package from PyPI, so the interpreter running here is the one on your machine after pip install cwg. The browser has no git binary, so programs are given to it in CWG's own .cwg form — a list of git commands — rather than as a cloned repository.",
+    },
   },
   {
     slug: "permit-paragons",
@@ -73,6 +103,7 @@ export const featuredProjects: Project[] = [
     blurb:
       "Permit prediction to shorten low-income housing timelines, on a team of 6. I built the front-end map of 330,000+ San Diego County parcels. 4th of 100+ participants.",
     tech: ["TypeScript", "Python", "Docker"],
+    repoUrl: "https://github.com/BrandonGarate177/BFFG-SD-HACKS",
   },
   {
     slug: "boulderbuddy",
@@ -88,6 +119,40 @@ export const featuredProjects: Project[] = [
 
 export const otherProjects: Project[] = [
   {
+    // PLACEHOLDER — it hasn't happened. Jake said he's going; that is the
+    // whole verified fact. A public recruitment page describes a 48-hour,
+    // 200+ builder event on Oct 16-18 2026 with the problem statement held
+    // back until the Friday, but that is third-party and unconfirmed, so none
+    // of it is on the site. Confirm before any of it goes in the copy.
+    slug: "usc-dual-use",
+    title: "USC Dual Use",
+    kind: "HACKATHON",
+    status: "UPCOMING",
+    period: "Upcoming",
+    blurb:
+      "A dual-use hackathon at USC. This one hasn't happened yet — whatever gets built lands here afterwards.",
+    detail: [
+      "A dual-use hackathon at USC, coming up. Nothing has been built yet, so there is nothing here to judge.",
+      "This tile exists so the board is current rather than complete. It gets the write-up, the stack and the result once there is a result.",
+    ],
+  },
+  {
+    // PLACEHOLDER — "a 2D game I'm developing, started last month" is all
+    // that's verified (Jake, 2026-10-14). No repo is public under this name.
+    // Genre, engine, stack and what the game actually is: all open (§8).
+    slug: "fools-mate",
+    title: "Fool's Mate",
+    kind: "PROJECT",
+    status: "IN PROGRESS",
+    period: "Sep 2026 - Now",
+    blurb:
+      "A 2D game, started in September and still being built. More here once there's something to play.",
+    detail: [
+      "A 2D game, in development since September 2026.",
+      "Too early for a write-up — this tile is a marker, not a claim. It gets the real description, the stack and a way to play it once those exist.",
+    ],
+  },
+  {
     slug: "lightning-mcshower",
     title: "Lightning McShower",
     kind: "HACKATHON",
@@ -100,6 +165,59 @@ export const otherProjects: Project[] = [
       "Judged 1st in hardware and 4th overall out of 200 competitors.",
     ],
     tech: ["Arduino", "C++", "Python", "Sensors"],
+    repoUrl: "https://github.com/Ethanniu3177/Lightning-McShower",
+    devpostUrl: "https://devpost.com/software/lightning-mcshower",
+  },
+  {
+    // Written from the repo itself (CONTENT.md §4) — there is no README and
+    // the CV doesn't list it. The difficulty ramp is the part that isn't in
+    // the standard build of this game: `treeSpeedRampRate` scales the tree's
+    // speed every frame and `gravityRampRate` adds downward gravity over time.
+    slug: "apple-picker",
+    title: "Apple Picker",
+    kind: "PROJECT",
+    period: "Sep 2026",
+    blurb:
+      "A Unity arcade game in C#: a tree drifts overhead dropping apples into mouse-controlled baskets, and every miss costs a basket. I added a difficulty ramp that scales both tree speed and gravity the longer you last.",
+    detail: [
+      "A Unity arcade game. A tree drifts left and right overhead dropping apples, and you slide a stack of baskets under them with the mouse. A miss destroys one basket and clears the field; run out and the scene reloads.",
+      "Six hand-written C# scripts — Apple, ApplePicker, AppleTree, Basket, ScoreCounter and HighScore — on URP with a TextMesh Pro interface.",
+      "The part that isn't in the standard build of this game is the difficulty ramp in AppleTree: treeSpeedRampRate scales the tree's speed every frame and gravityRampRate adds downward gravity over time, so it gets harder the longer you last.",
+    ],
+    tech: ["Unity", "C#", "URP"],
+    repoUrl: "https://github.com/JakeRecharte/Apple-Picker",
+    demo: {
+      key: "apple-picker",
+      label: "The Unity build, playable",
+      guide: [
+        "Move the mouse to slide the stack of baskets along the bottom. Every apple caught is 100 points.",
+        "A miss destroys one basket and clears the field. Run out of baskets and the scene reloads from the start.",
+        "Last a while and feel it tighten: treeSpeedRampRate scales the tree's speed every frame and gravityRampRate keeps adding downward gravity, so the apples fall faster the longer you survive.",
+      ],
+      note: "The actual Unity project compiled to WebAssembly and running in this page — not a recording. It is mouse-driven, so it wants a trackpad or a mouse; there is nothing to aim with on a phone.",
+    },
+  },
+  {
+    // Coursework, and the copy says so (§6 voice). Written from the three lab
+    // PDFs Jake supplied on 2026-10-14 — labs 0, 1 and 1b of SDSU's CS 470
+    // Unix/Linux Sysadmin, the course §2.2 lists in progress as "UNIX/System
+    // Design". Scope here is those three labs and nothing past them; how far
+    // along he actually is, and whether any of it is in a repo, are open
+    // (CONTENT.md §8.23), so the copy ends on "it isn't finished" rather than
+    // implying the whole lab network already stands.
+    slug: "homelab",
+    title: "Homelab",
+    kind: "PROJECT",
+    status: "IN PROGRESS",
+    period: "Aug 2026 - Now",
+    blurb:
+      "A lab network of VMs on one internal domain, built for a semester of Unix sysadmin: one OpenBSD server running BIND for DNS, a root CA that issues the certs, and an LDAP directory behind every login.",
+    detail: [
+      "A private network of virtual machines, all statically addressed on one domain — cs470.internal — with a single OpenBSD server holding it together: BIND answering forward and reverse DNS, a root certificate authority issuing the certs, and an OpenLDAP directory behind the logins.",
+      "Coursework for a Unix/Linux sysadmin class, done solo from a bare install up — custom disk layout, static addressing, then sudo, bash and BIND compiled out of the OpenBSD ports tree rather than installed as packages, and a kernel rebuilt with the drivers a VM never uses taken out.",
+      "The CA signs with a P-384 elliptic curve key and the directory answers only over LDAPS — plain LDAP on 389 is switched off, so no login crosses the network in the clear. It isn't finished: FreeBSD, Ubuntu, AlmaLinux and the rest join the same domain as the semester runs.",
+    ],
+    tech: ["OpenBSD", "BIND", "OpenLDAP", "OpenSSL"],
   },
   {
     slug: "ai-trading-model",
@@ -126,24 +244,5 @@ export const otherProjects: Project[] = [
       ],
       note: "A backtest on historical prices, for research — not investment advice. The split is time-ordered, so the model never trained on the dates it is scored against, but it is still one split of one decade of one 50-stock universe.",
     },
-  },
-  {
-    // Written from the repo itself (CONTENT.md §4) — there is no README and
-    // the CV doesn't list it. The difficulty ramp is the part that isn't in
-    // the standard build of this game: `treeSpeedRampRate` scales the tree's
-    // speed every frame and `gravityRampRate` adds downward gravity over time.
-    slug: "apple-picker",
-    title: "Apple Picker",
-    kind: "PROJECT",
-    period: "Sep 2026",
-    blurb:
-      "A Unity arcade game in C#: a tree drifts overhead dropping apples into mouse-controlled baskets, and every miss costs a basket. I added a difficulty ramp that scales both tree speed and gravity the longer you last.",
-    detail: [
-      "A Unity arcade game. A tree drifts left and right overhead dropping apples, and you slide a stack of baskets under them with the mouse. A miss destroys one basket and clears the field; run out and the scene reloads.",
-      "Six hand-written C# scripts — Apple, ApplePicker, AppleTree, Basket, ScoreCounter and HighScore — on URP with a TextMesh Pro interface.",
-      "The part that isn't in the standard build of this game is the difficulty ramp in AppleTree: treeSpeedRampRate scales the tree's speed every frame and gravityRampRate adds downward gravity over time, so it gets harder the longer you last.",
-    ],
-    tech: ["Unity", "C#", "URP"],
-    repoUrl: "https://github.com/JakeRecharte/Apple-Picker",
   },
 ];
