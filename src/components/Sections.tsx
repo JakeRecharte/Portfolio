@@ -5,15 +5,16 @@ import SectionHeading from "./SectionHeading";
 import ArrowLink from "./ArrowLink";
 import Reveal from "./Reveal";
 import ProjectBoard from "./ProjectBoard";
+import ProjectDialog from "./ProjectDialog";
 
 export function Hero() {
   return (
     <section>
       <Reveal>
-        <h2 className="text-6xl leading-[0.85] font-black tracking-tighter uppercase sm:text-7xl lg:text-8xl">
-          <span className="block text-white">{site.headline[0]}</span>
-          <span className="block text-white/20">{site.headline[1]}</span>
-        </h2>
+        {/* `size="hero"` is the one step up from a section heading. It used to
+            be a hand-rolled copy of `SectionHeading`'s markup, which DESIGN.md
+            §6 flagged as drift waiting to happen. */}
+        <SectionHeading lines={site.headline} size="hero" />
       </Reveal>
 
       <Reveal delay={0.1}>
@@ -46,13 +47,20 @@ export function Hero() {
 }
 
 /**
- * The top three, as cards. Three things given room read as a claim; the same
- * three in a row list read as inventory, which is what the additional-projects
- * rows below are for. Order is Jake's ranking, not chronological.
+ * The top three, as cards stacked one per row. Three things given room read as
+ * a claim; the same three in a row list read as inventory, which is what the
+ * additional-projects rows below are for. Order is Jake's ranking, not
+ * chronological.
  *
  * Cards are the exception to "rows beat boxes" (DESIGN.md §2.3) and the only
- * grid of them on the page — that's the whole reason the featured set looks
- * featured.
+ * ones on the page — that's the whole reason the featured set looks featured.
+ * They stack at every breakpoint: a full-width card is the widest surface on
+ * the page, which is the claim, and it leaves the three-across shape to the
+ * checkerboard below so the two don't compete.
+ *
+ * A stacked card is wider than its prose should ever be, so the blurb keeps
+ * DESIGN.md §2.5's `max-w-lg` measure itself rather than inheriting a cap from
+ * the column it used to sit in.
  */
 export function FeaturedProjects() {
   return (
@@ -60,14 +68,16 @@ export function FeaturedProjects() {
       <Reveal>
         <SectionHeading lines={["FEATURED", "PROJECTS"]} />
       </Reveal>
-      <ul className="mt-12 grid gap-4 lg:grid-cols-3">
+      <ul className="mt-12 flex flex-col gap-4">
         {featuredProjects.map((p, i) => {
-          const href = p.liveUrl ?? p.repoUrl;
+          const destination = p.liveUrl ?? p.devpostUrl ?? p.repoUrl;
           const body = (
             <>
               <div className="flex items-start justify-between gap-4">
                 <h3 className="text-xl font-bold text-white">{p.title}</h3>
-                {href && <ArrowLink className="mt-1 shrink-0 text-accent" />}
+                {destination && (
+                  <ArrowLink className="mt-1 shrink-0 text-accent" />
+                )}
               </div>
               <p className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-xs text-white/35">
                 {p.period}
@@ -75,11 +85,11 @@ export function FeaturedProjects() {
                   {p.kind}
                 </span>
               </p>
-              <p className="mt-4 text-sm leading-relaxed text-white/55">
+              <p className="mt-4 max-w-lg text-sm leading-relaxed text-white/55">
                 {p.blurb}
               </p>
               {p.tech && (
-                <ul className="mt-auto flex flex-wrap gap-2 pt-6">
+                <ul className="mt-6 flex flex-wrap gap-2">
                   {p.tech.map((t) => (
                     <li
                       key={t}
@@ -93,22 +103,22 @@ export function FeaturedProjects() {
             </>
           );
           const shell =
-            "flex h-full flex-col rounded-2xl border border-white/10 bg-white/[0.03] p-6";
+            "group flex w-full flex-col rounded-2xl border border-white/10 bg-white/[0.03] p-6 text-left transition hover:border-white/25 hover:bg-white/[0.07]";
           return (
-            <Reveal key={p.slug} delay={i * 0.04} className="h-full">
-              <li className="h-full">
-                {href ? (
-                  <a
-                    href={href}
-                    target="_blank"
-                    rel="noreferrer"
-                    className={`group ${shell} transition hover:border-white/25 hover:bg-white/[0.07]`}
-                  >
-                    {body}
-                  </a>
-                ) : (
-                  <div className={shell}>{body}</div>
-                )}
+            <Reveal key={p.slug} delay={i * 0.06}>
+              <li>
+                {/* A featured card opens the same dialog a board tile does —
+                    it is where the write-up and any live demo live, and CWG's
+                    demo would otherwise have nowhere to go. */}
+                <ProjectDialog
+                  project={p}
+                  className={shell}
+                  label={`${p.title}, ${p.period}. Open details${
+                    p.demo ? " and demo" : ""
+                  }.`}
+                >
+                  {body}
+                </ProjectDialog>
               </li>
             </Reveal>
           );

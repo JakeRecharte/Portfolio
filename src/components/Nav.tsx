@@ -1,15 +1,23 @@
+import Link from "next/link";
 import { site } from "@/content/site";
 import ContactDialog from "./ContactDialog";
 import ResumeDialog from "./ResumeDialog";
 
 /**
- * Page order, which is also priority order: work, then projects. There is no
- * `#contact` entry — the Contact section came off the page, and the pill on the
- * right is now the only way to reach that content.
+ * Page order, which is also priority order: work, then projects, then art.
+ * There is no `#contact` entry — the Contact section came off the page, and
+ * the pill on the right is now the only way to reach that content.
+ *
+ * **The two homepage links are `/#work`, not `#work`.** A bare fragment is
+ * relative to whatever page you are on, so from `/art` it resolved to
+ * `/art#work` and did nothing. Rooting them fixes that in both directions: on
+ * the homepage the browser still treats a same-path fragment as a scroll
+ * rather than a navigation, so nothing about that behaviour changed.
  */
 const links = [
-  { href: "#work", label: "Work" },
-  { href: "#projects", label: "Projects" },
+  { href: "/#work", label: "Work" },
+  { href: "/#projects", label: "Projects" },
+  { href: "/art", label: "Art" },
 ];
 
 const pillClass =
@@ -24,6 +32,11 @@ const pillClass =
  * The anchors are real anchors, so the bar works without JS; only the two
  * pills need it, and both degrade (Resume to the raw PDF, Contact to a
  * `mailto:` — see `ContactDialog`).
+ *
+ * They are `next/link` rather than plain `<a>` now that there are two routes
+ * to move between: it swaps the page without a reload, which matters here for
+ * one specific reason — a full load restarts the fog GIF from frame one, and
+ * the bar you clicked would flash out and back in.
  */
 export default function Nav() {
   return (
@@ -32,24 +45,24 @@ export default function Nav() {
       className="sticky top-0 z-50 border-b border-white/10 bg-neutral-950/60 backdrop-blur-xl"
     >
       <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between gap-4 px-5 lg:px-8">
-        <a
-          href="#top"
+        <Link
+          href="/"
           className="text-sm font-bold tracking-tight whitespace-nowrap text-white"
         >
           {site.name}
-        </a>
+        </Link>
 
         {/* Hidden on phones, where the two pills are the whole point of the
             bar and the sections are a short scroll apart anyway. */}
         <ul className="hidden items-center gap-7 sm:flex">
           {links.map((l) => (
             <li key={l.href}>
-              <a
+              <Link
                 href={l.href}
                 className="text-sm text-white/65 transition-colors hover:text-white"
               >
                 {l.label}
-              </a>
+              </Link>
             </li>
           ))}
         </ul>
