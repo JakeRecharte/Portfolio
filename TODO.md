@@ -196,14 +196,48 @@ input the demo cannot precompute.
       Verified against the Python backtest: 1.9499% vs 1.9514% edge over the
       same 487 dates, ~160ms of compute. Payload is 469KB + 107KB gzipped,
       fetched only when the dialog opens.
-- [ ] **Apple Picker** — Unity WebGL build into `public/demos/apple-picker/`,
-      loaded in an iframe behind a click-to-play poster so the ~25MB bundle is
-      never on the homepage's critical path. Fastest win left.
+- [x] **Apple Picker** — shipped 2026-10-14. The real Unity project built to
+      WebGL by `scripts/build-apple-picker.sh` into `public/demos/apple-picker/`,
+      behind a click-to-play poster so the bundle never touches the homepage's
+      critical path. Gzip + JS decompression fallback took it from **48MB to
+      16MB** and keeps it working on a host that sets no Content-Encoding.
+      Two things still open:
+      - **Gravity never resets between rounds** — CONTENT.md §8.14. One line
+        in the game fixes it; it is Jake's call.
+      - ~~Nobody has played it in a real browser yet.~~ Jake played it
+        2026-10-14 and the game itself runs fine. One bug came out of that:
+        the "Loading…" overlay stayed up over the loaded game, because the
+        generated page named its element reference `status` — and
+        `window.status` is a legacy property whose setter coerces to a
+        string, so the variable held `"[object HTMLParagraphElement]"` and
+        every use of it failed silently. Renamed to `statusEl`. Worth
+        remembering for any future demo page: at top-level scope in a
+        browser, `status`, `name`, `length` and `origin` are not free names.
+- [ ] Revisit the 16MB in git once there are two or three builds in here. The
+      options, in order of how much they cost: Brotli plus Content-Encoding
+      headers once the site is on Vercel (~13MB, and the fast native decode
+      instead of the JS fallback), dropping `TextMesh Pro/Examples & Extras`
+      from the game project (most of the 6.6MB `.data`), or Git LFS.
 - [ ] **Permit Paragons** — the 330,000-parcel map, predictions precomputed to
       vector tiles, on a static MapLibre canvas. Visually the strongest, and
       still needs no backend. Blocked on §8.3: there is no repo yet.
-- [ ] **CWG** — a set of prebaked example repos the page steps through, so the
-      commit graph executes visibly without running git in the browser.
+- [x] **CWG** — shipped 2026-10-14, and live rather than prebaked. Pyodide
+      loads CPython as WebAssembly and micropip installs the real `cwg` wheel
+      (vendored, 26KB, so PyPI is not a runtime dependency), then
+      `public/demos/cwg/cwg_trace.py` runs the program through Jake's own
+      `cwg.interpreter` and records a step per commit. Six programs, a scrub
+      control, three views (commit graph / as Python / git commands) and two
+      dialable values per program that re-run it for real.
+      - The tracer mirrors `interpreter._execute`, so it could drift from it.
+        `run_source` guards that by running the same program through the real
+        `cwg.interpreter.run` and asserting the final scopes match; the demo
+        surfaces any mismatch rather than animating a lie. All six programs
+        also produce byte-identical output to their plain-Python equivalents.
+      - Pyodide itself (~10MB) comes from jsdelivr, not this repo. That is the
+        one live third-party dependency on the site. Self-hosting it is ~12MB
+        in git — worth doing if the CDN ever proves flaky, or if the repo is
+        getting a size pass anyway.
+      - Two bugs in `cwg` came out of this; see CONTENT.md §8.15.
 - [ ] **BoulderBuddy** — `flutter build web` with a seeded demo account.
       Supabase is already the hosted backend, so this adds no infrastructure.
 - [ ] Lightning McShower is hardware — video only, never a live demo.
@@ -216,7 +250,10 @@ input the demo cannot precompute.
 - [ ] Background treatment: gradient, subtle noise, or canvas effect (a heavy GIF is the reference's worst perf decision — don't copy it)
 - [ ] Hover/tap micro-interactions on nav and project list
 - [ ] Deep-link projects (`?p=slug` or `/projects/[slug]`) so a single project is shareable
-- [ ] Per-view `<title>` and description
+- [x] Per-view `<title>` and description. Done 2026-10-14 with the second
+      route: the root layout sets `title.template` (`"%s · Jake Recharte"`),
+      so a route exports `title: "Art"` and gets the rest for free.
+- [ ] Fill `/art` — it is live with six placeholder frames (CONTENT.md §8 Q24)
 - [ ] Open Graph + Twitter card image so pasted links preview correctly
 - [ ] Favicon
 
@@ -324,3 +361,39 @@ The code is the easy half. This is what actually gates shipping.
   the pipeline also moved its headline number from 1.7% to 1.95% — same code,
   a fresher Yahoo pull — which the site now states both halves of
   (CONTENT.md §8.13).
+- **2026-10-14** — Homelab added to the project board at Jake's request, from
+  the three CS 470 lab PDFs he supplied (`lab0`, `lab1`, `lab1b`): an OpenBSD
+  VM on a static address serving DNS for cs470.internal with BIND, a P-384
+  root CA built on OpenSSL's `CA.pl`, and an OpenLDAP directory reachable only
+  over LDAPS, bridged into the system's user and group lookups by `ypldap`.
+  Labelled `PROJECT` / `IN PROGRESS`, `Aug 2026 - Now`, and it sits between
+  Apple Picker and the AI Trading Model on an August start. That takes the
+  board to **six tiles — two complete rows with no inert filler**, so
+  `CONTENT.md` §5 widened `otherProjects` from 2–5 to 2–6 and §3's filler
+  arithmetic was rewritten. The copy claims nothing past lab 1b and says the
+  thing isn't finished; what Jake needs to confirm is §8.23.
+- **2026-10-14** — **Second route: `/art`.** The site stopped being one page.
+  `src/app/art/page.tsx` is the route (a folder under `app/` becomes a URL
+  segment; the `page.tsx` inside it is what makes the segment public), fed by
+  `src/content/art.ts` and rendered by `ArtGallery` — uncropped masonry, two
+  columns on a phone and three from `lg:`, because art is the one kind of
+  content on this site that a square crop actively damages (DESIGN.md §2.3).
+  Three things moved to make room: the fog, the nav bar and the footer went
+  from `page.tsx` up into the **root layout**, so both routes share one copy
+  and the fog GIF no longer restarts on navigation; the nav's homepage anchors
+  became **rooted** (`/#work`, not `#work`, which resolved to `/art#work` from
+  the gallery) and all its links became `next/link`; and `SectionHeading` grew
+  `size` and `as` props, which closed the hero-duplication note DESIGN.md §6
+  had open since the doc was written — the art page needed that markup a third
+  time and copying it again was the point the note came due. **Every word on
+  the page is a placeholder**: CONTENT.md has no verified fact about Jake's
+  art, so all six pieces have `src: null` and draw an empty labelled frame at
+  a real aspect ratio. New: CONTENT.md §2.7, §5's `ArtPiece` limits, and §8
+  Q24, which is the list of what Jake has to supply.
+- **2026-10-14** — Featured cards gained the project dialog. Until now only
+  the board tiles had one, so CWG — the lead project — had nowhere to put a
+  demo. The dialog moved out of `ProjectBoard` into `ProjectDialog`, which
+  takes its trigger as `children` the way the resume and contact dialogs
+  already did; both call sites stayed server components. CWG's demo runs the
+  real interpreter under Pyodide, which makes it the third live demo and the
+  first that executes Jake's own published package in the visitor's browser.

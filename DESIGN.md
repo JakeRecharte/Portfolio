@@ -120,12 +120,21 @@ channel rows) is a `divide-y divide-white/10` list with a top or `y` border —
 not a stack of cards.
 
 **Cards are the exception, and there are exactly two.** The header panel
-(`rounded-3xl`), and the **three featured projects** — a `lg:grid-cols-3` grid
-of `rounded-2xl` tiles with `gap-4`, each `flex h-full flex-col` so the tech
-chips bottom-align on `mt-auto` regardless of blurb length. Below `lg:` they
-stack, because three blurbs do not fit across a tablet. That grid is the whole
-reason the featured set reads as featured rather than as the top of a list, so
-a second *card* grid anywhere else would spend it.
+(`rounded-3xl`), and the **three featured projects** — `rounded-2xl` cards in a
+`flex flex-col gap-4` stack, one per row at every breakpoint, each `p-6`. A
+featured card is therefore the widest surface on the page, which is what makes
+the set read as featured rather than as the top of a list; a second *card* shape
+anywhere else would spend that.
+
+Two consequences of stacking, both load-bearing:
+
+- **A card sizes to its own content**, so there is no `h-full` and no
+  `mt-auto` bottom-alignment — those existed only to level three cards sharing
+  one row. Tech chips take a plain `mt-6`.
+- **The card is wider than its prose may be.** The blurb carries §2.5's
+  `max-w-lg` measure itself rather than inheriting a cap from a narrow column.
+  Full-bleed prose across `max-w-6xl` is the failure mode a stacked card
+  invites, and the one thing to check when editing it.
 
 **The checkerboard is a third shape, and it is not a card grid.** The
 additional projects
@@ -181,9 +190,70 @@ and its title steps `text-sm sm:text-base lg:text-lg`: a third of a phone
 screen is about 100px and the chip does not fit in it. The dialog carries the
 chip at every size instead.
 
+**A tile carries one chip, and it is always `kind`.** A chip on this site
+names what a thing *is* — `PROJECT`, `HACKATHON`, `CLUB`, `INTERNSHIP` — and
+never where it is in its life. A project that isn't finished also has a
+`status` (`UPCOMING`, `IN PROGRESS`), but the tile does not spend its one chip
+slot on it: a hackathon that reads `UPCOMING` has been labelled on the wrong
+axis, which is the same mistake the header's "Now" rail made before its badges
+became kind chips (§2.1). Two chips would wrap on a square this size, so the
+tile shows `kind` and **`period` carries the state in words** — "Upcoming",
+"Sep 2026 - Now". The dialog has room and shows both, kind first. Both use the
+amber kind-chip recipe from §2.3, so the amber budget is unchanged: still one
+chip per tile.
+
+Below `lg:` the chip is hidden entirely, so **the period string is what carries
+the state at phone width** — which is why they read `Upcoming` and
+`Sep 2026 - Now` rather than a bare date. That matches `now.ts`, where period
+is the only place time is expressed.
+
 **A board is padded to full.** A half-empty last row reads as a broken grid
 rather than a pattern, so `ProjectBoard` appends inert `aria-hidden` cells to
 complete it, continuing the checker and carrying nothing else.
+
+**The art gallery is a fourth shape, and the reason is the content.** The
+`/art` page ([ArtGallery](./src/components/ArtGallery.tsx)) is uncropped
+masonry — CSS multi-column, two across on a phone and three from `lg:`:
+
+| Part | Classes |
+| --- | --- |
+| Gallery | `mt-12 columns-2 gap-4 lg:columns-3` |
+| Piece | `mb-4 break-inside-avoid` |
+| Frame | `overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03]` |
+| Image | `block h-auto w-full`, `sizes="(min-width: 1024px) 33vw, 50vw"` |
+| Empty frame | `grid place-items-center p-4` + inline `aspectRatio` |
+| Empty label | `font-mono text-[10px] tracking-wider text-white/35 uppercase` |
+| Caption, title | `mt-3 block text-sm font-medium text-white` |
+| Caption, meta | `mt-1 block font-mono text-xs text-white/35` |
+
+`columns-*` and `break-inside-avoid` are the only values this introduced; the
+frame is §2.3's tile recipe unchanged and the caption is §2.5's metadata line
+under a row title one step down.
+
+Three rules hold it:
+
+1. **Nothing is cropped.** Every other collection on this site is square,
+   because the project board holds text and a square is a shape to fill. A
+   picture cropped to a square has lost the composition, so each piece keeps
+   its own aspect ratio and the columns stagger around it. That is the whole
+   reason this is not the checkerboard.
+2. **`gap` is horizontal only.** In a multi-column box, `gap` sets the gutter
+   between columns and nothing between items, so each piece carries its own
+   `mb-4` — the same 4 as the gutter, so the grid reads as even.
+   `break-inside-avoid` keeps a piece from being sliced across a column
+   boundary, and it has to sit on the **direct child of the column box**:
+   `Reveal` is therefore *inside* the `<li>` here, the one place on the site
+   where it is not wrapped around it.
+3. **An aspect ratio is content, not design.** A piece's `width`/`height` come
+   from the file and ride in an inline `style`, on the same exemption the Apple
+   Picker poster's `aspect-[8/5]` takes in §3. A piece with no file yet draws
+   an empty frame at its real ratio rather than a broken image, so the layout
+   while the page is placeholder is the layout it will ship with.
+
+The frame is a hairline and nothing else on purpose: on this page the picture
+is the content, so the chrome around it cannot compete. There is no hover
+state and no arrow, because a piece is not a link — if pieces ever become
+clickable, that is the dialog recipe below, not a new one.
 
 **A modal is the nav pill's surface, one step more opaque.** `neutral-950/80`
 rather than `/60` because a modal sits over arbitrary content and has to win;
@@ -193,10 +263,20 @@ wider than the site. The resume viewer
 ([ResumeDialog](./src/components/ResumeDialog.tsx)) uses that full size; a modal
 that only holds a few rows
 ([ContactDialog](./src/components/ContactDialog.tsx)) is
-`w-[min(92vw,26rem)]` with `p-6 sm:p-8` and sizes to its content instead.
+`w-[min(92vw,26rem)]` with `p-6 sm:p-8` and sizes to its content instead. The
+**About** modal ([AboutDialog](./src/components/AboutDialog.tsx)) is the third
+size and introduces nothing: it borrows the project dialog's write-up-only
+`max-h-[90dvh] w-[min(92vw,32rem)]`, which is about half the `max-w-6xl` shell
+and a little under — wide enough for prose at §2.5's `max-w-lg` measure, narrow
+enough that it still reads as a panel over the header rather than a page.
 
-**The project dialog ([ProjectBoard](./src/components/ProjectBoard.tsx)) has
-two sizes, and the content picks.** A project with a demo takes the resume
+**The project dialog ([ProjectDialog](./src/components/ProjectDialog.tsx))
+has two sizes, and the content picks.** It takes its trigger as `children`
+plus a class, the same way `ResumeDialog` and `ContactDialog` do (§4 rule 4),
+which is what lets one component serve both the checkerboard tiles and the
+featured cards while both of those stay server components. A featured card
+now opens it too — CWG's demo had nowhere else to live, and a card that only
+linked out was the one project surface with no write-up behind it. A project with a demo takes the resume
 viewer's full `h-[90dvh] w-[92vw] max-w-6xl`; one with only a write-up takes
 `max-h-[90dvh] w-[min(92vw,32rem)]` and sizes to itself, with `max-h-` rather
 than `h-` so three paragraphs scroll instead of overflowing. Both share one
@@ -246,8 +326,16 @@ the eyebrow label. If it's a date or a status, it's mono; otherwise it isn't.
 **Display headings are always two lines**, first `text-white`, second
 `text-white/20`, and the pair must read as one phrase
 (`FEATURED`/`PROJECTS`).
-Use [SectionHeading](./src/components/SectionHeading.tsx) for every section; the
-hero is the only hand-rolled one, because it sits one step larger.
+Use [SectionHeading](./src/components/SectionHeading.tsx) for every one of
+them, including a hero: `size="hero"` is the step up in the table above and
+`size="section"` (the default) is everything inside a page. Nothing hand-rolls
+this markup any more — the homepage hero did until 2026-10-14, which is the
+drift §6 had open.
+
+`as="h1"` is the other prop, and it is a semantics switch rather than a style
+one: a display heading is an `<h2>` because `Header` owns the page's `<h1>`,
+but a page with no `Header` — `/art` — has to make its own title the `<h1>`
+(§3, "Semantics are part of the design").
 
 Measure is capped deliberately: `max-w-xl` for a lead, `max-w-lg` for body. Full
 -width prose across `max-w-6xl` is never correct here.
@@ -256,6 +344,10 @@ Measure is capped deliberately: `max-w-xl` for a lead, `max-w-lg` for body. Full
 
 Page shell, from [page.tsx](./src/app/page.tsx):
 `mx-auto w-full max-w-6xl px-5 lg:px-8 pt-12 lg:pt-16 pb-28`.
+**Every route repeats it verbatim** — `/art` carries its own copy rather than
+inheriting one, because a second page at a different measure would read as a
+different site. The fog, the nav and the footer are not in a page at all: they
+are in [layout.tsx](./src/app/layout.tsx), which wraps both routes.
 The nav is `sticky`, not `fixed`, so it occupies its own 64px and the shell's
 top padding is the gap *below* it, not clearance for it — it was `pt-24
 lg:pt-28` while the nav floated. `max-w-6xl` is the hard outer bound, and the
@@ -273,7 +365,7 @@ bar's inner row repeats it so wordmark and content share one left edge.
 | Paragraph → list | `mt-10` |
 | Panel padding | `p-6 sm:p-8` |
 | List row, major (project, role) | `py-7` |
-| Featured card padding | `p-6`, grid `gap-4` |
+| Featured card padding | `p-6`, stack `gap-4` |
 | List row, link (contact) | `py-5` |
 | List row, dense (now) | `py-3.5` |
 
@@ -376,14 +468,74 @@ Four rules hold it to the design:
    information in text, which is also what keeps a `/55` line legible for
    anyone who can't resolve it against black.
 
+**A heavy demo is a poster first, and loads only on a click.** A compiled
+build — a Unity WebGL game, anything in the tens of megabytes — must not start
+downloading because a dialog opened. The pane renders a poster on the tile
+recipe at the build's own aspect ratio, and the `<iframe>` is mounted by the
+click, never before:
+
+| Part | Classes |
+| --- | --- |
+| Frame | `aspect-[8/5] w-full overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03]` |
+| Poster | `group flex h-full w-full flex-col items-center justify-center gap-3 p-6 transition-colors hover:bg-white/[0.07]` |
+| Play control | the §2.3 pill button, with `<Icon name="Play" className="size-4 text-accent" />` |
+| Cost line | `font-mono text-xs text-white/35` |
+| Player | `<iframe className="h-full w-full border-0">` |
+
+The aspect ratio is the build's, not a design choice — `aspect-[8/5]` is Apple
+Picker's 960×600 `defaultScreenWidthWeb`. A different build gets a different
+ratio, and that is the one place a demo may introduce a value without adding
+it here.
+
+**The cost line is not optional.** A poster states what the click will cost
+and what it needs before it is clicked — the download size and, where it
+matters, the input: Apple Picker is mouse-driven and has nothing to aim with
+on a phone. A demo that only reveals that after thirty megabytes has lied by
+omission. `Play` is the one mark in [Icon](./src/components/Icon.tsx) that
+isn't a contact channel; it is on the same stroke recipe (§3) and outlined
+rather than filled for the same reason the brand glyphs are.
+
 **A demo computes in chunks, never in one blocking pass**, and says so while it
 works: a mono line and the progress bar above. Chunk with `setTimeout`, not
 `requestAnimationFrame` — rAF stops dead while a tab is backgrounded, which
 would strand the run at whatever percent it had reached.
 
+**A demo that steps through something gets one scrub control, and everything
+else reads off it.** [CwgDemo](./src/components/demos/CwgDemo.tsx) is the
+pattern: a range input is the single source of "where are we", and the code
+view, the variables and the output are all derived from its value rather than
+holding state of their own. Playback is a `setTimeout` chain at 700ms, and it
+sets its state inside the timeout — never synchronously in the effect, which
+cascades renders and ESLint rejects.
+
+| Part | Classes |
+| --- | --- |
+| Program tabs | the §2.3 chip recipe, selected `border-accent/40 text-white` |
+| View tabs | the §2.3 pill button, selected `border-white/25 bg-white/[0.07] text-white` |
+| Code / graph frame | `overflow-x-auto rounded-2xl border border-white/10 bg-white/[0.03] p-4` |
+| Executing line | `font-bold text-white` |
+| Line already run | `text-white/55` |
+| Line not yet run | `text-white/25` |
+| Changed variable | chip with `border-accent/40 text-white` |
+
+**Three states, one accent, and never a colour per category.** A commit graph
+wants to distinguish `if/` from `while/` from `fn/`, and the palette cannot:
+§2.1 allows one accent. So branch *type* is carried by the lane the commit
+sits in and by its branch label, and colour is spent on the axis that
+actually changes while you watch — not-yet-run, run, running now. The same
+rule produced the trading demo's amber-and-grey, and it is why neither demo
+needs a legend of five hues.
+
 **The nav bar** is `sticky top-0 z-50`, 64px tall, with three groups on one
-`max-w-6xl` row: the wordmark (`#top`), the section anchors (`gap-7`, hidden
-under `sm:` where the pills matter more), and the actions. Actions are the
+`max-w-6xl` row: the wordmark (`/`), the links (`gap-7`, hidden under `sm:`
+where the pills matter more), and the actions. Since `/art` shipped the links
+are a mix of two kinds and both are `next/link`: `/#work` and `/#projects`
+scroll the homepage, `/art` is a route. **A homepage anchor is rooted —
+`/#work`, never `#work`** — because a bare fragment is relative to the current
+page and resolved to `/art#work` from the gallery. On the homepage a same-path
+fragment is still a scroll, so nothing changed there. `next/link` rather than
+`<a>` is for one specific reason: a full load restarts the fog GIF from frame
+one and flashes the bar out and back in. Actions are the
 Contact and Resume pills — the two things a visitor is actually looking for,
 and since the Contact section came off the page on 2026-10-13 the Contact pill
 is the only route to an address at all, so it is load-bearing, not a shortcut —
@@ -431,10 +583,22 @@ links get `target="_blank" rel="noreferrer"`; internal paths must not.
    click — the Resume trigger degrades to a link straight to `/resume.pdf`,
    the Contact trigger to `mailto:` the address (it pointed at `#contact`
    until that section came off the page). A modal trigger is an anchor to the
-   thing it shows, never a bare `<button>`.
+   thing it shows, never a bare `<button>` — **with one exception, and the
+   test is whether a destination exists at all.** The About modal
+   ([AboutDialog](./src/components/AboutDialog.tsx)) holds copy that lives
+   only in `site.about`: there is no file to open and no section to jump to,
+   and an `href="#about"` pointing at nothing would degrade worse than a
+   button does. So that trigger is a `<button type="button">` with
+   `aria-haspopup="dialog"` — keyboard reachable, but genuinely inert without
+   JS, which is the cost of the exception. Anything with a URL behind it still
+   has to be an anchor.
 4. **Server components by default.** `Reveal`, `ResumeDialog`,
-   `ContactDialog`, `ProjectBoard` and everything under `components/demos/`
-   are the only `"use client"` files. A demo is interactive by definition, so
+   `ContactDialog`, `AboutDialog`, `ProjectDialog` and everything under
+   `components/demos/`
+   are the only `"use client"` files. `ProjectBoard` and `Sections` stayed on
+   the server through the dialog rework by handing their markup to
+   `ProjectDialog` as a trigger. A demo is mounted only while its dialog is
+   open: five tiles must not each hold a running Python runtime. A demo is interactive by definition, so
    it is a client component and is reached only through the dialog — never
    imported into a server section, which would put its JavaScript on the
    homepage for every visitor. A dialog takes its
@@ -472,9 +636,12 @@ Found while writing this doc. None are urgent; all are real.
 - **`--foreground` is nearly dead.** It styles `body` and nothing else; every
   piece of light text is `text-white/NN` instead. Either the ladder in §2.2
   should be built on `--foreground`, or the token should be dropped. Pick one.
-- **The hero heading duplicates `SectionHeading`.** `Sections.tsx` hand-rolls
-  the same two-tone markup one size up. A `size` prop on `SectionHeading`
-  would make the pair impossible to drift.
+- ~~**The hero heading duplicates `SectionHeading`.**~~ **Fixed 2026-10-14**,
+  when `/art` needed the same heading a third time and copying it again was
+  the point the note became real. `SectionHeading` took a `size` prop
+  (`hero` | `section`) and an `as` prop (`h1` | `h2`); `Sections.tsx` renders
+  `<SectionHeading lines={site.headline} size="hero" />` and the markup exists
+  once (§2.5).
 - **Two hover recipes for the same thing.** Header social pills end at
   `hover:bg-white/10`, against the `/[0.07]` rule in §2.3. (The tool tiles that
   were the other half of this note are gone with the Tools section.)

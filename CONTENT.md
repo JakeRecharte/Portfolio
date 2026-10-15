@@ -32,11 +32,15 @@ components.
 
 | File | Exports | Renders in |
 | --- | --- | --- |
-| `src/content/site.ts` | `site` — name, headline, role, tagline, bio, email, links, education, stats | `Header`, `Hero`, `ContactDialog` |
+| `src/content/site.ts` | `site` — name, headline, role, tagline, bio, about, email, links, education, stats | `Header`, `Hero`, `ContactDialog`, `AboutDialog` |
 | `src/content/now.ts` | `NowEntry[]` — the 4 newest roles, with status badges | `Header` |
 | `src/content/contributions.json` | generated, **do not hand-edit** — refreshed daily by `.github/workflows/contributions.yml`, or by hand with `npm run contributions` | `ContributionGraph` |
 | `src/content/projects.ts` | `featuredProjects` (top 3, ranked) and `otherProjects` (the rest, newest first) — both `Project[]` | `FeaturedProjects` cards, `AdditionalProjects` rows |
 | `src/content/experience.ts` | `Role[]` — the internship, the program, the job | `Experience` section |
+| `src/content/art.ts` | `art` — the `/art` page's headline and intro; `artPieces` — `ArtPiece[]`, newest first | `src/app/art/page.tsx`, `ArtGallery` |
+
+`art.ts` is **entirely placeholder** as of 2026-10-14 — see §2.7 and §8 Q24.
+It is the only content file with no §2 source behind it.
 
 Touch `src/components/Sections.tsx`, `Header.tsx`, `SectionHeading.tsx`
 only when the *shape* changes, not the words. Metadata strings are duplicated
@@ -137,6 +141,27 @@ Spring 2026. That's a good story in an interview, not site copy.
 
 Ordered newest first, as the CV has them. "Repo" = verified public GitHub repo.
 
+**USC Dual Use hackathon — upcoming, as of 2026-10-14**
+- **Unverified beyond its existence.** Jake said he is going. That is the whole
+  fact. No date, team, problem statement or result is confirmed.
+- A public recruitment form describes a Dual-Use Hackathon at USC on
+  **Oct 16–18 2026** during LA Tech Week — 48 hours, 200+ student builders,
+  problem statement withheld until the Friday night, re-cut into a new
+  sub-problem every 8 hours. **That is third-party and unconfirmed**, it is not
+  on the site, and it must not go into copy until Jake confirms it is the same
+  event. Source: https://tally.so/r/7R0APa
+- On the board as an `UPCOMING` tile whose copy says only that it hasn't
+  happened yet. See §8.
+
+**Fool's Mate — September 2026 – Present**
+- **Verified fact in full:** "a 2D game I'm developing", started September 2026
+  (Jake, 2026-10-14). Nothing else is known.
+- No public repo exists under that name as of 2026-10-14.
+- The title is the chess term for the fastest possible checkmate. **Do not
+  assume it is a chess game** — nothing says so.
+- On the board as an `IN PROGRESS` tile. Genre, engine, stack and what the game
+  actually is are all open — see §8.
+
 **Shower Hacks — "Lightning McShower" — September 2026**
 - Hackathon, team of 5. **1st in hardware, 4th overall out of 200 competitors.**
 - A remote-controlled car using a vision model and a gas sensor to determine
@@ -144,7 +169,61 @@ Ordered newest first, as the CV has them. "Repo" = verified public GitHub repo.
 - Jake owned the hardware build (car assembly, camera and gas sensor wiring)
   and overall project scope.
 - Tech: Arduino, Python, C++, HTML, sensors, multimeter, computer vision.
-- Repo: **none found** — see §8.
+- Repo: https://github.com/Ethanniu3177/Lightning-McShower — **a teammate's**
+  (Ethan Niu), which is why it isn't under `JakeRecharte`. Public, language
+  HTML, last pushed 2026-09-27, description "ShowerHacks". Supplied by Jake
+  and verified 2026-10-14.
+- Devpost: https://devpost.com/software/lightning-mcshower — verified
+  2026-10-14. This is the tile's destination, not the repo: for a hackathon
+  the Devpost page is the judged submission, with the demo video and the
+  team, and it is the thing worth landing a recruiter on.
+
+**Homelab — August 2026 – Present**
+- **Sourced from three lab PDFs Jake supplied on 2026-10-14** (`lab0.pdf`,
+  `lab1.pdf`, `lab1b.pdf`), not from the CV — the CV doesn't list it. They are
+  the course handouts for **SDSU CS 470: Unix/Linux Sysadmin, Fall 2026**,
+  which is the "UNIX/System Design" course §2.2 has in progress.
+- Jake named it **"Homelab"** and asked for it on the board as a `PROJECT`
+  running **August 2026 – now** (2026-10-14). The dates and the label are his;
+  the description is read off the labs.
+- What the three labs build, in order:
+  - **Lab 0** — a desktop hypervisor (VMware Fusion/Workstation on Intel, UTM
+    on ARM Macs), shell and `vi` basics on the campus system, SSH key-based
+    auth, and a shell script in `~/.profile` that finds a running `ssh-agent`
+    or starts one and loads the key, so a password is typed once per session.
+  - **Lab 1** — OpenBSD 7.9 installed from an ISO onto a custom disk label
+    (one 14 GB root partition plus swap, GPT/UEFI), given a static address on
+    the hypervisor's NAT network, then `sudo`, `bash`, `screen`, GnuPG and
+    ISC BIND **built from source** through the ports tree with privilege
+    separation (`doas`, `_pbuild`/`_pfetch`). `named` then serves
+    **cs470.internal**: a forward zone of A records plus an MX, a reverse
+    `in-addr.arpa` zone of PTRs, the `filter-aaaa` plugin hard-linked into
+    BIND's chroot, and IPv6 turned off at both the daemon and the answers.
+    Closes with `cron` jobs for `syspatch`/ports updates and a **custom
+    kernel** (`CS470.MP`) rebuilt with the `softraid` and `vscsi` drivers
+    removed.
+  - **Lab 1b** — a **root certificate authority** built from OpenSSL's
+    `CA.pl` with a **P-384 (secp384r1) elliptic curve** key, its certificate
+    added to the trust anchors on both the VM and the host OS, then used to
+    sign a server certificate carrying a `subjectAltName`. On top of it,
+    **OpenLDAP**: `posixAccount` and `posixGroup` entries under
+    `dc=cs470,dc=internal`, `slapd` listening on **LDAPS (636) and the local
+    socket only — plain LDAP on 389 off**, and `ypldap` bridging the directory
+    into the NIS maps OpenBSD resolves users and groups through, so one
+    account logs into every machine. Ends by trimming the kernel and the VM's
+    RAM.
+- The lab network the labs are heading towards, all on cs470.internal with
+  fixed last octets: openbsd `.71`, freebsd `.72`, alma `.73`, ubuntu `.74`,
+  solaris `.75`, proxmox `.76`, alpine `.78`. **Only the OpenBSD box is
+  described on the site**, because only labs 0–1b were supplied.
+- Tech on the tile: OpenBSD, BIND, OpenLDAP, OpenSSL — see §2.5.
+- No repo, no link. The tile is linkless like the two placeholders, which
+  DESIGN.md allows on the board (every tile keeps its arrow and opens its
+  dialog). See §8.23.
+- **What is not claimed, on purpose:** that any lab past 1b is done, that the
+  other six VMs exist yet, or that this is anything other than coursework.
+  §6 is explicit that a class project can be called a class project, and the
+  copy does. See §8.23 for what to ask him.
 
 **Building for Good Hackathon — "Permit Paragons" — August 2026**
 - Hackathon, team of 6. **4th of 100+ participants.**
@@ -153,7 +232,12 @@ Ordered newest first, as the CV has them. "Repo" = verified public GitHub repo.
 - Jake built the TypeScript front-end map visualization of **330,000+ parcels**
   in San Diego County.
 - Tech: TypeScript, Python, Docker.
-- Repo: **none found** — see §8.
+- Repo: https://github.com/BrandonGarate177/BFFG-SD-HACKS — **a teammate's**
+  (Brandon Garate), which is why it isn't under `JakeRecharte`. Public, language
+  TypeScript, last pushed 2026-10-08, description "Make informed decisions about
+  where to build affordable housing in San Diego, CA". Supplied by Jake and
+  verified 2026-10-14. No Devpost page has been supplied, so the repo is the
+  card's destination.
 
 **CWG — Coding With Git — May 2026 – Present**
 - A language where the git commit DAG *is* the source code: branches are
@@ -169,6 +253,23 @@ Ordered newest first, as the CV has them. "Repo" = verified public GitHub repo.
   https://pypi.org/project/cwg/. The CV does not mention this. It is the single
   most distinctive thing on the whole CV: a published package with real docs.
   **Lead the Projects section with it.**
+- **Live demo since 2026-10-14**, and it is the real thing: Pyodide loads
+  CPython as WebAssembly and installs the actual `cwg` wheel (vendored at
+  `public/demos/cwg/wheels/`), so the interpreter a visitor drives is the one
+  `pip install cwg` gives them. Six programs — statements, if/else, while,
+  for, revert, functions — step commit by commit with scope and output, and
+  two values per program are dialable so the program re-runs for real.
+- **Found while building it: the `.cwg` runner is missing three verbs.**
+  `cwg.runner.CWGRunner` parses `init`, `commit`, `branch`, `checkout` and
+  `merge`, but not `revert`, `tag` or `cherry-pick` — it never sets
+  `is_revert`, `revert_src` or `cherry_pick_src`, and always passes
+  `functions=[]`. So **exception handling and functions cannot be expressed in
+  a `.cwg` file at all**, only in a real repo. That is a third of the language
+  the file format can't reach. See §8.
+- **Also found: `cwg` can't be imported where git is absent.**
+  `gpScraper.py` does `from git import …` at module scope and calls
+  `sys.exit(1)` on failure — not a raise, an exit — so any environment
+  without a git binary cannot even `import cwg`. See §8.
 
 **BoulderBuddy — March 2026 – Present**
 - Cross-platform mobile app for climbers: log routes with gym, V-grade, notes,
@@ -225,6 +326,17 @@ Ordered newest first, as the CV has them. "Repo" = verified public GitHub repo.
   — **don't describe it as persistent.**
 - Tech: Unity, C#, URP.
 - Repo: https://github.com/JakeRecharte/Apple-Picker — no README. See §8.
+- **Playable on the site since 2026-10-14**, as the real Unity project built
+  to WebGL by `scripts/build-apple-picker.sh` into `public/demos/apple-picker/`.
+  Source project: `~/Unity Projects/Apple Picker` (Unity 6000.5.11f1), which
+  is outside this repo — only the build output is committed.
+- Read off the source while building it: the game is **mouse-driven**
+  (`Input.mousePosition` in `Basket.Update`), so it cannot be played on a
+  phone. The poster says so before the download starts.
+- **`Physics.gravity` is never reset — see §8.** `AppleTree.Update` does
+  `Physics.gravity += Vector3.down * gravityRampRate * Time.deltaTime`, and
+  `Physics.gravity` is a global that survives `SceneManager.LoadScene`. In the
+  editor, leaving play mode resets it; in a browser tab nothing does.
 - Likely the 3D Game Design course listed as in progress (§2.2), but the repo
   doesn't say so and neither does the CV, so the site doesn't claim it. See §8.
 
@@ -259,6 +371,12 @@ Ordered newest first, as the CV has them. "Repo" = verified public GitHub repo.
   (ShaderLab + HLSL too). It is now on the site through that project's tech
   chips, which is the only way a tool should appear here — see the "no toolkit
   section" note in §3. Adding it to the CV is Jake's call (§8).
+- **OpenBSD, BIND, OpenLDAP and OpenSSL** are not on the CV either; they are
+  what the Homelab labs actually use (§2.4) and they appear only as that
+  project's chips, on the same rule. `Linux/Unix` already covers the family in
+  **Tools & Platforms** — these are the specific things, named on the row that
+  used them. Worth adding to the CV alongside the UNIX course; Jake's call
+  (§8.23).
 
 ### 2.6 Extracurriculars
 
@@ -276,6 +394,20 @@ Ordered newest first, as the CV has them. "Repo" = verified public GitHub repo.
 - **SDSU Rock Climbing Club — Member — September 2025 – Present.** Attends and
   helps set up events. (Not on any resume tab; it's the human-interest one and
   it explains BoulderBuddy — worth one line somewhere.)
+
+### 2.7 Art — nothing is verified
+
+**There are no facts in this section, and that is the point.** The `/art` route
+shipped on 2026-10-14 at Jake's request, and the CV, the transcript and the
+GitHub audit say nothing about his art: not the medium, not a title, not a
+year, not one image file. Neither has he.
+
+So the page is live with six placeholder pieces, every string starting
+`PLACEHOLDER` and every `src` set to `null`, which draws an empty labelled
+frame at a stated aspect ratio. Nothing on it is a claim about Jake. **Do not
+write art copy from anywhere but Jake directly** — there is no second source
+to check it against, which makes this the easiest section on the site to
+quietly invent. §8 Q24 is the ask.
 
 ---
 
@@ -301,8 +433,8 @@ let a redesign treat them as optional chrome. The availability line is not lost
 with the section: `site.bio` still carries "looking for a summer 2027
 internship" in the header.
 
-1. **`FeaturedProjects`** — the top three, as cards: **CWG, Permit Paragons,
-   BoulderBuddy**, in that order. The order is Jake's ranking and is *not*
+1. **`FeaturedProjects`** — the top three, as full-width cards stacked one per
+   row: **CWG, Permit Paragons, BoulderBuddy**, in that order. The order is Jake's ranking and is *not*
    chronological; don't "fix" it. CWG leads because it's the most distinctive
    thing on the CV (published on PyPI, the only polished README).
 2. **`AdditionalProjects`** — everything else, newest first: Lightning
@@ -314,10 +446,25 @@ internship" in the header.
    NAVSEA sits here, not in projects, per Jake: it was a program he attended,
    not a thing he built. The `PROGRAM` chip is what keeps that honest.
 
-The board holds three tiles as of 2026-10-13, in this order — the order is the
-board's reading order and also decides which squares are filled, so don't
-reshuffle it casually: **Lightning McShower, AI Trading Model, Apple Picker**.
-Three fills one row exactly, with no fillers.
+The board holds six tiles as of 2026-10-14, **strictly newest first** (§5),
+which is also the board's reading order and decides which squares are filled:
+**USC Dual Use, Fool's Mate, Lightning McShower, Apple Picker, Homelab, AI
+Trading Model**. Six is two full rows with no filler at all — Homelab (added
+2026-10-14 at Jake's request) took the seat the lone inert cell held. Apple
+Picker and AI Trading Model swapped on 2026-10-14 at Jake's request — the
+board had drifted out of the order §5 already specified. Lightning McShower
+and Apple Picker are both September 2026; the CV's own order breaks that tie,
+and Homelab sits below all three on an August start.
+
+The two unfinished ones lead on purpose: a board that opens with what's in
+flight reads as current. **The tile chip says what a thing is, never where it
+is in its life** — `kind`, always, so a hackathon reads as `HACKATHON` and not
+as `UPCOMING` (changed 2026-10-14 at Jake's request; it is the same axis rule
+§5 sets for the Now rail's badge). Nothing is lost, because `period` carries
+the state in words — "Upcoming", "Sep 2026 - Now" — and the dialog shows the
+`status` chip beside the `kind` one. They are also the two
+thinnest tiles on the site — if either stays contentless for long, it is doing
+less work than the filler it displaced.
 
 Off the board, and why: **Avalanche NFT** (§2.4 — one CV line and no link isn't
 a tile; waiting on detail), the **Portfolio site** itself (its repo 404s — §4,
@@ -325,8 +472,20 @@ a tile; waiting on detail), the **Portfolio site** itself (its repo 404s — §4
 moment the repo is public), and **CS460** and **Machine-Learning** (one is
 empty, the other has no name yet).
 
-Note the arithmetic: a fourth tile costs two inert fillers to complete the
-second row, so three and six are the sizes that look deliberate.
+Note the arithmetic: the board pads its last row with inert cells, so three
+and six are the sizes that look deliberate and four or five always show
+filler. It is at six now. A **seventh** tile — the Portfolio site is the one
+waiting (§8.1) — costs two fillers again, so the next addition wants a
+partner.
+
+**The art page is a second route, not a section.** `/art` shipped 2026-10-14 at
+Jake's request, reached from a third nav link. It is deliberately off the
+homepage: the homepage answers "can he write code" (`TODO.md` §1) and a gallery
+does not help that case, so it gets its own URL to hand to people who asked
+about the art instead. **It is live with placeholders**, which means a visitor
+can reach an empty page today — commenting out the `{ href: "/art" }` entry in
+`Nav.tsx` hides it without touching anything else, and that is the call to make
+if it stays empty for long (§2.7, §8 Q24).
 
 **No toolkit section.** The standalone grid of languages and frameworks came off
 on 2026-10-13 — a tool named on the row that used it is evidence, and the same
@@ -337,19 +496,43 @@ Extracurriculars have no section today. ColorStack Co-VP and the Sigma Phi
 Delta chairs are real leadership signal. Either add a small section or fold the
 strongest one into Experience — flagged in §8.
 
-**Stats row — shipped 2026-10-13: `82` PERCENT/ACCURACY, `330K`
-PARCELS/MAPPED, `2` HACKATHON/PLACEMENTS.** The full candidate list, all
-literally true:
+**Stats row — `2/2` HACKATHONS/PLACED, `7` PROJECTS/FINISHED, `1`
+PUBLISHED/PACKAGE** (set 2026-10-14, replacing the project-scoped pair that
+shipped a day earlier).
 
-| Value | Label | Sourced from |
-| --- | --- | --- |
-| `8` | LANGUAGES / SHIPPED | §2.5 languages list |
-| `2` | HACKATHON / PLACEMENTS | 1st-in-hardware + 4th, and 4th of 100+ |
-| `6` | PROJECTS / BUILT | §2.4 count |
-| `82` | PERCENT / ACCURACY | GradeFlow ML model |
-| `330K` | PARCELS / MAPPED | Permit Paragons |
+**The rule the hero now follows, in both the stats row and the tagline: a hero
+claim has to span the career, not a project.** `82` PERCENT/ACCURACY and `330K` PARCELS/MAPPED were true, but each
+was one project's metric doing summary duty, and both already appear on the
+tile that earned them — evidence there, assertion here. It is the same
+distinction that took the toolkit grid off the site (§3, "No toolkit section").
+Don't put a single project's number back in this row.
 
-The concrete ones won: they survive scrutiny better than a count of projects.
+The tagline took the same edit on 2026-10-14: it ended "an ML model at 82%
+accuracy" and now ends "a hackathon car wired by hand" (§2.4 — he owned the
+car assembly and the camera and gas sensor wiring). The three examples are
+descriptions rather than metrics, and they deliberately cover three different
+kinds of building — tooling, an app with a backend, hardware — which three
+software projects wouldn't.
+
+| Value | Label | Sourced from | On the site? |
+| --- | --- | --- | --- |
+| `2/2` | HACKATHONS / PLACED | both entered, both placed | **yes** |
+| `7` | PROJECTS / FINISHED | Jake's count, 2026-10-14 | **yes** |
+| `1` | PUBLISHED / PACKAGE | CWG on PyPI (§2.4) | **yes** |
+| `8` | LANGUAGES / USED | §2.5 languages list | no — closer to an assertion |
+| `82` | PERCENT / ACCURACY | GradeFlow ML model | no — project-scoped |
+| `330K` | PARCELS / MAPPED | Permit Paragons | no — project-scoped |
+
+Two of the three live ones need watching:
+
+- **`2/2` has an expiry condition.** It claims he has placed in every hackathon
+  he has entered. A third hackathon without a placement makes it false, and it
+  has to drop to a plain `2` the same day. Flagged in §8.
+- **`7` is Jake's number, not arithmetic.** §2.4 lists seven builds, but
+  "finished" is genuinely ambiguous — CWG is published yet still ongoing,
+  BoulderBuddy shipped but stale, and the board carries two tiles that aren't
+  finished at all. He set it to 7 on 2026-10-14. Don't recompute it; ask him.
+
 "Years coding" has no source — it was on the site until 2026-10-13 and is now
 gone. Labels must be two words, ≤10 chars each (§5).
 
@@ -420,23 +603,39 @@ behaviour.
 - `featuredProjects` is **exactly 3**, in Jake's ranked order (not
   chronological). Three is the grid; a fourth breaks `lg:grid-cols-3` into an
   orphan row and stops the set reading as a shortlist.
-- `otherProjects` is **2–5**, newest first.
+- `otherProjects` is **2–6**, newest first. The board pads its last row, so
+  **3 and 6 are the only counts with no inert filler** — it has been at 6
+  since Homelab went on (2026-10-14). Past 6 is untested: nine would be three
+  clean rows, but a board that long stops reading as the footnote to the
+  featured three.
 - `slug` kebab-case and stable (it becomes the Phase 4 deep-link URL).
 - `title` ≤ 30 chars. In a featured card it sits at `text-xl` with no `sm:`
-  step up, so a title past ~22 chars wraps to two lines there — fine, but check
-  it.
+  step up; now that cards are full width a 30-char title fits on one line there,
+  so the limit is about the board's squares, where it still wraps.
 - `kind` is `PROJECT` or `HACKATHON`. `HACKATHON` means a weekend build judged
   against other teams (Lightning McShower, Permit Paragons). The chip says it,
   so the blurb must not repeat the word.
 - `period` a month (`Sep 2026`), a span, or `May 2026 - Now` while it's
   running. Time lives here, never in `kind`.
-- `blurb` 1–2 sentences, ~120–200 chars. The featured cards sit in a 3-up grid,
-  so a blurb much past 200 makes one card tower over its neighbours.
+- `blurb` 1–2 sentences, ~120–200 chars. The featured cards stack one per row
+  and cap their prose at `max-w-lg`, so ~200 chars is about four lines in a
+  card — past that the card stops being scannable, which is the whole point of
+  a featured card.
 - `tech` 2–4 chips of ≤ 14 chars, from the §2.5 skills list. Featured cards cap
-  at **3** — a fourth chip wraps to a second line inside a narrow card.
+  at **3**. A full-width card has room for a fourth now that they stack, but the
+  cap stays: three is what the board tiles carry, and the featured set should
+  not read as a denser version of the same list.
+- `devpostUrl` optional, and only for a hackathon. It is its own field rather
+  than a second `liveUrl` because a Devpost page is not the thing running —
+  it is the judged submission, with the demo video and the team. It **outranks
+  `repoUrl`** for the tile's click and leads the dialog's link list, labelled
+  "Read the Devpost": for a weekend build that page sells the work better than
+  the source does.
 - `repoUrl` / `liveUrl` optional. The row or card links to `liveUrl ??
-  repoUrl`; with neither it renders with **no arrow**, which is honest for the
-  two hackathons that have no public repo (§8.3).
+  devpostUrl ?? repoUrl`; with neither it renders with **no arrow**, which is
+  honest for the two placeholders that have nothing to show yet — USC Dual Use
+  (upcoming) and Fool's Mate (in progress). Every finished project now has a
+  destination (§8.3), so a linkless *finished* one is a bug, not a style.
 - `detail` **2–3 paragraphs**, each ~150–300 chars, on every board project.
   This is what the dialog is *for* now that the tile carries the blurb and the
   tech chips: paragraph one says what the thing does, two says what Jake built
@@ -460,6 +659,32 @@ behaviour.
   number wherever §2.3 has one.
 - `tech` optional, same rules as a project's — the NAVSEA program has none
   worth naming and omits it.
+
+**`art`** (`art.ts`) — the `/art` page's own hero copy, same rules as the
+homepage's because it renders at the same size.
+
+- `headline` exactly two strings, uppercase, each **≤ 10 chars** (§5's display
+  rule). It is `ART`/`PORTFOLIO` today, which restates the nav link that got
+  the visitor there — a placeholder, not a decision.
+- `intro` 1–2 sentences, ~150–220 chars, at `max-w-xl` — the tagline's slot.
+
+**`ArtPiece`** — `artPieces`, newest first. **No count constraint**, unlike
+the project arrays: masonry has no row to leave half-empty, so 4 pieces and 40
+both look deliberate. Six placeholders are in there now.
+
+- `slug` kebab-case and stable; it is the React key and a future deep link.
+- `title` ≤ 40 chars — it sits under the piece at `text-sm` in a column about
+  a third of the page wide, and wraps to two lines past that.
+- `year` a year (`2026`) or a span (`2025 - 2026`). Mono, like every date.
+- `medium` what it is made of — "Graphite on paper", "Digital", "Oil on
+  canvas". ≤ 24 chars; it shares one caption line with `year`.
+- `src` a path under `public/` (`"/art/foo.jpg"`), or `null` while the piece
+  has no file, which draws the placeholder frame instead of a broken image.
+- `width` / `height` the file's **real** pixel dimensions, read off the file
+  (`sips -g pixelWidth -g pixelHeight <file>`), never guessed — `next/image`
+  reserves space from them and a wrong ratio makes the image jump on load.
+- `alt` real alt text describing the picture, for someone who cannot see it —
+  not `"artwork"` and not the title again (§7).
 
 ---
 
@@ -504,8 +729,11 @@ The CV and transcript closed most of the original questions. These are what's
 left, roughly in order of how much they block.
 
 **Broken or wrong right now**
-1. `github.com/JakeRecharte/Portfolio` 404s. Make it public, or should the
-   Portfolio row come off the site?
+1. ~~`github.com/JakeRecharte/Portfolio` 404s.~~ **Resolved 2026-10-14** — the
+   repo is public. The Portfolio tile can go back on the board whenever you
+   want — but Homelab took the seat that would have made it exact. The board
+   is at **six** now, which is two clean rows; a seventh tile brings two inert
+   fillers back, and it takes a **ninth** to be clean again.
 2. ~~Resume PDF → 404s.~~ Fixed 2026-10-13: `public/resume.pdf` is a copy of
    `~/Downloads/Jake Recharte Resume.pdf` (modified Oct 6 2026), and the
    nav bar's Resume pill now opens it in a modal viewer instead of navigating
@@ -513,9 +741,14 @@ left, roughly in order of how much they block.
    things to confirm: is that the tab you want public, and **that PDF prints
    your phone number**, which Q9 and §2.1 say to keep off the site — a
    phone-free export would settle it.
-3. Are there repos for **Lightning McShower** and **Permit Paragons**? They're
-   two of your five best items and both would be unclickable rows without a
-   URL. A teammate's repo or a Devpost page works.
+3. ~~Are there repos for **Lightning McShower** and **Permit Paragons**?~~
+   **Closed 2026-10-14**: Jake supplied a Devpost page and Ethan Niu's repo for
+   Lightning McShower, and Brandon Garate's repo for Permit Paragons (§4). Both
+   are live. Every finished project now has a destination; the only linkless
+   tiles left are the two placeholders, which have nothing to link to yet. One
+   thing worth knowing: the Permit Paragons repo's README is whatever the team
+   left it as — say the word and I'll read it and tell you what a recruiter
+   lands on, the way Q4 and Q5 flag BoulderBuddy's and Trading-Model's.
 4. **BoulderBuddy's README contradicts the CV** — it still says AsyncStorage
    and lists Nearby Gyms / Feed / Profile as "coming soon", and nothing's been
    pushed since April. The CV says Supabase, the gym finder, and a Flutter
@@ -535,6 +768,36 @@ left, roughly in order of how much they block.
     claim. Related: the test **R² is 0.006**, which the dialog also states —
     tell me if you'd rather that came off, though I'd keep it.
 
+14. **Apple Picker's gravity never resets between rounds, and the live demo
+    makes that visible.** `AppleTree.Update` adds to `Physics.gravity` every
+    frame, but `Physics.gravity` is a global that `SceneManager.LoadScene`
+    does not restore. Leaving play mode resets it in the editor, which is why
+    it has never shown up — in a browser tab nothing does. At
+    `gravityRampRate = 0.2`, a one-minute round leaves gravity at about -22
+    against a default of -9.81, so round two starts twice as fast and round
+    four is unplayable. The demo ships as-is because the first playthrough is
+    the honest one and it is your game, not mine to change. The fix is one
+    line in `ApplePicker.Start()` — `Physics.gravity = new Vector3(0, -9.81f,
+    0);` — and I'd take it: a visitor who dies once and retries is the common
+    case, and right now that visitor gets a broken game. Say the word.
+
+15. **Two real gaps in `cwg` itself, found by building the demo.** Both are
+    package bugs, not site problems, and both have a fix worth upstreaming:
+    - **`.cwg` files can't express revert, tags or cherry-pick.**
+      `CWGRunner.load` handles five verbs and silently ignores the rest, so a
+      `.cwg` file can't do exception handling or functions — a third of the
+      language. The demo needed those two examples, so it ships its own
+      parser (`public/demos/cwg/cwg_trace.py`, `Builder`) that handles all
+      eight verbs and feeds the same `CommitNode` graph to your unmodified
+      interpreter. That class is a PR to `cwg` more or less as written.
+    - **`import cwg` calls `sys.exit(1)` when git is missing.**
+      `gpScraper.py` exits the process on a failed `from git import …`. A
+      library should raise, not kill its host — and the import only needs to
+      succeed for the scraper, which `.cwg` files never use. Making it lazy
+      (import `git` inside `scrape()`) would let `cwg` run anywhere Python
+      runs, which is exactly what the browser demo needed and what it had to
+      stub around.
+
 **Decisions only you can make**
 6. **Avalanche NFT ($12k, team of 8) — on the site or not?** Real leadership
    signal; crypto also turns off some engineering recruiters. Your call.
@@ -553,6 +816,12 @@ left, roughly in order of how much they block.
     bio, the tagline and the `ACTUALLY`/`FINISHED` hero line are my wording,
     not your voice. The *facts* in the tagline are yours (§2.4); the phrasing
     isn't.
+    → **This now has somewhere to go.** As of 2026-10-14 the header has an
+    **About** button under the degree line that opens a modal, and
+    `site.about` is the array it reads — currently two strings that both start
+    `PLACEHOLDER` so nobody mistakes them for you. Drop the script in there,
+    one string per paragraph, and this question closes. There is no length
+    limit: the modal scrolls.
 
 **Nice to have**
 12a. The header's contribution graph shows the **last 6 months** — 229 real
@@ -572,15 +841,68 @@ left, roughly in order of how much they block.
 15. **Avalanche is parked, not dropped.** To put it back: a link (collection
     page, explorer, anything that still resolves), whether the contracts are
     anywhere public, and one sentence on what *you* built versus what the team
-    of 8 did. Adding it alone makes the board four tiles and two fillers, so
-    it pairs well with making the Portfolio repo public (§8.1).
-16. Your GitHub display name is "Tendie" and your bio is one line. Recruiters
+    of 8 did. The board is at six (two clean rows), so adding
+    Avalanche alone leaves two inert fillers and adding it **with** the
+    Portfolio tile (§8.1) leaves one — it takes three more to be clean at
+    nine, which is a longer board than this section probably wants.
+16. **USC Dual Use — is it the Oct 16–18 LA Tech Week one?** (§2.4 has what I
+    found and why none of it is on the site.) Either way, after it happens:
+    what you built, who with, and how it placed. Until then the tile says only
+    that it's coming.
+17. **Fool's Mate needs everything.** Right now the site says "a 2D game,
+    started in September" because that is all I have. Most useful: what the
+    game is, engine and stack, whether it's chess-related at all, whether
+    there's a repo (public or to-be), and whether anyone else is on it.
+18. **`2/2` HACKATHONS PLACED goes stale the moment it isn't true.** Tell me
+    if you enter another one and don't place, and I'll drop it to a plain `2`.
+    Same if you've already been to hackathons the CV doesn't list.
+19. Your GitHub display name is "Tendie" and your bio is one line. Recruiters
     click through from this site — want it tidied?
-17. Anything on LinkedIn that isn't in the CV? I can't read it (§4), so paste
+20. Anything on LinkedIn that isn't in the CV? I can't read it (§4), so paste
     anything that matters.
-18. Domain decision (`TODO.md` §3 and §7).
-19. Anything you'd rather the site *not* say.
+21. Domain decision (`TODO.md` §3 and §7).
+22. Anything you'd rather the site *not* say.
+23. **Homelab — I wrote it from your lab PDFs, so check it.** You asked for
+    the tile on 2026-10-14 and gave me `lab0.pdf`, `lab1.pdf` and `lab1b.pdf`;
+    everything the tile and its dialog say is read off those three (§2.4), so
+    the site currently describes an OpenBSD VM serving DNS, a P-384 root CA
+    and an LDAP directory, and says outright that it isn't finished. Four
+    things only you know: **(a)** how far past lab 1b you actually are — if
+    FreeBSD, AlmaLinux or the rest of the network are standing, the copy is
+    behind and I'll widen it; **(b)** whether any of it is in a repo
+    (dotfiles, zone files, the `srcpatch`-style scripts) — right now it is the
+    only *non-placeholder* tile on the board with nothing to click, which the
+    board allows but which I'd rather fix; **(c)** whether you want it named
+    as the CS 470 course on the site, or kept as "a semester of Unix
+    sysadmin" the way it reads now; and **(d)** whether OpenBSD, BIND,
+    OpenLDAP and OpenSSL should go on the CV's Tools line (§2.5) — they are
+    real and they are not on it.
 
+24. **`/art` is built and completely empty — it needs you.** The route, the
+    nav link, the masonry layout and the content file all shipped 2026-10-14,
+    and every word on the page starts `PLACEHOLDER` because §2.7 has no
+    source for a single fact about your art. A visitor who clicks "Art" right
+    now gets six grey frames. What I need, in the order it unblocks things:
+    - **(a) The files.** Any format `next/image` handles — JPG, PNG, WebP,
+      AVIF. Point me at a folder and I'll copy them into `public/art/`, read
+      each one's real dimensions off the file, and wire them up. Don't resize
+      them first; the optimizer does that per column width.
+    - **(b) A title, a year and a medium for each.** These are the three
+      things the caption shows and the three I cannot guess. "Untitled" is a
+      fine title; a made-up one is not.
+    - **(c) Alt text, or permission to write it.** §7 requires real alt text
+      on every image. I can describe what is in a picture once I can see it —
+      say the word and I'll draft it for you to correct.
+    - **(d) Two sentences for the intro, and a hero line.** Same slots as the
+      homepage tagline and `ACTUALLY`/`FINISHED`. The placeholder reads
+      `ART`/`PORTFOLIO`, which just repeats the link you clicked — §2.5 says a
+      heading that size has to beat that. Two lines, ≤ 10 characters each.
+    - **(e) Does it stay in the nav while it's empty?** It is live and
+      reachable today. One commented-out line hides it until you're ready.
+    - **(f) Should a piece be clickable?** Right now a piece is not a link,
+      which is why it carries no arrow. If you want full-size views, the
+      project board's tile→dialog pattern already exists and would be a
+      lightbox for roughly nothing.
 ---
 
 ## 9. Workflow for a content change
