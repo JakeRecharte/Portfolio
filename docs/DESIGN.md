@@ -500,7 +500,7 @@ a `ProjectDemo` drops the `lg:grid lg:grid-cols-3` split, so the demo spans
 the full width and the write-up sits underneath instead of beside it. Spending
 a third of the dialog on prose next to a map is the wrong trade; for a stepper
 or a chart, where the guide is read *while* the demo runs, the split is right.
-Permit Paragons is the only `wide` demo.
+Permit Paragons and Clearline are the `wide` demos.
 
 **A heavy demo is a poster first, and loads only on a click.** A compiled
 build (a Unity WebGL game, anything in the tens of megabytes) must not start
@@ -520,6 +520,13 @@ The aspect ratio is the build's, not a design choice. `aspect-[8/5]` is Apple
 Picker's 960×600 `defaultScreenWidthWeb`. A different build gets a different
 ratio, and that is the one place a demo may introduce a value without adding
 it here.
+
+Two are on record. Permit Paragons is `aspect-[4/3]`, a map that wants to be
+wide. Clearline is `aspect-[3/4] sm:aspect-[4/3]`: it frames a dashboard that scrolls
+rather than a fixed canvas, so below `sm:` it goes portrait. At 4:3 a phone gets
+a 307×230 window onto a stacked page, and at 3:4 it gets a usable one. A demo
+whose page scrolls may do the same; one with a fixed-size canvas, like the Unity
+build, may not, since there the ratio is the build's.
 
 **The cost line is not optional.** A poster states what the click will cost
 and what it needs before it is clicked, the download size and, where it

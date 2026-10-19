@@ -2,8 +2,8 @@
 
 Read this before adding a demo to a project, or before touching one that's
 already there. It's to running code what `DESIGN.md` is to styling: the rules
-the demos actually hold to, written down so the fifth one is built the same
-way as the first four.
+the demos actually hold to, written down so the sixth one is built the same
+way as the first five.
 
 `DESIGN.md` §3 owns what a demo *looks* like (the poster, the chart recipe,
 the scrub control, the colour rules). This doc owns what it *is*: what's
@@ -23,7 +23,7 @@ we know it isn't lying.
 
 ## 1. The one-sentence version
 
-Four projects have a demo. Each one runs that project's real artifact, ships
+Five projects have a demo. Each one runs that project's real artifact, ships
 as files this repo serves, is rebuilt by one command in `scripts/`, and says
 out loud what it costs and what it isn't.
 
@@ -34,8 +34,8 @@ out loud what it costs and what it isn't.
 ### 2.1 Run the real thing
 
 A demo executes the project's own artifact: the trained forest, the Unity
-build, the published wheel, the team's own frontend. Never a reimplementation,
-never a recording dressed up as live.
+build, the published wheel, the team's own frontend, the team's own dispatch
+board. Never a reimplementation, never a recording dressed up as live.
 
 This is the whole point. A demo is evidence that the thing works, and a
 rebuild is just new code wearing the project's name. If you can't run the real
@@ -60,8 +60,8 @@ In order of preference, a demo's bytes come from:
 5. **A third-party service, live.** The Permit Paragons tiles. Worst case.
 
 Anything at level 4 or 5 is a thing that can die without a commit, so it gets
-an entry in `CONTENT.md` §8 naming who owns it and what breaks. Three of the
-four demos are entirely at level 1 or 2.
+an entry in `CONTENT.md` §8 naming who owns it and what breaks. Two of the five
+demos, trading and Apple Picker, are entirely at level 1 or 2.
 
 **Never add a backend.** No demo gets a server, a database, an API key or an
 account. A dead demo link is worse than no demo link, and a free tier you
@@ -76,7 +76,11 @@ random seed. "I ran some commands once" isn't a build.
 If the script has to patch someone else's source to make it work, the patch
 lives in the script with the reason written next to it, and it fails loudly
 when the thing it's patching has moved. `build-permit-paragons.sh` applies
-three and checks all three.
+three and checks all three. `build-usc-dual-hacks.sh` applies nine, which is
+what it costs to turn a Next.js app with a server into static files, and checks
+every one: build it against a commit from before the scenario existed and it
+stops on the first patch that no longer finds its line, having written nothing
+to `public/`.
 
 ### 2.4 Prove it matches
 
@@ -93,6 +97,13 @@ The bar for "verified" is a number you can repeat, not a screenshot that
 looked fine. The trading demo's TypeScript port was checked against the Python
 backtest and agreed to 1.9499% versus 1.9514% over the same 487 dates. That's
 what verified means. (It isn't automated yet, see §6.)
+
+Clearline re-implements nothing, so there's no drift to catch between two copies. The
+risk there is the other kind: the patched build isn't the code the team tested.
+So `build-usc-dual-hacks.sh` runs the team's own suite, 156 tests, against the
+unpatched commit before it builds and stops if one fails. That covers the
+scenario engine, the call routing, the colour rule and the fire's size bands. It
+doesn't cover the patches or the page, which were checked in a browser by hand.
 
 ### 2.5 Say what it costs before it costs it
 
@@ -125,7 +136,7 @@ backtest and not advice, and that its edge is an average over noise.
 
 ---
 
-## 3. The four demos
+## 3. The five demos
 
 | Demo | What actually runs | Comes from | Payload | Rebuild |
 | --- | --- | --- | --- | --- |
@@ -133,6 +144,7 @@ backtest and not advice, and that its edge is an average over noise.
 | Apple Picker | the Unity build, as WebAssembly | `~/Unity Projects/Apple Picker` | 16MB | `./scripts/build-apple-picker.sh` |
 | CWG | the real `cwg` wheel, under Pyodide | PyPI, vendored | 72KB + Pyodide from CDN | re-vendor the wheel |
 | Permit Paragons | the team's own frontend | their repo at `ed392b2` | 1.5MB | `./scripts/build-permit-paragons.sh` |
+| Clearline | the team's own dispatch board, as static files | `JakeRecharte/USC-Dual-Hacks` at `10fb4ea` | 1.1MB + 1.7MB map tiles | `./scripts/build-usc-dual-hacks.sh` |
 
 **AI Trading Model.** The export retrains the repo's pipeline (same universe,
 features, horizon, split and seed) and writes the forest out as flat arrays,
@@ -161,11 +173,27 @@ patches (base path, router basename, basemap) are applied by the script. The
 interface is ours to serve; the parcel tiles and the parcel API are still on
 the team's CloudFront.
 
+**Clearline.** The `web/` app from Jake's own USC Dual Hacks repo, pinned to
+`10fb4ea` (main on 2026-10-18). The real app is a Next.js server with a signed
+cookie guard, a Supabase database and a Retell phone line, so the build keeps
+the dispatch board, its map and its scenario engine and swaps what's underneath:
+the route guard, API routes, sign-in and officer page come out, the household
+list the server would have streamed is built in the browser from the same
+`seedAddresses()`, and the board opens on Scenario instead of Live. Scenario is
+a layer the board already draws, and it writes nothing, so nothing depends on a
+server. What a visitor sees is therefore real code on simulated data: the
+statuses, calls, callers and the fire's spread are generated by the team's seeded
+engine, the addresses and residents are placeholders, and the map, the building
+footprints and the day's 24-beat timeline are real. The board says so itself, in
+a banner it won't let you close. The patches are listed in the script's header.
+Live mode is still there and still honest: with no database or phone line it's
+8,088 grey houses.
+
 ---
 
 ## 4. What's pinned and what's live
 
-Nothing updates on its own, with one exception. Every demo ships a built
+Nothing updates on its own, with two exceptions. Every demo ships a built
 artifact, so changing a project's source does nothing to the site until the
 demo is rebuilt and pushed.
 
@@ -175,7 +203,9 @@ demo is rebuilt and pushed.
 | The Apple Picker Unity project | No. Re-run the build. |
 | `cwg` on PyPI | No. The wheel is pinned to 0.2.0. |
 | The Permit Paragons frontend | No. It's pinned twice: a build, and `COMMIT` in the script. |
+| The Clearline repo | No. It's pinned twice: a build, and `COMMIT` in the script. |
 | **The Permit Paragons tiles or API** | **Yes, immediately.** Fetched at runtime. |
+| **OpenFreeMap tiles, or Google Fonts** (Clearline, and Permit Paragons' basemap) | **Yes, immediately.** Fetched at runtime. With the network down the board still draws its perimeter, houses and fire, just on a blank basemap and in fallback type. |
 
 That last row cuts both ways. If the team retrains the model, the site shows
 it with no action from you. If they change the API's response shape, the
@@ -223,6 +253,17 @@ Those are fine on a project, they just don't go in a demo pane.
   isn't fixed, and it can't be reproduced headlessly.
 - **Permit Paragons depends on the team's CloudFront** for tiles and the API.
   `CONTENT.md` §8.17 has the options.
+- **Clearline's patch set is the biggest on the site, and it's coupled to the team's
+  code.** Nine string patches on a Next.js app. If they restructure `use-live.ts`
+  or `ui.tsx` the build stops, which is the point, but someone has to re-patch it.
+  The pin makes that a choice rather than an emergency. Also not automated: the
+  patched page itself. The tests run on the pristine commit, and the board was
+  checked in a browser by hand (it boots in about 2.4 seconds, runs the day when
+  scrubbed to 13:00, 17:00 and 23:00, and logs no errors). Real WebGL was the
+  installed Chrome; headless Chrome's software GL is enough for MapLibre here.
+- **Clearline's scenario starts quiet.** Nothing changes until about 10:44 on the
+  board's clock, which is 20 real seconds at its default speed, and the first calls
+  have landed by about 11:15. That's the team's pacing, left alone, and the guide says so.
 - **Pyodide comes from jsdelivr**, the only live third-party dependency on the
   site that isn't Permit Paragons. Self-hosting it is about 12MB in git.
 - **Apple Picker is 16MB in git history**, permanently. Fine for one demo, not

@@ -17,6 +17,7 @@ ends up in front of a recruiter who may ask about it in an interview.
 | `FULL CV.pdf` (master CV, supplied 2026-10-13) | education, work, projects, skills, extracurriculars | authoritative |
 | `SSR_TSRPT.pdf` (SDSU unofficial transcript, printed 2026-07-10) | courses, grades, GPA through Spring 2026 | authoritative |
 | github.com/JakeRecharte | public repos (read 2026-10-13) | authoritative, see §4 |
+| `JakeRecharte/USC-Dual-Hacks`, README and `git log` (read 2026-10-18) | the Clearline project, §2.4 | authoritative for what it is and who committed what; **not** for the result or the team |
 | LinkedIn | n/a | **could not be read**, see §4 |
 
 The CV is a master record that feeds several resume tabs (Base, Robotics, Full
@@ -142,17 +143,83 @@ Spring 2026. That's a good story in an interview, not site copy.
 
 Ordered newest first, as the CV has them. "Repo" = verified public GitHub repo.
 
-**USC Dual Use hackathon, upcoming, as of 2026-10-14**
-- **Unverified beyond its existence.** Jake said he is going. That is the whole
-  fact. No date, team, problem statement or result is confirmed.
-- A public recruitment form describes a Dual-Use Hackathon at USC on
-  **Oct 16–18 2026** during LA Tech Week: 48 hours, 200+ student builders,
-  problem statement withheld until the Friday night, re-cut into a new
-  sub-problem every 8 hours. **That is third-party and unconfirmed**, it is not
-  on the site, and it must not go into copy until Jake confirms it is the same
-  event. Source: https://tally.so/r/7R0APa
-- On the board as an `UPCOMING` tile whose copy says only that it hasn't
-  happened yet. See §8.
+**Clearline, USC Dual Use hackathon, October 2026**
+- Hackathon: the **InnovateLA × Dual-Use Hackathon** at USC Viterbi, **Oct 16–18
+  2026**, lens **Resilience Comms**. All of it is from the repo's own README
+  (Jake's repo, read 2026-10-18), which closes the old question of whether it
+  was the LA Tech Week event (§8.16). A third-party recruitment form
+  (https://tally.so/r/7R0APa) also described "48 hours, 200+ student builders,
+  problem withheld until Friday night". Jake hasn't confirmed that, so none of it
+  is on the site.
+- **What it is**, from the README (which calls it **Line**): Clearline connects what officers find at the
+  door to the person who answers the phone during a wildfire evacuation. Three
+  pieces: a one-tap **officer page** (Cleared, Refused, No answer, timestamped,
+  held on the phone and sent later if there's no signal), a **voice agent**
+  (Retell) that takes the call, checks the address against the sweep log and
+  either says what was recorded and when or moves the call up the queue to a
+  person, and a **dispatch board** (one map of every house's status, the call
+  queue with the reason for each routing decision, and the door-knock list).
+  Incident: the Palisades Fire, January 7, 2025.
+- Stack, from `web/package.json` and the README: Next.js 15, React 19,
+  TypeScript, Tailwind 4, MapLibre GL 5 on an OpenFreeMap basemap, Supabase
+  (Postgres with Realtime), Retell AI for the voice agent, a Fastify server on
+  Railway, Vercel for the web app. The tile carries **TypeScript, React,
+  MapLibre, Supabase**: three are on the CV (§2.5), and MapLibre is named on
+  the row that used it, the same way Apple Picker's Unity is.
+- **What Jake built, in his words (2026-10-18) and confirmed by `git log`:** the
+  officer's one-tap page and the dispatch board, plus **parts of the Supabase
+  database, set up and wired into the front end**. His 39 commits
+  (`jakerecharte`) are the web app: the officer and dispatcher portals with
+  passcode sign-in, the Supabase-backed board, the paper-style map, the 8,103
+  OpenStreetMap building footprints, the GPS-first officer map, the five-colour
+  house rule, the Palisades Fire scenario, and the README. A teammate,
+  Adriancluna (67 commits), wrote the server, the Retell agent and its prompt and
+  tools, and also committed to `web/` (45 file touches against Jake's 123). "The
+  voice agent and the phone line are teammates'" is read off the log and Jake
+  hasn't disputed it, but he hasn't said it either.
+- A third author name, **"Tendie"** (4 commits: the initial commit and three PR
+  merges), is Jake's GitHub display name (§4), so it is probably him and is not
+  counted above.
+- **Result, Jake 2026-10-18: top third of the field, no placement.** That is
+  his phrase and the copy keeps it ("finished in the top third of the field
+  without placing"). No field size was given, so the copy has none, and a
+  percentile is his own estimate, not a published ranking. It is why the stat
+  row reads `2/3` (§3).
+- **Team of 4**, Jake 2026-10-18, matching `team_plan.md`'s "for 4 people"
+  (voice agent, backend and data, pitch, frontend and demo). The git log has
+  only three author names, so at least one member committed nothing to the
+  repo. The copy says "on a team of 4" and "teammates", and
+  names no one.
+- **The name is Clearline** (Jake, 2026-10-18), which is also what the Devpost
+  page is titled ("Connecting Wild-Fire Dispatchers with Real Time House
+  Evacuation", read 2026-10-18). The repo, the README, the app's header and its
+  browser title all still say **Line**. The tile is `Clearline` and the dialog
+  says the repo and the board's header still say Line, so a visitor who opens the
+  demo or the repo isn't left wondering. Those strings are the team's code and
+  are not patched in the build.
+- The headline number, **3,624 911 calls in 24 hours against a normal day of just
+  under 1,500** (LAFD, Jan 7 2025), is the team's own README and pitch citing
+  LAFD. It is on the tile's dialog, and I did not check the original source.
+- Repo: https://github.com/JakeRecharte/USC-Dual-Hacks, **Jake's own**, public,
+  MIT, 109 commits across three author names. `liveUrl` is
+  https://usc-dual-hacks.vercel.app (HTTP 200 on 2026-10-19), which Jake says is
+  hosted live with the phone line technically working. Its sign-in screen prints
+  the demo shift codes by design, so judges could get in (§8.27). `devpostUrl`
+  is https://devpost.com/software/clearline-q2wktm (200 on 2026-10-18, supplied
+  by Jake, who is on its team). The emailed link carried `ref_*` and `utm_*`
+  tracking parameters and a `#app-team` anchor; the stored URL is the bare one.
+- **Demo on the site since 2026-10-18**: the team's own dispatch board, built
+  from `10fb4ea` by `scripts/build-usc-dual-hacks.sh` and opened on its
+  Scenario mode, which replays the day on 8,088 placeholder households. **Real:**
+  the map, the OpenStreetMap footprints, the 24-beat timeline from the LAPD and
+  LAFD after-action reports and press, each street's researched threat level, and
+  where and when the fire was documented. **Simulated:** what happens at any one
+  house, every call and caller, the fire's shape between its documented points,
+  and all addresses and resident names. The board's own banner says so and can't
+  be closed. Nothing is connected behind it: no database, no phone line. The
+  live site is the one with both connected, and the demo's note says so.
+- Clearline is the **newest** project, so it takes the first seat on the board that
+  the USC Dual Use placeholder held.
 
 **Fool's Mate, September 2026 – Present**
 - **Verified fact in full:** "a 2D game I'm developing", started September 2026
@@ -410,6 +477,9 @@ Ordered newest first, as the CV has them. "Repo" = verified public GitHub repo.
   (ShaderLab + HLSL too). It is now on the site through that project's tech
   chips, which is the only way a tool should appear here, see the "no toolkit
   section" note in §3. Adding it to the CV is Jake's call (§8).
+- **MapLibre** is not on the CV; it is the map library in the Clearline project's
+  `web/` app (§2.4) and appears only as that project's chip, on the same rule.
+  Next.js and Tailwind are in the same app and are not on the tile.
 - **OpenBSD, BIND, OpenLDAP and OpenSSL** are not on the CV either; they are
   what the Homelab labs actually use (§2.4) and they appear only as that
   project's chips, on the same rule. `Linux/Unix` already covers the family in
@@ -523,25 +593,33 @@ internship" in the header.
    NAVSEA sits here, not in projects, per Jake: it was a program he attended,
    not a thing he built. The `PROGRAM` chip is what keeps that honest.
 
-The board holds six tiles as of 2026-10-14, **strictly newest first** (§5),
-which is also the board's reading order and decides which squares are filled:
-**USC Dual Use, Fool's Mate, Lightning McShower, Apple Picker, Homelab, AI
-Trading Model**. Six is two full rows with no filler at all. Homelab (added
+The board holds six tiles as of 2026-10-14, **newest first with one
+exception** (§5), which is also the board's reading order and decides which
+squares are filled: **Fool's Mate, Clearline, Lightning McShower, Apple Picker,
+Homelab, AI Trading Model**. The exception is Fool's Mate and Clearline, swapped
+on 2026-10-18 at Jake's request: Clearline is the newer one (Oct 2026 against a
+Sep 2026 start), but Fool's Mate is still being built, and Jake wants the thing
+in flight first. Six is two full rows with no filler at all. Homelab (added
 2026-10-14 at Jake's request) took the seat the lone inert cell held. Apple
 Picker and AI Trading Model swapped on 2026-10-14 at Jake's request. The
 board had drifted out of the order §5 already specified. Lightning McShower
 and Apple Picker are both September 2026; the CV's own order breaks that tie,
 and Homelab sits below all three on an August start.
 
-The two unfinished ones lead on purpose: a board that opens with what's in
-flight reads as current. **The tile chip says what a thing is, never where it
-is in its life**, `kind`, always, so a hackathon reads as `HACKATHON` and not
-as `UPCOMING` (changed 2026-10-14 at Jake's request; it is the same axis rule
-§5 sets for the Now rail's badge). Nothing is lost, because `period` carries
-the state in words ("Upcoming", "Sep 2026 - Now"), and the dialog shows the
-`status` chip beside the `kind` one. They are also the two
-thinnest tiles on the site. If either stays contentless for long, it is doing
-less work than the filler it displaced.
+Clearline was the `UPCOMING` USC Dual Use placeholder until 2026-10-18, when the
+event happened and the tile was filled in, and it held the first seat until Jake
+swapped it with Fool's Mate the same day. That puts the one unfinished tile that
+sits above finished ones first, which does the work of a board that opens with
+what's in flight reading as current; Homelab is the other unfinished tile, lower
+down on an August start. **The tile chip says what a thing is, never where it is
+in its life**, `kind`, always, so a hackathon reads as `HACKATHON` and not as
+`UPCOMING` (changed 2026-10-14 at Jake's request; it is the same axis rule §5
+sets for the Now rail's badge). Nothing is lost, because `period` carries the
+state in words ("Oct 2026", "Sep 2026 - Now"), and the dialog shows the `status`
+chip beside the `kind` one. Fool's Mate is also the thinnest tile on the site,
+and now the first one a visitor reads. If it stays contentless for long, it is
+doing less work than the filler it displaced, and the seat it holds is the
+costliest on the board.
 
 Off the board, and why: **Avalanche NFT** (§2.4. One CV line and no link isn't
 a tile; waiting on detail), the **Portfolio site** itself (its repo 404s (§4,
@@ -584,7 +662,7 @@ Extracurriculars have no section today. ColorStack Co-VP and the Sigma Phi
 Delta chairs are real leadership signal. Either add a small section or fold the
 strongest one into Experience, flagged in §8.
 
-**Stats row. `2/2` HACKATHONS/PLACED, `7` PROJECTS/FINISHED, `1`
+**Stats row. `2/3` HACKATHONS/PLACED, `8` PROJECTS/FINISHED, `1`
 PUBLISHED/PACKAGE** (set 2026-10-14, replacing the project-scoped pair that
 shipped a day earlier).
 
@@ -604,8 +682,8 @@ software projects wouldn't.
 
 | Value | Label | Sourced from | On the site? |
 | --- | --- | --- | --- |
-| `2/2` | HACKATHONS / PLACED | both entered, both placed | **yes** |
-| `7` | PROJECTS / FINISHED | Jake's count, 2026-10-14 | **yes** |
+| `2/3` | HACKATHONS / PLACED | three entered, two placed (Permit Paragons 4th of 100+, Lightning McShower 1st in hardware and 4th of 200); Clearline finished top third without placing | **yes** |
+| `8` | PROJECTS / FINISHED | Jake's count: 7 on 2026-10-14, 8 on 2026-10-18 | **yes** |
 | `1` | PUBLISHED / PACKAGE | CWG on PyPI (§2.4) | **yes** |
 | `8` | LANGUAGES / USED | §2.5 languages list | no, closer to an assertion |
 | `82` | PERCENT / ACCURACY | GradeFlow ML model | no, project-scoped |
@@ -613,13 +691,20 @@ software projects wouldn't.
 
 Two of the three live ones need watching:
 
-- **`2/2` has an expiry condition.** It claims he has placed in every hackathon
-  he has entered. A third hackathon without a placement makes it false, and it
-  has to drop to a plain `2` the same day. Flagged in §8.
-- **`7` is Jake's number, not arithmetic.** §2.4 lists seven builds, but
+- **`2/3` has an expiry condition: the next hackathon.** It was `2/2` until
+  2026-10-18, when Clearline became a third entry without a placement and Jake said
+  to move it to `2/3` (§8.18, closed). Every hackathon after this changes the
+  denominator, and the numerator if it places, so the stat is only true on the
+  day it is edited. It is a fraction rather than a plain `2` because the
+  fraction is the honest half: placing twice says less than placing twice out
+  of three.
+- **`8` is Jake's number, not arithmetic.** §2.4 lists the builds, but
   "finished" is genuinely ambiguous. CWG is published yet still ongoing,
   BoulderBuddy shipped but stale, and the board carries two tiles that aren't
-  finished at all. He set it to 7 on 2026-10-14. Don't recompute it; ask him.
+  finished at all. He set it to 7 on 2026-10-14, and it went to 8 on 2026-10-18
+  when Clearline was done: **the +1 is my reading of his question that day, not
+  a count he gave me**, and it assumes Clearline wasn't already one of the
+  seven (it was an upcoming placeholder then). Don't recompute it; ask him.
 
 "Years coding" has no source. It was on the site until 2026-10-13 and is now
 gone. Labels must be two words, ≤10 chars each (§5).
@@ -691,7 +776,8 @@ behaviour.
 - `featuredProjects` is **exactly 3**, in Jake's ranked order (not
   chronological). Three is the grid; a fourth breaks `lg:grid-cols-3` into an
   orphan row and stops the set reading as a shortlist.
-- `otherProjects` is **2–6**, newest first. The board pads its last row, so
+- `otherProjects` is **2–6**, newest first, except that Fool's Mate (in
+  progress) leads Clearline at Jake's call (§3). The board pads its last row, so
   **3 and 6 are the only counts with no inert filler**: it has been at 6
   since Homelab went on (2026-10-14). Past 6 is untested: nine would be three
   clean rows, but a board that long stops reading as the footnote to the
@@ -701,7 +787,7 @@ behaviour.
   step up; now that cards are full width a 30-char title fits on one line there,
   so the limit is about the board's squares, where it still wraps.
 - `kind` is `PROJECT` or `HACKATHON`. `HACKATHON` means a weekend build judged
-  against other teams (Lightning McShower, Permit Paragons). The chip says it,
+  against other teams (Lightning McShower, Permit Paragons, Clearline). The chip says it,
   so the blurb must not repeat the word.
 - `period` a month (`Sep 2026`), a span, or `May 2026 - Now` while it's
   running. Time lives here, never in `kind`.
@@ -721,9 +807,9 @@ behaviour.
   the source does.
 - `repoUrl` / `liveUrl` optional. The row or card links to `liveUrl ??
   devpostUrl ?? repoUrl`; with neither it renders with **no arrow**, which is
-  honest for the two placeholders that have nothing to show yet, USC Dual Use
-  (upcoming) and Fool's Mate (in progress). Every finished project now has a
-  destination (§8.3), so a linkless *finished* one is a bug, not a style.
+  honest for the placeholders that have nothing to show yet, Fool's Mate (in
+  progress) and Homelab (in progress, no repo). Every finished project now has
+  a destination (§8.3), so a linkless *finished* one is a bug, not a style.
 - `detail` **2–3 paragraphs**, each ~150–300 chars, on every board project.
   This is what the dialog is *for* now that the tile carries the blurb and the
   tech chips: paragraph one says what the thing does, two says what Jake built
@@ -974,17 +1060,25 @@ left, roughly in order of how much they block.
     Avalanche alone leaves two inert fillers and adding it **with** the
     Portfolio tile (§8.1) leaves one. It takes three more to be clean at
     nine, which is a longer board than this section probably wants.
-16. **USC Dual Use. Is it the Oct 16–18 LA Tech Week one?** (§2.4 has what I
-    found and why none of it is on the site.) Either way, after it happens:
-    what you built, who with, and how it placed. Until then the tile says only
-    that it's coming.
+16. ~~**Clearline (USC Dual Use): result, team, role, Devpost.**~~ **Mostly
+    closed 2026-10-18.** The README answered whether it was the Oct 16–18 event,
+    and Jake supplied the rest: top third of the field with no placement, a team
+    of 4, what he built (the officer page, the board, and parts of Supabase wired
+    into the front end), the Devpost URL, and that the name is Clearline, not
+    Line. All of it is folded into §2.4 and live on the tile. One thing is still
+    open: **should the teammates be named?** The copy says "teammates" and "a
+    team of 4" and no one by name. Names are yours to give. Adriancluna is the
+    only other author in the log, and crediting teammates with the voice agent
+    and the phone line is read off that log.
 17. **Fool's Mate needs everything.** Right now the site says "a 2D game,
     started in September" because that is all I have. Most useful: what the
     game is, engine and stack, whether it's chess-related at all, whether
     there's a repo (public or to-be), and whether anyone else is on it.
-18. **`2/2` HACKATHONS PLACED goes stale the moment it isn't true.** Tell me
-    if you enter another one and don't place, and I'll drop it to a plain `2`.
-    Same if you've already been to hackathons the CV doesn't list.
+18. ~~**`2/2` HACKATHONS PLACED needs your answer today.**~~ **Closed
+    2026-10-18.** Clearline finished in the top third without placing, so Jake said to
+    make it `2/3`, and it is (§3). It goes stale again at the next hackathon.
+    Still open from the old question: any hackathon you've been to that the CV
+    doesn't list, which would change both numbers.
 19. Your GitHub display name is "Tendie" and your bio is one line. Recruiters
     click through from this site. Want it tidied?
 20. Anything on LinkedIn that isn't in the CV? I can't read it (§4), so paste
@@ -1058,6 +1152,26 @@ left, roughly in order of how much they block.
       `Silenced`, `The Jester's Blade`, `Untitled_2`, an `IMG_0266.HEIC`, and
       TIFF originals of two that are already up). I used only what you
       pointed at.
+
+27. **The Clearline demo leans on three things outside this repo, all of which fail
+    soft.** DEMO.md §2.2 wants level 4 and 5 dependencies named with an owner:
+    - **OpenFreeMap** (`tiles.openfreemap.org`) serves the basemap tiles and map
+      glyphs. A free public service, keyless, owned by its maintainers. If it
+      goes away or starts gating tiles, as CARTO did (§2.4, Permit Paragons), the
+      board keeps its perimeter, its houses and its fire on a blank basemap.
+      Permit Paragons' basemap comes from the same place. About 1.7MB of the
+      demo's roughly 3MB is these tiles.
+    - **Google Fonts** serves the board's two typefaces (Libre Caslon Display and
+      Geist Mono). If it's unreachable the board falls back to Georgia and the
+      system mono, and nothing else changes.
+    - **`usc-dual-hacks.vercel.app`** is the tile's `liveUrl` ("View it live"),
+      and it's yours. **Kept on, at Jake's call 2026-10-18:** it's hosted live and
+      the phone line technically works. It dies if that Vercel project is
+      deleted. Its sign-in screen prints the demo shift codes because the README
+      says so, for judges; the README's `HIDE_DEMO_CODES=1` turns that off, and if
+      you do, a recruiter who clicks the link lands on a code prompt with no
+      code. Worth re-checking before an application round, like §8.17.
+
 ---
 
 ## 9. Workflow for a content change
