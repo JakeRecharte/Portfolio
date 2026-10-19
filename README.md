@@ -4,8 +4,8 @@ Personal portfolio site: projects, experience, and contact info.
 
 **Jake Recharte** · Computer Science, San Diego State University
 
-See [TODO.md](./TODO.md) for the project plan, goals, and phase checklist, and
-[CONTENT.md](./CONTENT.md) for the content fact sheet. Read it before editing
+See [TODO.md](./docs/TODO.md) for the project plan, goals, and phase checklist, and
+[CONTENT.md](./docs/CONTENT.md) for the content fact sheet. Read it before editing
 anything in `src/content/` or writing copy.
 
 ## Stack

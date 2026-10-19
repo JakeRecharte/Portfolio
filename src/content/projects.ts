@@ -23,7 +23,7 @@
  * project that has one.
  */
 export type DemoKey =
-  "ai-trading-model" | "apple-picker" | "cwg" | "permit-paragons";
+  "ai-trading-model" | "apple-picker" | "clearline" | "cwg" | "permit-paragons";
 
 export type ProjectDemo = {
   key: DemoKey;
@@ -143,24 +143,6 @@ export const featuredProjects: Project[] = [
 
 export const otherProjects: Project[] = [
   {
-    // PLACEHOLDER: it hasn't happened. Jake said he's going; that is the
-    // whole verified fact. A public recruitment page describes a 48-hour,
-    // 200+ builder event on Oct 16-18 2026 with the problem statement held
-    // back until the Friday, but that is third-party and unconfirmed, so none
-    // of it is on the site. Confirm before any of it goes in the copy.
-    slug: "usc-dual-use",
-    title: "USC Dual Use",
-    kind: "HACKATHON",
-    status: "UPCOMING",
-    period: "Upcoming",
-    blurb:
-      "A dual-use hackathon at USC. This one hasn't happened yet, so whatever gets built lands here afterwards.",
-    detail: [
-      "A dual-use hackathon at USC, coming up. Nothing's been built yet, so there's nothing here to judge.",
-      "This tile is here so the board reads as current rather than complete. It gets the write-up, the stack and the result once there is one.",
-    ],
-  },
-  {
     // PLACEHOLDER: "a 2D game I'm developing, started last month" is all
     // that's verified (Jake, 2026-10-14). No repo is public under this name.
     // Genre, engine, stack and what the game actually is: all open (§8).
@@ -175,6 +157,42 @@ export const otherProjects: Project[] = [
       "A 2D game, in the works since September 2026.",
       "Too early for a write-up, so this tile is a marker, not a claim. It gets the real description, the stack and a way to play it once those exist.",
     ],
+  },
+  {
+    // The USC Dual Use placeholder, filled in now that it has happened. What
+    // it is comes from Jake's own repo (CONTENT.md §2.4); the team of 4, the
+    // top-third finish with no placement, and what he built (the officer page,
+    // the board, and parts of Supabase wired into the front end) are his own
+    // words, 2026-10-18, including the name: Clearline. The repo and the app's
+    // own header still say Line, so the write-up says so. The 3,624 calls are
+    // the team's own pitch citing LAFD, not something checked here.
+    slug: "clearline",
+    title: "Clearline",
+    kind: "HACKATHON",
+    period: "Oct 2026",
+    blurb:
+      "On a team of 4: in a wildfire, families call 911 about houses already swept, and nobody can say. Clearline is the officer page, voice agent and dispatch board that can. I built the page and board.",
+    detail: [
+      "Clearline connects what officers find at the door to whoever answers the phone. An officer taps Cleared, Refused or No answer at each house, and a voice agent checks the caller's address against that record and says what was recorded and when, or moves the call up the queue for a person.",
+      "Built at USC's Dual-Use hackathon, where we finished in the top third of the field without placing. I built the officer's one-tap page and the dispatch board, and set up parts of the Supabase database and wired it into the front end. Teammates built the voice agent and the phone line.",
+      "It's set in the Palisades Fire, when LAFD took 3,624 911 calls in a day against a normal day of just under 1,500. The board can replay that day on about 8,100 real buildings, with simulated residents and calls. The repo and the board's header still say Line.",
+    ],
+    tech: ["TypeScript", "React", "MapLibre", "Supabase"],
+    repoUrl: "https://github.com/JakeRecharte/USC-Dual-Hacks",
+    devpostUrl: "https://devpost.com/software/clearline-q2wktm",
+    liveUrl: "https://usc-dual-hacks.vercel.app",
+    demo: {
+      key: "clearline",
+      label: "The dispatch board, replaying the fire",
+      wide: true,
+      guide: [
+        "It opens on the Palisades Fire's day, 10:00 to 00:30, and plays by itself. Nothing changes until about 10:44, so drag the slider ahead if you don't want to wait.",
+        "Houses take the colour of their last record: green cleared, gold evacuating, orange no answer, red refusing or a caller who needs a person, grey unknown. Watch it fill in street by street.",
+        "Each call in the queue says why it was routed where it was: a call about a house already cleared is answered from the record, and a panicked caller goes straight to a person.",
+        "Open Suggested for what the board would send, re-contact and medical standby among them, each with its reasons. Confirm marks it in the simulation. Nothing is dispatched, here or in the real thing.",
+      ],
+      note: "This is the team's own dispatch board, built from their repo as it stood on the event's last day, not a recording. Nothing is connected behind it here (the live site linked below has the database and phone line), so every status, call and caller and the fire's spread is simulated, and the addresses and residents are placeholders. The map, buildings and timeline are real. It's a prototype, not a tool for a real incident.",
+    },
   },
   {
     slug: "lightning-mcshower",

@@ -14,6 +14,9 @@ import type { NextConfig } from "next";
  *
  * This does not proxy WebSockets, so the demo's RAG chat does not work here;
  * the map, the filters and the parcel dashboard do.
+ *
+ * The Clearline demo (`public/demos/usc-dual-hacks/`) is a static export and needs
+ * no proxy, only the one rewrite below to find its entry.
  */
 const nextConfig: NextConfig = {
   async rewrites() {
@@ -33,6 +36,12 @@ const nextConfig: NextConfig = {
       {
         source: "/demos/permit-paragons/parcel/:path*",
         destination: "/demos/permit-paragons/index.html",
+      },
+      // Clearline is one page with no client-side routes, so its entry is the
+      // whole list.
+      {
+        source: "/demos/usc-dual-hacks",
+        destination: "/demos/usc-dual-hacks/index.html",
       },
     ];
   },

@@ -274,6 +274,30 @@ input the demo cannot precompute.
         in git, worth doing if the CDN ever proves flaky, or if the repo is
         getting a size pass anyway.
       - Two bugs in `cwg` came out of this; see CONTENT.md §8.15.
+- [x] **Clearline (USC Dual Use)**: shipped 2026-10-18. The team's own dispatch
+      board, built from Jake's `USC-Dual-Hacks` repo at `10fb4ea` by
+      `scripts/build-usc-dual-hacks.sh` into `public/demos/usc-dual-hacks/`, and
+      opened on its Scenario mode: the Palisades Fire, replayed on 8,088
+      placeholder households with the team's own seeded engine. No server, no
+      database, no phone line. About 1.1MB plus 1.7MB of OpenFreeMap tiles,
+      fetched only when the poster is clicked.
+      - The real app is a Next.js server, so the build is a static export with
+        **nine patches**, all deployment concerns and all checked (the build
+        stops if one stops matching). They are listed in the script's header and
+        summarized in DEMO.md §3.
+      - **Verified:** the team's own 156 tests run against the unpatched commit
+        inside the build and gate it. In a real Chrome the board boots in about
+        2.4s, runs the day when scrubbed to 13:00, 17:00 and 23:00, makes no
+        request that isn't to this origin, OpenFreeMap or Google Fonts, and logs
+        no errors once a hydration warning (patch 9) was fixed.
+      - **Unverified:** the patched page isn't under test, only the pristine
+        source is. Safari and Firefox weren't tried. A phone got one pass at
+        390px: it loads and plays, but a dashboard is a laptop thing, and the
+        poster says so.
+      - Placeholder USC Dual Use tile replaced by the real project. Result,
+        team size, Jake's role and the Devpost link all came from him the same
+        day (top third, no placement; team of 4), and the `2/2` stat became
+        `2/3`. CONTENT.md §2.4, §3.
 - [ ] **BoulderBuddy**: `flutter build web` with a seeded demo account.
       Supabase is already the hosted backend, so this adds no infrastructure.
 - [ ] Lightning McShower is hardware, video only, never a live demo.
@@ -477,3 +501,26 @@ The code is the easy half. This is what actually gates shipping.
   files still hold one: `AGENTS.md`, which `next dev` rewrites from its own
   template, and the vendored Permit Paragons bundle, which is the team's
   compiled application rather than Jake's copy.
+- **2026-10-18**: **Clearline, the USC Dual Use project, went on the board with a
+  demo**, replacing the `UPCOMING` placeholder in the same seat. It is the fifth
+  demo, and like Permit Paragons it runs a hackathon team's own application;
+  unlike it, the repo is Jake's own. The board is the team's own code and the
+  hard part was the backend: the real app has a
+  signed-cookie guard, API routes, Supabase and a Retell phone line, none of
+  which this site may run (DEMO.md §2.2). The Scenario mode the team built on
+  the last day turned out to be a layer that only reads the household list, so
+  the build swaps that one data source, opens on Scenario, and leaves everything
+  the board computes and draws as it was. The copy claims no result and no team
+  size because neither was known when it went on (CONTENT.md §8.16); Jake
+  supplied both the same evening, plus the Devpost link, and the `2/2` stat
+  moved to `2/3` (§8.18). Two docs notes came out of
+  it: `wide` and a portrait-below-`sm:` frame in DESIGN.md §3, and a nine-patch
+  entry in DEMO.md §2.3. The vendored bundle is the team's compiled output, so
+  like Permit Paragons' it keeps whatever dashes the team wrote (their `<title>`
+  has one) and is outside the em dash rule.
+- **2026-10-18**: Clearline and Fool's Mate swapped places on the board at
+  Jake's request, so Fool's Mate leads. That is the one break in the board's
+  newest-first rule (CONTENT.md §3, §5), made on purpose: the thing still being
+  built goes first. The checker fill follows array order, so the two tiles also
+  traded which one is filled.
+- **2026-10-18**: The PROJECTS FINISHED stat went from 7 to 8 now that Clearline is done. Jake's count, so the +1 is an assumption (CONTENT.md §3).

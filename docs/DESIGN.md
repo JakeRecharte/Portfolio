@@ -17,6 +17,7 @@ use `/[0.03]` is how a design system dies.
 | --- | --- |
 | `DESIGN.md` (this) | how it looks and moves |
 | [CONTENT.md](./CONTENT.md) | what it says, and length limits per field |
+| [DEMO.md](./DEMO.md) | what runs, where it comes from, how it's rebuilt |
 | [TODO.md](./TODO.md) | what gets built next |
 
 Length limits live in `CONTENT.md` §5 because they are content rules, but they
@@ -38,7 +39,7 @@ fades up once as it enters the viewport.
 
 ### 2.1 Color
 
-Three CSS custom properties in [globals.css](./src/app/globals.css), exposed to
+Three CSS custom properties in [globals.css](../src/app/globals.css), exposed to
 Tailwind through `@theme inline`:
 
 | Token | Value | Tailwind class | Use |
@@ -138,7 +139,7 @@ Two consequences of stacking, both load-bearing:
 
 **The checkerboard is a third shape, and it is not a card grid.** The
 additional projects
-([ProjectBoard](./src/components/ProjectBoard.tsx)) are square tiles three
+([ProjectBoard](../src/components/ProjectBoard.tsx)) are square tiles three
 across, and the distinction that keeps them from competing with the featured
 cards is that they have no gap, no radius of their own and no fill of their
 own: they are cells of one board, not objects on the page. The recipe:
@@ -212,7 +213,7 @@ rather than a pattern, so `ProjectBoard` appends inert `aria-hidden` cells to
 complete it, continuing the checker and carrying nothing else.
 
 **The art gallery is a fourth shape, and the reason is the content.** The
-`/art` page ([ArtGallery](./src/components/ArtGallery.tsx)) is uncropped
+`/art` page ([ArtGallery](../src/components/ArtGallery.tsx)) is uncropped
 masonry, CSS multi-column, two across on a phone and three from `lg:`:
 
 | Part | Classes |
@@ -262,7 +263,7 @@ state and no arrow, because a piece is not a link. If pieces ever become
 clickable, that is the dialog recipe below, not a new one.
 
 **The profile picture is one of the pieces.** The header's avatar
-([Header](./src/components/Header.tsx)) is *Cradled Fortress*, served from
+([Header](../src/components/Header.tsx)) is *Cradled Fortress*, served from
 `art.ts` rather than copied, same file, same `alt`, same dimensions as the
 gallery renders. It is `aspect-square w-32 sm:w-36` on §2.3's tile frame with
 the image `block h-full w-full` inside it, and the choice of piece is
@@ -276,11 +277,11 @@ rather than `/60` because a modal sits over arbitrary content and has to win;
 it is the only use of that value. Size is `h-[90dvh] w-[92vw] max-w-6xl`, the
 same `max-w-6xl` outer bound as the page shell (§2.6), so a modal never reads
 wider than the site. The resume viewer
-([ResumeDialog](./src/components/ResumeDialog.tsx)) uses that full size; a modal
+([ResumeDialog](../src/components/ResumeDialog.tsx)) uses that full size; a modal
 that only holds a few rows
-([ContactDialog](./src/components/ContactDialog.tsx)) is
+([ContactDialog](../src/components/ContactDialog.tsx)) is
 `w-[min(92vw,26rem)]` with `p-6 sm:p-8` and sizes to its content instead. The
-**About** modal ([AboutDialog](./src/components/AboutDialog.tsx)) is the third
+**About** modal ([AboutDialog](../src/components/AboutDialog.tsx)) is the third
 size and introduces nothing: it borrows the project dialog's write-up-only
 `max-h-[90dvh] w-[min(92vw,32rem)]`, which is about half the `max-w-6xl` shell
 and a little under, wide enough for prose at §2.5's `max-w-lg` measure, narrow
@@ -296,7 +297,7 @@ paragraphs `space-y-3` within one, and the single link out (`/art`) is the §3
 row recipe on a `rounded-2xl` tile with the arrow at `size-4`, because it is
 the only thing in the dialog that leads anywhere.
 
-**The project dialog ([ProjectDialog](./src/components/ProjectDialog.tsx))
+**The project dialog ([ProjectDialog](../src/components/ProjectDialog.tsx))
 has two sizes, and the content picks.** It takes its trigger as `children`
 plus a class, the same way `ResumeDialog` and `ContactDialog` do (§4 rule 4),
 which is what lets one component serve both the checkerboard tiles and the
@@ -328,7 +329,7 @@ never fills one, only outlines it.
 
 ### 2.5 Type
 
-Two fonts, both `next/font/google`, wired in [layout.tsx](./src/app/layout.tsx):
+Two fonts, both `next/font/google`, wired in [layout.tsx](../src/app/layout.tsx):
 **Inter Tight** (`font-sans`, default) and **JetBrains Mono** (`font-mono`).
 
 Mono is not for code. It marks machine-ish facts: dates, periods, badges, and
@@ -352,7 +353,7 @@ the eyebrow label. If it's a date or a status, it's mono; otherwise it isn't.
 **Display headings are always two lines**, first `text-white`, second
 `text-white/20`, and the pair must read as one phrase
 (`FEATURED`/`PROJECTS`).
-Use [SectionHeading](./src/components/SectionHeading.tsx) for every one of
+Use [SectionHeading](../src/components/SectionHeading.tsx) for every one of
 them, including a hero: `size="hero"` is the step up in the table above and
 `size="section"` (the default) is everything inside a page. Nothing hand-rolls
 this markup any more. The homepage hero did until 2026-10-14, which is the
@@ -368,12 +369,12 @@ Measure is capped deliberately: `max-w-xl` for a lead, `max-w-lg` for body. Full
 
 ### 2.6 Spacing rhythm
 
-Page shell, from [page.tsx](./src/app/page.tsx):
+Page shell, from [page.tsx](../src/app/page.tsx):
 `mx-auto w-full max-w-6xl px-5 lg:px-8 pt-12 lg:pt-16 pb-28`.
 **Every route repeats it verbatim**: `/art` carries its own copy rather than
 inheriting one, because a second page at a different measure would read as a
 different site. The fog, the nav and the footer are not in a page at all: they
-are in [layout.tsx](./src/app/layout.tsx), which wraps both routes.
+are in [layout.tsx](../src/app/layout.tsx), which wraps both routes.
 The nav is `sticky`, not `fixed`, so it occupies its own 64px and the shell's
 top padding is the gap *below* it, not clearance for it. It was `pt-24
 lg:pt-28` while the nav floated. `max-w-6xl` is the hard outer bound, and the
@@ -401,7 +402,7 @@ they matter.
 
 ### 2.7 Motion
 
-All scroll animation goes through [Reveal](./src/components/Reveal.tsx). Do not
+All scroll animation goes through [Reveal](../src/components/Reveal.tsx). Do not
 hand-write a `motion.div` in a section.
 
 - Enter: `opacity 0 → 1`, `y: 24 → 0`, `duration: 0.6`,
@@ -420,7 +421,7 @@ per component. Nothing may be *only* legible mid-animation.
 ## 3. Patterns
 
 **A channel gets its mark.** GitHub, LinkedIn, Email and Resume carry an
-[Icon](./src/components/Icon.tsx) in `text-accent`, `size-5` on a contact row
+[Icon](../src/components/Icon.tsx) in `text-accent`, `size-5` on a contact row
 and `size-4` in a header pill, with `gap-3` and `gap-2` respectively. **The
 label sets the icon size, not the other way round:** an icon runs one step
 above its text (`size-4` beside `text-sm`, `size-5` beside `text-lg`), which is
@@ -432,7 +433,7 @@ never amber as a fill. Adding a fifth channel means adding it to `IconName`,
 not writing an inline `<svg>` in a section.
 
 **A row that leads somewhere** gets `group`, `transition-colors
-hover:bg-white/[0.03]`, and an [ArrowLink](./src/components/ArrowLink.tsx) at
+hover:bg-white/[0.03]`, and an [ArrowLink](../src/components/ArrowLink.tsx) at
 the far right in `text-accent`. The arrow's `group-hover` nudge is the hover
 affordance. Don't also underline or scale. A row or card with no destination
 gets no arrow, which is how a project with no public repo reads as one.
@@ -445,7 +446,7 @@ corner would look broken rather than linkless. It steps down to `size-4` below
 size").
 
 **The contribution graph is one link, not a row.** The whole figure
-([ContributionGraph](./src/components/ContributionGraph.tsx)) is an anchor to
+([ContributionGraph](../src/components/ContributionGraph.tsx)) is an anchor to
 `site.links.github`, so the obvious click target behaves. It carries the
 `ArrowLink` beside its caption rather than at a far-right edge, at `size-3.5`
 (the third step of "the label sets the icon size", the one that belongs to
@@ -457,10 +458,10 @@ would read as a change in the data. The anchor owns the accessible name
 `aria-hidden`, so the caption isn't announced twice.
 
 **A demo is a figure, a control and a table, in the site's own palette.**
-A live demo ([demos/](./src/components/demos/)) renders inside the project
+A live demo ([demos/](../src/components/demos/)) renders inside the project
 dialog's demo column and may not reach for colors the rest of the site does not
 have. The recipe, from
-[TradingDemo](./src/components/demos/TradingDemo.tsx):
+[TradingDemo](../src/components/demos/TradingDemo.tsx):
 
 | Part | Classes |
 | --- | --- |
@@ -499,7 +500,7 @@ a `ProjectDemo` drops the `lg:grid lg:grid-cols-3` split, so the demo spans
 the full width and the write-up sits underneath instead of beside it. Spending
 a third of the dialog on prose next to a map is the wrong trade; for a stepper
 or a chart, where the guide is read *while* the demo runs, the split is right.
-Permit Paragons is the only `wide` demo.
+Permit Paragons and Clearline are the `wide` demos.
 
 **A heavy demo is a poster first, and loads only on a click.** A compiled
 build (a Unity WebGL game, anything in the tens of megabytes) must not start
@@ -520,11 +521,18 @@ Picker's 960×600 `defaultScreenWidthWeb`. A different build gets a different
 ratio, and that is the one place a demo may introduce a value without adding
 it here.
 
+Two are on record. Permit Paragons is `aspect-[4/3]`, a map that wants to be
+wide. Clearline is `aspect-[3/4] sm:aspect-[4/3]`: it frames a dashboard that scrolls
+rather than a fixed canvas, so below `sm:` it goes portrait. At 4:3 a phone gets
+a 307×230 window onto a stacked page, and at 3:4 it gets a usable one. A demo
+whose page scrolls may do the same; one with a fixed-size canvas, like the Unity
+build, may not, since there the ratio is the build's.
+
 **The cost line is not optional.** A poster states what the click will cost
 and what it needs before it is clicked, the download size and, where it
 matters, the input: Apple Picker is mouse-driven and has nothing to aim with
 on a phone. A demo that only reveals that after thirty megabytes has lied by
-omission. `Play` is the one mark in [Icon](./src/components/Icon.tsx) that
+omission. `Play` is the one mark in [Icon](../src/components/Icon.tsx) that
 isn't a contact channel; it is on the same stroke recipe (§3) and outlined
 rather than filled for the same reason the brand glyphs are.
 
@@ -534,7 +542,7 @@ works: a mono line and the progress bar above. Chunk with `setTimeout`, not
 would strand the run at whatever percent it had reached.
 
 **A demo that steps through something gets one scrub control, and everything
-else reads off it.** [CwgDemo](./src/components/demos/CwgDemo.tsx) is the
+else reads off it.** [CwgDemo](../src/components/demos/CwgDemo.tsx) is the
 pattern: a range input is the single source of "where are we", and the code
 view, the variables and the output are all derived from its value rather than
 holding state of their own. Playback is a `setTimeout` chain at 700ms, and it
@@ -583,7 +591,7 @@ because §2.1 forbids text on an amber field and there is no other fill.
 
 **A section** is `<section id="…" className="scroll-mt-24">`, opens with a
 `<Reveal><SectionHeading /></Reveal>`, then `mt-12` and its list. The `id` must
-match an entry in [Nav](./src/components/Nav.tsx), and `scroll-mt-24` must stay
+match an entry in [Nav](../src/components/Nav.tsx), and `scroll-mt-24` must stay
 or the fixed nav covers the heading on anchor jump.
 
 **A subsection** is the one exception to that: a second list belonging to the
@@ -593,7 +601,7 @@ because the nav points at the parent. `Additional projects` is the only one:
 the featured cards own the `PROJECTS` title, and a second display heading would
 split one list into two sections in the reader's head. It sits `mt-16 lg:mt-20`
 under its parent, which means the pair has to be wrapped in a plain `div` in
-[page.tsx](./src/app/page.tsx): `main`'s `space-y` out-specifies a child's
+[page.tsx](../src/app/page.tsx): `main`'s `space-y` out-specifies a child's
 `mt-*` and would otherwise force the full between-sections gap.
 
 **A list of things** is `<ul>`/`<ol>` with `divide-y divide-white/10` and
@@ -623,7 +631,7 @@ links get `target="_blank" rel="noreferrer"`; internal paths must not.
    until that section came off the page). A modal trigger is an anchor to the
    thing it shows, never a bare `<button>`, **with one exception, and the
    test is whether a destination exists at all.** The About modal
-   ([AboutDialog](./src/components/AboutDialog.tsx)) holds copy that lives
+   ([AboutDialog](../src/components/AboutDialog.tsx)) holds copy that lives
    only in `site.about`: there is no file to open and no section to jump to,
    and an `href="#about"` pointing at nothing would degrade worse than a
    button does. So that trigger is a `<button type="button">` with
