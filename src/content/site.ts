@@ -74,19 +74,20 @@ export const site = {
    * here, which is the same reason the toolkit grid came off (DESIGN.md
    * §2.3). Each of these spans the whole body of work instead.
    *
-   * `2/2` rather than `2`: a count says he placed twice, the fraction says he
-   * has placed in every hackathon he has entered. It is only true while that
-   * stays the case, since a third hackathon without a placement makes it a lie
-   * (CONTENT.md §8).
+   * `2/3` rather than `2`: a count says he placed twice, the fraction says
+   * out of how many. Three entered (Permit Paragons, Lightning McShower and
+   * Clearline, the last a top-third finish with no placement, Jake 2026-10-18), two
+   * placed. The denominator is only true until the next hackathon, which has
+   * to move it (CONTENT.md §3).
    *
-   * The project count is Jake's, set 2026-10-14. CONTENT.md §2.4 lists seven
-   * builds and can't decide on its own which are "finished" (CWG is
-   * published but ongoing, BoulderBuddy shipped but stale) so the number is
-   * his call, not an arithmetic result.
+   * The project count is Jake's: 7 on 2026-10-14, then 8 on 2026-10-18 once
+   * Clearline was done. CONTENT.md §2.4 can't decide on its own which builds
+   * are "finished" (CWG is published but ongoing, BoulderBuddy shipped but
+   * stale) so the number is his call, not an arithmetic result.
    */
   stats: [
-    { value: "2/2", label: ["HACKATHONS", "PLACED"] },
-    { value: "7", label: ["PROJECTS", "FINISHED"] },
+    { value: "2/3", label: ["HACKATHONS", "PLACED"] },
+    { value: "8", label: ["PROJECTS", "FINISHED"] },
     { value: "1", label: ["PUBLISHED", "PACKAGE"] },
   ],
 } as const;
