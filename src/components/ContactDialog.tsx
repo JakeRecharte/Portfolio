@@ -98,7 +98,7 @@ export default function ContactDialog({
         onClick={(e) => {
           if (e.target === dialogRef.current) dialogRef.current?.close();
         }}
-        className="m-auto w-[min(92vw,26rem)] rounded-3xl border border-white/10 bg-neutral-950/80 p-6 backdrop-blur-xl backdrop:bg-black/70 open:block sm:p-8"
+        className="m-auto min-h-[45dvh] w-[min(92vw,36rem)] rounded-3xl border border-white/10 bg-neutral-950/80 p-6 backdrop-blur-xl backdrop:bg-black/70 open:block sm:p-8"
       >
         <div className="flex items-start justify-between gap-4">
           <h2

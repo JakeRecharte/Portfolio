@@ -10,9 +10,9 @@ import ArrowLink from "./ArrowLink";
  * sitting under the degree line because that is where a reader is already
  * looking at "who is this" rather than "what has he shipped".
  *
- * Size is the project dialog's write-up-only size, `w-[min(92vw,32rem)]`,
- * roughly half the `max-w-6xl` shell and a little under (DESIGN.md §2.3),
- * with `max-h-` rather than `h-` so a long script scrolls instead of
+ * Size is the project dialog's write-up-only size: half the demo dialog's
+ * `max-w-6xl` by `90dvh`, so `w-[min(92vw,36rem)]` and `min-h-[45dvh]`
+ * (DESIGN.md §2.3), with `max-h-` so a long script scrolls instead of
  * overflowing. It reuses that shell wholesale: `p-0 open:flex open:flex-col`,
  * a pinned header bar, one scrolling body.
  *
@@ -49,7 +49,7 @@ export default function AboutDialog({
         onClick={(e) => {
           if (e.target === dialogRef.current) dialogRef.current?.close();
         }}
-        className="m-auto max-h-[90dvh] w-[min(92vw,32rem)] overflow-hidden rounded-3xl border border-white/10 bg-neutral-950/80 p-0 backdrop-blur-xl backdrop:bg-black/70 open:flex open:flex-col"
+        className="m-auto max-h-[90dvh] min-h-[45dvh] w-[min(92vw,36rem)] overflow-hidden rounded-3xl border border-white/10 bg-neutral-950/80 p-0 backdrop-blur-xl backdrop:bg-black/70 open:flex open:flex-col"
       >
         <div className="flex items-center justify-between gap-4 border-b border-white/10 px-5 py-3.5">
           <h2
@@ -80,8 +80,9 @@ export default function AboutDialog({
         </div>
 
         <div className="min-h-0 flex-1 overflow-y-auto p-6 sm:p-8">
-          {/* Measure is carried by the prose, not the dialog: a 32rem panel
-              is already wider than §2.5's body measure. */}
+          {/* Measure is carried by the prose, not the dialog: the panel's
+              36rem less `sm:` padding is exactly §2.5's `max-w-lg`, and the
+              cap holds it there on any wider screen. */}
           <div className="max-w-lg space-y-8">
             {site.about.sections.map((section) => (
               <section key={section.heading}>
