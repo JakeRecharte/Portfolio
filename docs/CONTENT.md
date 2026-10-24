@@ -163,9 +163,12 @@ Ordered newest first, as the CV has them. "Repo" = verified public GitHub repo.
 - Stack, from `web/package.json` and the README: Next.js 15, React 19,
   TypeScript, Tailwind 4, MapLibre GL 5 on an OpenFreeMap basemap, Supabase
   (Postgres with Realtime), Retell AI for the voice agent, a Fastify server on
-  Railway, Vercel for the web app. The tile carries **TypeScript, React,
-  MapLibre, Supabase**: three are on the CV (§2.5), and MapLibre is named on
-  the row that used it, the same way Apple Picker's Unity is.
+  Railway, Vercel for the web app. The card carries **TypeScript, MapLibre,
+  Supabase**: two are on the CV (§2.5), and MapLibre is named on the row that
+  used it, the same way Apple Picker's Unity is. React is in the app and was
+  on the chip row while this was a board tile (four chips); it came off on
+  2026-10-19 when the card went featured, because a featured card caps tech at
+  three (§5).
 - **What Jake built, in his words (2026-10-18) and confirmed by `git log`:** the
   officer's one-tap page and the dispatch board, plus **parts of the Supabase
   database, set up and wired into the front end**. His 39 commits
@@ -218,8 +221,10 @@ Ordered newest first, as the CV has them. "Repo" = verified public GitHub repo.
   and all addresses and resident names. The board's own banner says so and can't
   be closed. Nothing is connected behind it: no database, no phone line. The
   live site is the one with both connected, and the demo's note says so.
-- Clearline is the **newest** project, so it takes the first seat on the board that
-  the USC Dual Use placeholder held.
+- Clearline is the **newest** project. It took the USC Dual Use placeholder's
+  seat on the board on 2026-10-18, and **moved up to the third featured card on
+  2026-10-19** at Jake's request, with BoulderBuddy going down to the board in
+  its place (§3).
 
 **Fool's Mate, September 2026 – Present**
 - **Verified fact in full:** "a 2D game I'm developing", started September 2026
@@ -391,6 +396,13 @@ Ordered newest first, as the CV has them. "Repo" = verified public GitHub repo.
   **describes an earlier state** (AsyncStorage local persistence; Feed, Nearby
   Gyms and Profile marked "coming soon") that contradicts the CV's Supabase
   schema and shipped gym finder. Last push 2026-04-09. See §8.
+- **On the board since 2026-10-19**, between Homelab and AI Trading Model by
+  start date; it was the third featured card until then. Moving it down meant
+  it needed a `detail`, which the featured card never did, so the dialog's
+  three paragraphs are written from the CV bullets above and add no claim: the
+  Supabase auth and schema, the Haversine gym finder with its tags and
+  directions, and the Flutter rebuild. They say nothing about team size or
+  whether the app is published, because the CV doesn't.
 
 **AI Trading Model, November 2025**
 - Stock prediction pipeline pulling historical data from the Yahoo Finance API,
@@ -581,45 +593,44 @@ with the section: `site.bio` still carries "looking for a summer 2027
 internship" in the header.
 
 1. **`FeaturedProjects`**: the top three, as full-width cards stacked one per
-   row: **CWG, Permit Paragons, BoulderBuddy**, in that order. The order is Jake's ranking and is *not*
+   row: **CWG, Permit Paragons, Clearline**, in that order. The order is Jake's ranking and is *not*
    chronological; don't "fix" it. CWG leads because it's the most distinctive
-   thing on the CV (published on PyPI, the only polished README).
-2. **`AdditionalProjects`**: everything else, newest first: Lightning
-   McShower, AI Trading Model. Thin at two rows; Avalanche NFT (§2.4) and this
-   site itself are the two candidates to lengthen it, both still open in §8.
-   It renders as a subsection under the featured cards, so its title is the
-   small eyebrow `Additional projects`, not a display heading.
+   thing on the CV (published on PyPI, the only polished README). Clearline took
+   BoulderBuddy's seat, third, on 2026-10-19. Jake asked for the swap but gave no
+   rank, so third is the seat it inherited rather than a position he chose.
+2. **`AdditionalProjects`**: everything else, newest first (the board, below).
+   Avalanche NFT (§2.4) and this site itself are the two candidates to
+   lengthen it, both still open in §8. It renders as a subsection under the
+   featured cards, so its title is the small eyebrow `Additional projects`, not a display heading.
 3. **`Experience`**: GradeFlow, NAVSEA/FathomWerx, Gold Coast Insurance.
    NAVSEA sits here, not in projects, per Jake: it was a program he attended,
    not a thing he built. The `PROGRAM` chip is what keeps that honest.
 
-The board holds six tiles as of 2026-10-14, **newest first with one
-exception** (§5), which is also the board's reading order and decides which
-squares are filled: **Fool's Mate, Clearline, Lightning McShower, Apple Picker,
-Homelab, AI Trading Model**. The exception is Fool's Mate and Clearline, swapped
-on 2026-10-18 at Jake's request: Clearline is the newer one (Oct 2026 against a
-Sep 2026 start), but Fool's Mate is still being built, and Jake wants the thing
-in flight first. Six is two full rows with no filler at all. Homelab (added
-2026-10-14 at Jake's request) took the seat the lone inert cell held. Apple
-Picker and AI Trading Model swapped on 2026-10-14 at Jake's request. The
-board had drifted out of the order §5 already specified. Lightning McShower
-and Apple Picker are both September 2026; the CV's own order breaks that tie,
-and Homelab sits below all three on an August start.
+The board holds six tiles as of 2026-10-19, **newest start first**, which is
+also the board's reading order and decides which squares are filled: **Fool's
+Mate, Lightning McShower, Apple Picker, Homelab, BoulderBuddy, AI Trading
+Model**. Six is two full rows with no filler at all. Fool's Mate, Lightning
+McShower and Apple Picker all start in September 2026; the CV's own order
+breaks the tie between the last two, and Fool's Mate goes first because it is
+still being built (Jake, 2026-10-18: the thing in flight first). Homelab sits
+below them on an August start, BoulderBuddy below it on a March one, and AI
+Trading Model last on November 2025. Clearline used to hold a board seat
+(swapped with Fool's Mate on 2026-10-18, which was then the board's one break
+from newest-first). It left for the featured set on 2026-10-19, so the break is
+gone: Fool's Mate leads on the tie-break alone. Homelab (added 2026-10-14 at
+Jake's request) took the seat the lone inert cell held. Apple Picker and AI
+Trading Model swapped on 2026-10-14 at Jake's request, because the board had
+drifted out of the order §5 already specified.
 
-Clearline was the `UPCOMING` USC Dual Use placeholder until 2026-10-18, when the
-event happened and the tile was filled in, and it held the first seat until Jake
-swapped it with Fool's Mate the same day. That puts the one unfinished tile that
-sits above finished ones first, which does the work of a board that opens with
-what's in flight reading as current; Homelab is the other unfinished tile, lower
-down on an August start. **The tile chip says what a thing is, never where it is
-in its life**, `kind`, always, so a hackathon reads as `HACKATHON` and not as
-`UPCOMING` (changed 2026-10-14 at Jake's request; it is the same axis rule §5
-sets for the Now rail's badge). Nothing is lost, because `period` carries the
-state in words ("Oct 2026", "Sep 2026 - Now"), and the dialog shows the `status`
-chip beside the `kind` one. Fool's Mate is also the thinnest tile on the site,
-and now the first one a visitor reads. If it stays contentless for long, it is
-doing less work than the filler it displaced, and the seat it holds is the
-costliest on the board.
+**The tile chip says what a thing is, never where it is in its life**, `kind`,
+always, so a hackathon reads as `HACKATHON` and not as `UPCOMING` (changed
+2026-10-14 at Jake's request; it is the same axis rule §5 sets for the Now
+rail's badge). Nothing is lost, because `period` carries the state in words
+("Oct 2026", "Sep 2026 - Now"), and the dialog shows the `status` chip beside
+the `kind` one. Fool's Mate is also the thinnest tile on the site, and now the
+first one a visitor reads. If it stays contentless for long, it is doing less
+work than the filler it displaced, and the seat it holds is the costliest on
+the board. Homelab is the other unfinished tile.
 
 Off the board, and why: **Avalanche NFT** (§2.4. One CV line and no link isn't
 a tile; waiting on detail), the **Portfolio site** itself (its repo 404s (§4,
@@ -776,8 +787,9 @@ behaviour.
 - `featuredProjects` is **exactly 3**, in Jake's ranked order (not
   chronological). Three is the grid; a fourth breaks `lg:grid-cols-3` into an
   orphan row and stops the set reading as a shortlist.
-- `otherProjects` is **2–6**, newest first, except that Fool's Mate (in
-  progress) leads Clearline at Jake's call (§3). The board pads its last row, so
+- `otherProjects` is **2–6**, newest start first, with the unfinished Fool's
+  Mate ahead of the two builds that started the same month (§3). The board
+  pads its last row, so
   **3 and 6 are the only counts with no inert filler**: it has been at 6
   since Homelab went on (2026-10-14). Past 6 is untested: nine would be three
   clean rows, but a board that long stops reading as the footnote to the
