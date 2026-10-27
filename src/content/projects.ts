@@ -5,8 +5,9 @@
  * chronological. They render as cards, because three things given room read as
  * a claim; the same three in a row list read as inventory.
  *
- * `otherProjects` is the board underneath: a checkerboard of squares, in the
- * order Jake placed them, for everything that's real but isn't the pitch.
+ * `otherProjects` is the board underneath: a checkerboard of squares, newest
+ * start first (an unfinished one ahead of a finished one that started the same
+ * month), for everything that's real but isn't the pitch.
  * Array order is the board's reading order and also drives the checker fill
  * (`i % 2` in ProjectBoard), so reordering changes which tiles are filled.
  *
@@ -130,14 +131,42 @@ export const featuredProjects: Project[] = [
     },
   },
   {
-    slug: "boulderbuddy",
-    title: "BoulderBuddy",
-    kind: "PROJECT",
-    period: "Mar 2026 - Now",
+    // The USC Dual Use placeholder, filled in now that it has happened. What
+    // it is comes from Jake's own repo (CONTENT.md §2.4); the team of 4, the
+    // top-third finish with no placement, and what he built (the officer page,
+    // the board, and parts of Supabase wired into the front end) are his own
+    // words, 2026-10-18, including the name: Clearline. The repo and the app's
+    // own header still say Line, so the write-up says so. The 3,624 calls are
+    // the team's own pitch citing LAFD, not something checked here. Moved up
+    // from the board on 2026-10-19; React is off the chip row because a
+    // featured card caps tech at three (CONTENT.md §5).
+    slug: "clearline",
+    title: "Clearline",
+    kind: "HACKATHON",
+    period: "Oct 2026",
     blurb:
-      "Cross-platform app for climbers: log routes by gym, V-grade and photo, then find nearby gyms by GPS and Haversine distance. Rebuilt in Flutter on the same Supabase backend.",
-    tech: ["Flutter", "React Native", "Supabase"],
-    repoUrl: "https://github.com/JakeRecharte/BoulderBuddy",
+      "On a team of 4: in a wildfire, families call 911 about houses already swept, and nobody can say. Clearline is the officer page, voice agent and dispatch board that can. I built the page and board.",
+    detail: [
+      "Clearline connects what officers find at the door to whoever answers the phone. An officer taps Cleared, Refused or No answer at each house, and a voice agent checks the caller's address against that record and says what was recorded and when, or moves the call up the queue for a person.",
+      "Built at USC's Dual-Use hackathon, where we finished in the top third of the field without placing. I built the officer's one-tap page and the dispatch board, and set up parts of the Supabase database and wired it into the front end. Teammates built the voice agent and the phone line.",
+      "It's set in the Palisades Fire, when LAFD took 3,624 911 calls in a day against a normal day of just under 1,500. The board can replay that day on about 8,100 real buildings, with simulated residents and calls. The repo and the board's header still say Line.",
+    ],
+    tech: ["TypeScript", "MapLibre", "Supabase"],
+    repoUrl: "https://github.com/JakeRecharte/USC-Dual-Hacks",
+    devpostUrl: "https://devpost.com/software/clearline-q2wktm",
+    liveUrl: "https://usc-dual-hacks.vercel.app",
+    demo: {
+      key: "clearline",
+      label: "The dispatch board, replaying the fire",
+      wide: true,
+      guide: [
+        "It opens on the Palisades Fire's day, 10:00 to 00:30, and plays by itself. Nothing changes until about 10:44, so drag the slider ahead if you don't want to wait.",
+        "Houses take the colour of their last record: green cleared, gold evacuating, orange no answer, red refusing or a caller who needs a person, grey unknown. Watch it fill in street by street.",
+        "Each call in the queue says why it was routed where it was: a call about a house already cleared is answered from the record, and a panicked caller goes straight to a person.",
+        "Open Suggested for what the board would send, re-contact and medical standby among them, each with its reasons. Confirm marks it in the simulation. Nothing is dispatched, here or in the real thing.",
+      ],
+      note: "This is the team's own dispatch board, built from their repo as it stood on the event's last day, not a recording. Nothing is connected behind it here (the live site linked below has the database and phone line), so every status, call and caller and the fire's spread is simulated, and the addresses and residents are placeholders. The map, buildings and timeline are real. It's a prototype, not a tool for a real incident.",
+    },
   },
 ];
 
@@ -157,42 +186,6 @@ export const otherProjects: Project[] = [
       "A 2D game, in the works since September 2026.",
       "Too early for a write-up, so this tile is a marker, not a claim. It gets the real description, the stack and a way to play it once those exist.",
     ],
-  },
-  {
-    // The USC Dual Use placeholder, filled in now that it has happened. What
-    // it is comes from Jake's own repo (CONTENT.md §2.4); the team of 4, the
-    // top-third finish with no placement, and what he built (the officer page,
-    // the board, and parts of Supabase wired into the front end) are his own
-    // words, 2026-10-18, including the name: Clearline. The repo and the app's
-    // own header still say Line, so the write-up says so. The 3,624 calls are
-    // the team's own pitch citing LAFD, not something checked here.
-    slug: "clearline",
-    title: "Clearline",
-    kind: "HACKATHON",
-    period: "Oct 2026",
-    blurb:
-      "On a team of 4: in a wildfire, families call 911 about houses already swept, and nobody can say. Clearline is the officer page, voice agent and dispatch board that can. I built the page and board.",
-    detail: [
-      "Clearline connects what officers find at the door to whoever answers the phone. An officer taps Cleared, Refused or No answer at each house, and a voice agent checks the caller's address against that record and says what was recorded and when, or moves the call up the queue for a person.",
-      "Built at USC's Dual-Use hackathon, where we finished in the top third of the field without placing. I built the officer's one-tap page and the dispatch board, and set up parts of the Supabase database and wired it into the front end. Teammates built the voice agent and the phone line.",
-      "It's set in the Palisades Fire, when LAFD took 3,624 911 calls in a day against a normal day of just under 1,500. The board can replay that day on about 8,100 real buildings, with simulated residents and calls. The repo and the board's header still say Line.",
-    ],
-    tech: ["TypeScript", "React", "MapLibre", "Supabase"],
-    repoUrl: "https://github.com/JakeRecharte/USC-Dual-Hacks",
-    devpostUrl: "https://devpost.com/software/clearline-q2wktm",
-    liveUrl: "https://usc-dual-hacks.vercel.app",
-    demo: {
-      key: "clearline",
-      label: "The dispatch board, replaying the fire",
-      wide: true,
-      guide: [
-        "It opens on the Palisades Fire's day, 10:00 to 00:30, and plays by itself. Nothing changes until about 10:44, so drag the slider ahead if you don't want to wait.",
-        "Houses take the colour of their last record: green cleared, gold evacuating, orange no answer, red refusing or a caller who needs a person, grey unknown. Watch it fill in street by street.",
-        "Each call in the queue says why it was routed where it was: a call about a house already cleared is answered from the record, and a panicked caller goes straight to a person.",
-        "Open Suggested for what the board would send, re-contact and medical standby among them, each with its reasons. Confirm marks it in the simulation. Nothing is dispatched, here or in the real thing.",
-      ],
-      note: "This is the team's own dispatch board, built from their repo as it stood on the event's last day, not a recording. Nothing is connected behind it here (the live site linked below has the database and phone line), so every status, call and caller and the fire's spread is simulated, and the addresses and residents are placeholders. The map, buildings and timeline are real. It's a prototype, not a tool for a real incident.",
-    },
   },
   {
     slug: "lightning-mcshower",
@@ -260,6 +253,21 @@ export const otherProjects: Project[] = [
       "The CA signs with a P-384 elliptic curve key and the directory answers only over LDAPS. Plain LDAP on 389 is switched off, so no login crosses the network in the clear. It isn't finished: FreeBSD, Ubuntu, AlmaLinux and the rest join the same domain as the semester runs.",
     ],
     tech: ["OpenBSD", "BIND", "OpenLDAP", "OpenSSL"],
+  },
+  {
+    slug: "boulderbuddy",
+    title: "BoulderBuddy",
+    kind: "PROJECT",
+    period: "Mar 2026 - Now",
+    blurb:
+      "Cross-platform app for climbers: log routes by gym, V-grade and photo, then find nearby gyms by GPS and Haversine distance. Rebuilt in Flutter on the same Supabase backend.",
+    detail: [
+      "Sign-in runs on Supabase auth, and behind it is a relational PostgreSQL schema for gyms, routes, 3D hold placements, user profiles and community grade voting. A route carries its gym, V-grade, notes and photos.",
+      "The nearby-gym finder reads the phone's GPS and sorts gyms by Haversine distance. Each gym has climbing-style tags (bouldering, top rope, lead) and one-tap directions in Apple or Google Maps.",
+      "I rebuilt the whole app in Flutter (screens, login, navigation and theming) on the same Supabase backend and schema.",
+    ],
+    tech: ["Flutter", "React Native", "Supabase"],
+    repoUrl: "https://github.com/JakeRecharte/BoulderBuddy",
   },
   {
     slug: "ai-trading-model",

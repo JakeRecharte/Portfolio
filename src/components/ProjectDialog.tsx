@@ -85,11 +85,11 @@ export default function ProjectDialog({
     </button>
   );
 
-  // A demo needs the resume viewer's full-bleed size; a write-up sizes to its
-  // own content at the narrower width (DESIGN.md §2.3).
+  // A demo needs the resume viewer's full-bleed size; a write-up is half of it
+  // in both directions, growing to its content past that (DESIGN.md §2.3).
   const size = project.demo
     ? "h-[90dvh] w-[92vw] max-w-6xl"
-    : "max-h-[90dvh] w-[min(92vw,32rem)]";
+    : "max-h-[90dvh] min-h-[45dvh] w-[min(92vw,36rem)]";
 
   return (
     <>

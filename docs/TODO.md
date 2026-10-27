@@ -524,3 +524,14 @@ The code is the easy half. This is what actually gates shipping.
   built goes first. The checker fill follows array order, so the two tiles also
   traded which one is filled.
 - **2026-10-18**: The PROJECTS FINISHED stat went from 7 to 8 now that Clearline is done. Jake's count, so the +1 is an assumption (CONTENT.md §3).
+- **2026-10-19**: **Clearline moved from the board to the featured set, and
+  BoulderBuddy moved down to take its place on the board**, at Jake's request.
+  Clearline took BoulderBuddy's seat as the third card (CWG, Permit Paragons,
+  Clearline); Jake gave no rank, so third is inherited. BoulderBuddy sits
+  between Homelab and AI Trading Model, by start date, and the board stays at
+  six. The Fool's Mate / Clearline swap from 2026-10-18 is moot: Fool's Mate
+  leads on the in-flight tie-break alone. Two knock-ons: the Clearline card
+  drops React from its chips (a featured card caps tech at three), and
+  BoulderBuddy gained a three-paragraph `detail` written from the CV bullets,
+  since every board project has one and the dialog would otherwise have
+  restated its own blurb (CONTENT.md §2.4, §3, §5).

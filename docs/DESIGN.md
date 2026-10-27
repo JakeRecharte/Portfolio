@@ -276,16 +276,25 @@ with the viewport, and `priority` because it is above the fold on every visit.
 rather than `/60` because a modal sits over arbitrary content and has to win;
 it is the only use of that value. Size is `h-[90dvh] w-[92vw] max-w-6xl`, the
 same `max-w-6xl` outer bound as the page shell (§2.6), so a modal never reads
-wider than the site. The resume viewer
-([ResumeDialog](../src/components/ResumeDialog.tsx)) uses that full size; a modal
-that only holds a few rows
-([ContactDialog](../src/components/ContactDialog.tsx)) is
-`w-[min(92vw,26rem)]` with `p-6 sm:p-8` and sizes to its content instead. The
-**About** modal ([AboutDialog](../src/components/AboutDialog.tsx)) is the third
-size and introduces nothing: it borrows the project dialog's write-up-only
-`max-h-[90dvh] w-[min(92vw,32rem)]`, which is about half the `max-w-6xl` shell
-and a little under, wide enough for prose at §2.5's `max-w-lg` measure, narrow
-enough that it still reads as a panel over the header rather than a page.
+wider than the site. There are **two sizes, and the second is exactly half of
+the first in both directions**:
+
+| Size | Classes | Used by |
+| --- | --- | --- |
+| Full | `h-[90dvh] w-[92vw] max-w-6xl` | the resume viewer ([ResumeDialog](../src/components/ResumeDialog.tsx)), a project with a demo |
+| Half | `max-h-[90dvh] min-h-[45dvh] w-[min(92vw,36rem)]` | a project with only a write-up, About ([AboutDialog](../src/components/AboutDialog.tsx)), Contact ([ContactDialog](../src/components/ContactDialog.tsx)) |
+
+`36rem` is half of `max-w-6xl`'s `72rem` and `45dvh` is half of `90dvh`, so a
+write-up modal sits next to a demo modal at a clean 1:2 rather than a different
+size per modal. The previous sizes (`26rem` for Contact, `32rem` and
+content-height for the rest) read as far too small beside a demo dialog
+(Jake, 2026-10-18). The height is `min-h-` plus `max-h-`, not a fixed `h-`:
+never shorter than half, so a three-row Contact modal is still a panel rather
+than a chip, but it grows to fit longer prose and scrolls past `90dvh`. A
+Half modal with less than half a screen of content is top-anchored with empty
+panel below it, which is deliberate; don't pad it out. At `sm:` and up the
+36rem less `p-8` is 32rem, which is exactly §2.5's `max-w-lg` measure, so About's
+prose fills the panel and the cap only starts to matter on a wider one.
 
 **The About modal's body is prose, so it takes the one heading the type scale
 doesn't have.** Its sections (*The code*, *Outside the code*) are the §2.5
@@ -305,8 +314,8 @@ featured cards while both of those stay server components. A featured card
 now opens it too. CWG's demo had nowhere else to live, and a card that only
 linked out was the one project surface with no write-up behind it. A project with a demo takes the resume
 viewer's full `h-[90dvh] w-[92vw] max-w-6xl`; one with only a write-up takes
-`max-h-[90dvh] w-[min(92vw,32rem)]` and sizes to itself, with `max-h-` rather
-than `h-` so three paragraphs scroll instead of overflowing. Both share one
+the Half size above, with `max-h-` rather than `h-` so three paragraphs scroll
+instead of overflowing. Both share one
 shell: `p-0 open:flex open:flex-col`, a pinned header bar
 (`border-b border-white/10 px-5 py-3.5`) holding the title and the close
 button, and one scrolling body at `min-h-0 flex-1 overflow-y-auto p-6 sm:p-8`.
