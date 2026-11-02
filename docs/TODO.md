@@ -145,7 +145,8 @@ site uses):
       pills that open modals (replaced the floating pill 2026-10-13)
 - [x] Scroll-reveal transitions between blocks (Motion `whileInView`)
 - [x] Mobile layout: stacks to a single column
-- [x] `prefers-reduced-motion` respected globally
+- [x] `prefers-reduced-motion` respected globally, including the scroll reveal
+      and the fog (2026-11-02, DESIGN.md §2.7)
 
 **Layout changed from the original plan.** The afamolie pattern (state-swapped
 panes, one view at a time) was replaced with the sawad.framer.website pattern:

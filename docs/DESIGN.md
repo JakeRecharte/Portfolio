@@ -31,7 +31,8 @@ re-checking §5.
 A near-black page with a drifting blue fog GIF behind it; content sits in
 translucent glass panels and hairline-divided rows; headings are enormous,
 uppercase, and two-tone; one amber accent carries every affordance; everything
-fades up once as it enters the viewport.
+fades up once as it enters the viewport, unless the visitor has asked for
+reduced motion (§2.7).
 
 ---
 
@@ -422,8 +423,21 @@ hand-write a `motion.div` in a section.
   color and background; `duration-300` for the arrow's transform.
 - `once: true` is not optional. Re-firing reveals on scroll-up reads as noise.
 
-Reduced motion is handled globally in `globals.css` and must not be re-handled
-per component. Nothing may be *only* legible mid-animation.
+All motion respects `prefers-reduced-motion`, and any new animation must too.
+Nothing may be *only* legible mid-animation. There are three mechanisms, one per
+kind of animation:
+
+- **CSS animation and transitions:** the global rule in `globals.css`. Don't
+  re-handle these per component.
+- **Reveal:** `motion-reduce:opacity-100!` and `motion-reduce:transform-none!`
+  on its wrapper, so a block sits in place with no fade or slide. Don't branch
+  on `useReducedMotion` to render different markup: the page is prerendered
+  without knowing the setting, so its HTML always has Motion's `opacity: 0`,
+  and React won't remove that during hydration. Everything would stay invisible.
+- **The fog:** CSS can't pause a GIF, so a `<picture>` source swaps in
+  `public/portfoliobg-still.jpg`, and the GIF is never downloaded. The still is
+  frame 30 of the GIF. To rebuild it:
+  `ffmpeg -i public/portfoliobg.gif -vf "select=eq(n\,30)" -frames:v 1 -q:v 2 public/portfoliobg-still.jpg`
 
 ---
 
