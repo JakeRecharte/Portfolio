@@ -919,8 +919,8 @@ American spelling.
   goes through `next/image`.
 - External links already get `target="_blank" rel="noreferrer"`; internal paths
   (like `/resume.pdf`) must not.
-- `prefers-reduced-motion` is handled globally in `globals.css`. Don't write
-  copy that only makes sense while an animation plays.
+- `prefers-reduced-motion` is handled in DESIGN.md §2.7. Don't write copy that
+  only makes sense while an animation plays.
 
 ---
 

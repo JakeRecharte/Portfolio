@@ -7,6 +7,9 @@
  *
  * 600x338 / 2.9 MB, stretched over the viewport exactly as the reference does.
  * It is upscaled and soft at full size, and that softness is the look.
+ *
+ * CSS can't pause a GIF, so reduced motion swaps the file in the <picture>
+ * instead: portfoliobg-still.jpg, one frame of the same GIF at the same size.
  */
 
 .root {
