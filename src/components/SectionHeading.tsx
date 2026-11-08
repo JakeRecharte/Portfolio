@@ -36,7 +36,12 @@ export default function SectionHeading({
       className={`${sizes[size]} leading-[0.85] font-black tracking-tighter uppercase`}
     >
       <span className="block text-white">{lines[0]}</span>
-      <span className="block text-white/20">{lines[1]}</span>
+      {/* `opacity-20`, not `text-white/20`. At `tracking-tighter` and black
+          weight neighbouring glyphs overlap slightly, and a colour alpha is
+          applied per glyph, so every overlap painted twice and showed as a
+          brighter seam (EXPERIENCE, FINISHED, PORTFOLIO). `opacity` fades the
+          line as one layer, so the overlaps vanish and the tracking stays. */}
+      <span className="block text-white opacity-20">{lines[1]}</span>
     </Tag>
   );
 }
