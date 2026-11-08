@@ -1,5 +1,5 @@
 import type { Project } from "@/content/projects";
-import ArrowLink from "./ArrowLink";
+import ActionPill from "./ActionPill";
 import Reveal from "./Reveal";
 import ProjectDialog from "./ProjectDialog";
 
@@ -128,11 +128,18 @@ function Tile({ project }: { project: Project }) {
         </ul>
       )}
 
+      {/* Title and pill share the bottom line, the pill pinned to the
+          bottom-right corner (Jake, 2026-11-07). A third of a phone screen is
+          ~110px, so below `sm:` the pill steps down to the Now badge's `px-2`
+          and `text-[10px]` and the title wraps beside it. */}
       <span className="mt-3 flex items-end justify-between gap-2">
         <span className="text-sm leading-tight font-bold text-white sm:text-base lg:text-lg">
           {project.title}
         </span>
-        <ArrowLink className="size-4 text-accent sm:size-5" />
+        <ActionPill
+          demo={Boolean(project.demo)}
+          className="px-2 py-1.5 text-[10px] sm:px-3 sm:text-xs"
+        />
       </span>
     </ProjectDialog>
   );

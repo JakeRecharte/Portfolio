@@ -53,7 +53,8 @@ Everything else is `white` at an alpha. That is deliberate. The fog is the
 color in this design, so the UI stays neutral over it.
 
 **Accent discipline.** Amber means "this does something." It is currently used
-in exactly six places: the focus ring, `ArrowLink` on every linking row, the
+in exactly seven places: the focus ring, `ArrowLink` on every linking row, the
+`ActionPill` ("Live Demo" / "See More") on every project card and tile, the
 role line under a job row in `Work Experience`, the filled levels of the contribution
 graph, the channel icons in `Icon` (contact rows and header pills), and the
 outline of a **kind** chip (`border-accent/40`, `CLUB`, `INTERNSHIP`,
@@ -89,7 +90,7 @@ This is the real type hierarchy; weight and size do less work than alpha does.
 | `text-white/40` | mono eyebrow |
 | `text-white/35` | dates, captions, graph axis labels |
 | `text-white/30` | footer, bullet dots |
-| `text-white/20` | the dropped second line of a display heading |
+| `text-white opacity-20` | the dropped second line of a display heading (as `opacity`, see §2.5) |
 
 **`/55` is the floor for anything a person reads as a sentence**: `TODO.md` §1
 commits to 4.5:1 and `/55` on black is where that lands. `/45` and below are for
@@ -170,7 +171,7 @@ form. What fits depends entirely on how wide a third of the viewport is:
 | Blurb wrapper | `mt-3 hidden min-h-0 flex-1 sm:block` | `sm:` |
 | Blurb | `line-clamp-3 text-xs leading-relaxed text-white/55 lg:line-clamp-5 lg:text-sm` | `sm:` |
 | Tech chips | `mt-3 hidden flex-wrap gap-2 lg:flex` | `lg:` |
-| Title + arrow | `mt-3 flex items-end justify-between` | always |
+| Title + pill | `mt-3 flex items-end justify-between gap-2` | always |
 
 **The wrapper hides and the paragraph clamps, never both on one element.**
 `hidden` and `line-clamp-*` both set `display`, so a `hidden sm:line-clamp-3`
@@ -361,8 +362,13 @@ the eyebrow label. If it's a date or a status, it's mono; otherwise it isn't.
 | Caption / micro | `text-[11px]`, `text-[10px]`, `text-[9px]` |
 
 **Display headings are always two lines**, first `text-white`, second
-`text-white/20`, and the pair must read as one phrase
+`text-white opacity-20`, and the pair must read as one phrase
 (`FEATURED`/`PROJECTS`).
+**Dim display type with `opacity`, never a colour alpha.** At
+`tracking-tighter` and black weight neighbouring glyphs overlap, and
+`text-white/20` is applied glyph by glyph, so each overlap paints twice and
+reads as a bright seam, as if the letter were clipped. `opacity-20` fades the
+line as one layer and keeps the tracking (Jake, 2026-11-07).
 Use [SectionHeading](../src/components/SectionHeading.tsx) for every one of
 them, including a hero: `size="hero"` is the step up in the table above and
 `size="section"` (the default) is everything inside a page. Nothing hand-rolls
@@ -461,12 +467,29 @@ the far right in `text-accent`. The arrow's `group-hover` nudge is the hover
 affordance. Don't also underline or scale. A row or card with no destination
 gets no arrow, which is how a project with no public repo reads as one.
 
-**A checkerboard tile is the exception: every tile carries the arrow**, because
-every tile leads somewhere, to its own detail dialog if not to a repo. The
-board only reads as uniform if the mark is uniform, and a tile with a blank
-corner would look broken rather than linkless. It steps down to `size-4` below
-`sm:` so it doesn't out-weigh the title beside it (§3, "the label sets the icon
-size").
+**A project card or tile carries a pill, not the arrow**
+([ActionPill](../src/components/ActionPill.tsx)), on every one, because every
+one opens its dialog. The pill names what that dialog holds: **"Live Demo"**
+when the project has a `demo`, **"See More"** when it is only a write-up. A
+word beats the arrow here because the arrow only says "somewhere", and on a
+project the useful thing to know before clicking is whether something runs
+(Jake, 2026-11-07).
+
+| Part | Classes |
+| --- | --- |
+| Pill | `rounded-lg border border-accent/40 bg-white/[0.03] text-accent`, a `span` (it sits inside the trigger) |
+| Hover (via the trigger's `group`) | `group-hover:border-accent group-hover:bg-white/[0.07]` |
+| Featured card | `px-3 py-1.5 text-xs`, beside the title, the About button's size |
+| Board tile | `px-2 py-1.5 text-[10px] sm:px-3 sm:text-xs`, bottom-right, on the title's line |
+
+It is the About button's geometry (§2.3 pill button) with the arrow's amber
+swapped in for the white border and label. The border is the kind chip's
+`/40` at rest and full `accent` on hover, the one place an amber outline
+changes, because unlike a chip this is the click target's label. PER_ywuq stays an
+outline and a foreground, never a fill (§2.1). On a tile it is pinned to the
+bottom-right corner on the title's line, where the arrow was (Jake,
+2026-11-07); at phone width (~110px a cell) the title wraps beside it rather
+than the pill moving.
 
 **The contribution graph is one link, not a row.** The whole figure
 ([ContributionGraph](../src/components/ContributionGraph.tsx)) is an anchor to

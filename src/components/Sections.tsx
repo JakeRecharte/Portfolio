@@ -2,7 +2,7 @@ import { site } from "@/content/site";
 import { featuredProjects, otherProjects } from "@/content/projects";
 import { experience } from "@/content/experience";
 import SectionHeading from "./SectionHeading";
-import ArrowLink from "./ArrowLink";
+import ActionPill from "./ActionPill";
 import Reveal from "./Reveal";
 import ProjectBoard from "./ProjectBoard";
 import ProjectDialog from "./ProjectDialog";
@@ -71,14 +71,14 @@ export function FeaturedProjects() {
       </Reveal>
       <ul className="mt-12 flex flex-col gap-4">
         {featuredProjects.map((p, i) => {
-          const destination = p.liveUrl ?? p.devpostUrl ?? p.repoUrl;
           const body = (
             <>
               <div className="flex items-start justify-between gap-4">
                 <h3 className="text-xl font-bold text-white">{p.title}</h3>
-                {destination && (
-                  <ArrowLink className="mt-1 shrink-0 text-accent" />
-                )}
+                <ActionPill
+                  demo={Boolean(p.demo)}
+                  className="px-3 py-1.5 text-xs"
+                />
               </div>
               <p className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-xs text-white/35">
                 {p.period}
