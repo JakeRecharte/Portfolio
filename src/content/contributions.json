@@ -1,6 +1,6 @@
 {
   "user": "JakeRecharte",
-  "fetchedAt": "2026-11-12",
+  "fetchedAt": "2026-11-13",
   "total": 454,
   "days": [
     {
@@ -1845,6 +1845,11 @@
     },
     {
       "date": "2026-11-12",
+      "level": 0,
+      "count": 0
+    },
+    {
+      "date": "2026-11-13",
       "level": 0,
       "count": 0
     }
