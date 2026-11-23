@@ -73,7 +73,7 @@ Numbers are quoted exactly as the CV states them. Don't round, inflate, or
 ### 2.2 Education
 
 - San Diego State University, College of Sciences, San Diego, CA
-- B.S. Computer Science. **expected May 2028**
+- B.S. Computer Science. **expected December 2027** (updated 2026-11-23; was May 2028)
 - Plan of record on the transcript: Computer Science Major, subplan *Computer
   Science Pre-Major* (through Spring 2026)
 - Transfer credit from Moorpark College and Oxnard College; test credit covers
@@ -1022,7 +1022,7 @@ left, roughly in order of how much they block.
 7. **Extracurriculars**: ColorStack Co-VP and the Sigma Phi Delta chairs are
    strong. Own section, folded into Experience, or left off?
 8. **What are you targeting?** The site currently says "summer 2027
-   internship" in two places. Confirm, summer 2027, new grad 2028, or both?
+   internship" in two places. Confirm, summer 2027, new grad (graduating Dec 2027), or both?
 9. Phone number: CV has it, the site's copy doesn't, but the resume PDF
    served at `/resume.pdf` does, so it is public now. Keep it off? (Recommended.
    Email plus LinkedIn is enough, and a scraped phone number invites spam.
