@@ -66,7 +66,7 @@ export const site = {
     location: "San Diego, CA",
     school: "San Diego State University",
     degree: "B.S. Computer Science",
-    graduation: "Expected May 2028",
+    graduation: "Expected December 2027",
   },
   /**
    * Career-level only. A single project's metric (82% accuracy, 330,000
